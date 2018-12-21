@@ -13,11 +13,10 @@ tarsnode: An image to run tarsnode for scale, supporting apps including cpp, jav
 ### Quickstart
 Please replace the ${your_machine_ip} and ${your_mysql_ip} with your machine ip and your mysql ip, and then run the following commands.
 ```sh
-git clone https://github.com/TarsCloud/TarsDocker.git
 docker pull mysql:5.6
 docker pull tarsdocker/tars
 docker run --name mysql -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 -v /data/mysql-data:/var/lib/mysql mysql:5.6
-docker run -d -it --name=tars --link mysql -e MOUNT_DATA=true -e DBIP=${your_mysql_ip} -e DBPort=3306 -e DBUser=root -e DBPassword=root@appinside -p 3000:3000 -v /data:/data tars
+docker run -d -it --name=tars --link mysql -e MOUNT_DATA=true -e DBIP=${your_mysql_ip} -e DBPort=3306 -e DBUser=root -e DBPassword=root@appinside -p 3000:3000 -v /data:/data tarsdocker/tars
 ```
 Then access http://${your_machine_ip}:3000 to enjoy tars.
 
@@ -34,13 +33,10 @@ DBPassword: provide mysql admin's password for tars docker
 
 
 ### Scale up tarsnode
-Please replace the ${your_machine_ip} and ${your_mysql_ip} with your machine ip and your mysql ip, and then run the following commands.
+Please replace the ${registry_ip} with your tarsregistry ip, and then run the following commands.
 ```
-git clone https://github.com/TarsCloud/TarsDocker.git
-docker pull mysql:5.6
 docker pull tarsdocker/tarsnode
-docker run --name mysql -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 -v /data/mysql-data:/var/lib/mysql mysql:5.6
-docker run -d -it --name tarsnode --link mysql -e MOUNT_DATA=true -e DBIP=${your_mysql_ip} -e DBPort=3306 -e DBUser=root -e DBPassword=root@appinside -p 8080:8080 -v /data:/data tarsnode
+docker run -d -it --name tarsnode -e MASTER=${registry_ip} -v /data:/data tarsdocker/tarsnode
 ```
 
 ## Appreciation
