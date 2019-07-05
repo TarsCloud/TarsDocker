@@ -1,7 +1,7 @@
 # Tars Docker
 
 ## Introduction
-Tars comes from the robot in Interstellar movie. Tars is a high-performance RPC framework based on name service and Tars protocol, also integrated administration platform, and implemented hosting-service via flexible schedule. More information please see [here](https://github.com/TarsCloud/Tars/blob/master/Introduction.en.md).
+Tars comes from the robot in Interstellar movie. Tars is a high-performance RPC framework based on name service and Tars protocol, also integrated administration platform, and implemented hosting-service via flexible schedule. More information please see [here](https://github.com/TarsCloud/Tars/blob/master/Install.md).
 
 Tars docker provides docker images for tars framework, which make it deploy easily and efficiently. This repository provides 2 images: tars and tarsnode.
 
