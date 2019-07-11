@@ -26,19 +26,14 @@ Use command as follow to check whether docker install correctly or not.
 docker version
 ```
 
-### Pull the images
-Please replace the ${your_machine_ip} and ${your_mysql_ip} with your machine ip and your mysql ip, and then run the following commands.
+### Start services
+Clone project from github:
 ```sh
-docker pull mysql:5.6
-docker pull tarsdocker/tars
-docker run --name mysql -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 -v /data/mysql-data:/var/lib/mysql mysql:5.6
-docker run -d -it --name=tars --link mysql -e MOUNT_DATA=true -e DBIP=${your_mysql_ip} -e DBPort=3306 -e DBUser=root -e DBPassword=root@appinside -p 3000:3000 -v /data:/data tarsdocker/tars
+git clone https://github.com/TarsCloud/TarsDocker.git
 ```
-
-**NOTICE**:
-You can  check ${your_mysql_ip} using follow commands
-``` sh
-docker inspect --format='{{.NetworkSettings.IPAddress}}' mysql
+Start the services:
+```sh
+docker-compose up
 ```
 
 Then access `http://${your_machine_ip}:3000` to enjoy tars.
