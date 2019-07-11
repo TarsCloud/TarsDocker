@@ -1,0 +1,39 @@
+version: "3"
+services:
+  tars:
+    image: tarsdocker/tars
+    container_name: tars
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data:/data:rw
+      - ./wait-for-mysql.sh:/tmp/wait-for-mysql.sh:ro
+    environment:
+      MOUNT_DATA: "true"
+      DBIP: tars-mysql-server
+      DBPort: 3306
+      DBUser: root
+      DBPassword: 123456
+    depends_on:
+      - tars-mysql-server
+    entrypoint: ["bash", "/tmp/wait-for-mysql.sh", "/sbin/entrypoint.sh", "start"]
+    networks:
+      - default
+
+  tars-mysql-server:
+    image: mysql:8.0.13
+    container_name: tars-mysql
+    restart: always
+    ports:
+      - 3308:3306
+    volumes:
+      - ./mysql:/var/lib/mysql/:rw
+    command: mysqld --sql_mode="" --innodb_use_native_aio=0
+    networks:
+      - default
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+
+networks:
+  default:
