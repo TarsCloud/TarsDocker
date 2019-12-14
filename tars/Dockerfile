@@ -60,14 +60,14 @@ RUN	cd /root/Tars/framework/build/ && ./build.sh all \
 	&& ./configure --enable-phptars --with-php-config=/usr/bin/php-config && make && make install \
 	&& echo "extension=phptars.so" > /etc/php.d/phptars.ini 
 	# Install PHP swoole module
-RUN	cd /root && wget -c -t 0 https://github.com/swoole/swoole-src/archive/v2.2.0.tar.gz \
-	&& tar zxf v2.2.0.tar.gz && cd swoole-src-2.2.0 && phpize && ./configure && make && make install \
-	&& echo "extension=swoole.so" > /etc/php.d/swoole.ini \
-	&& cd /root && rm -rf v2.2.0.tar.gz swoole-src-2.2.0 \
-	&& mkdir -p /root/phptars && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars 
-	# Install tars go
-RUN	go get github.com/TarsCloud/TarsGo/tars \
-	&& cd $GOPATH/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go && go build . 
+# RUN	cd /root && wget -c -t 0 https://github.com/swoole/swoole-src/archive/v2.2.0.tar.gz \
+# 	&& tar zxf v2.2.0.tar.gz && cd swoole-src-2.2.0 && phpize && ./configure && make && make install \
+# 	&& echo "extension=swoole.so" > /etc/php.d/swoole.ini \
+# 	&& cd /root && rm -rf v2.2.0.tar.gz swoole-src-2.2.0 \
+# 	&& mkdir -p /root/phptars && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars 
+# 	# Install tars go
+# RUN	go get github.com/TarsCloud/TarsGo/tars \
+# 	&& cd $GOPATH/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go && go build . 
 	# Get and install nodejs
 RUN	wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip;unzip v0.35.1.zip; cp -rf nvm-0.35.1 $HOME/.nvm \
 	&& echo 'NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion";' >> $HOME/.bashrc \
@@ -78,30 +78,30 @@ RUN	wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip;unzip v0.35.1.zip; cp
 	# && cp -Rf /root/Tars/web /usr/local/tarsweb && cd /usr/local/tarsweb/ && npm install \
 	# && npm install -g pm2 @tars/deploy @tars/stream @tars/rpc @tars/logs @tars/config @tars/monitor @tars/notify @tars/utils @tars/dyeing @tars/registry \
 	# Get and install JDK
-RUN	mkdir -p /root/init && cd /root/init/  \
-	&& wget https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/NSG/common/x86_64/jdk-10.0.2_linux-x64_bin.rpm \
-	&& rpm -ivh /root/init/jdk-10.0.2_linux-x64_bin.rpm && rm -rf /root/init/jdk-10.0.2_linux-x64_bin.rpm \
-	&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /etc/profile \
-	&& echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /etc/profile \
-	&& echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /etc/profile \
-	&& echo "export PATH JAVA_HOME CLASSPATH" >> /etc/profile \
-	&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /root/.bashrc \
-	&& echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /root/.bashrc \
-	&& echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /root/.bashrc \
-	&& echo "export PATH JAVA_HOME CLASSPATH" >> /root/.bashrc \
-	&& cd /usr/local/ && wget -c -t 0 https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz \
-	&& tar zxvf apache-maven-3.5.4-bin.tar.gz && echo "export MAVEN_HOME=/usr/local/apache-maven-3.5.4/" >> /etc/profile 
+# RUN	mkdir -p /root/init && cd /root/init/  \
+# 	&& wget https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/NSG/common/x86_64/jdk-10.0.2_linux-x64_bin.rpm \
+# 	&& rpm -ivh /root/init/jdk-10.0.2_linux-x64_bin.rpm && rm -rf /root/init/jdk-10.0.2_linux-x64_bin.rpm \
+# 	&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /etc/profile \
+# 	&& echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /etc/profile \
+# 	&& echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /etc/profile \
+# 	&& echo "export PATH JAVA_HOME CLASSPATH" >> /etc/profile \
+# 	&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /root/.bashrc \
+# 	&& echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /root/.bashrc \
+# 	&& echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /root/.bashrc \
+# 	&& echo "export PATH JAVA_HOME CLASSPATH" >> /root/.bashrc \
+# 	&& cd /usr/local/ && wget -c -t 0 https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz \
+# 	&& tar zxvf apache-maven-3.5.4-bin.tar.gz && echo "export MAVEN_HOME=/usr/local/apache-maven-3.5.4/" >> /etc/profile 
 	# Set aliyun maven mirror
 	# && sed -i '/<mirrors>/a\\t<mirror>\n\t\t<id>nexus-aliyun<\/id>\n\t\t<mirrorOf>*<\/mirrorOf>\n\t\t<name>Nexus aliyun<\/name>\n\t\t<url>http:\/\/maven.aliyun.com\/nexus\/content\/groups\/public<\/url>\n\t<\/mirror>' /usr/local/apache-maven-3.5.4/conf/settings.xml \
-RUN	echo "export PATH=\$PATH:\$MAVEN_HOME/bin" >> /etc/profile \
-	&& echo "export PATH=\$PATH:\$MAVEN_HOME/bin" >> /root/.bashrc \
-	&& source /etc/profile && mvn -v \
-	&& rm -rf apache-maven-3.5.4-bin.tar.gz \
-	&& cd /root/Tars/java && source /etc/profile && mvn clean install && mvn clean install -f core/client.pom.xml \
-	&& mvn clean install -f core/server.pom.xml \
-	&& cd /root/init && mvn archetype:generate -DgroupId=com.tangramor -DartifactId=TestJava -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false \
-	&& cd /root/Tars/java/examples/quickstart-server/ && mvn tars:tars2java && mvn package \
-	&& yum clean all && rm -rf /var/cache/yum
+# RUN	echo "export PATH=\$PATH:\$MAVEN_HOME/bin" >> /etc/profile \
+# 	&& echo "export PATH=\$PATH:\$MAVEN_HOME/bin" >> /root/.bashrc \
+# 	&& source /etc/profile && mvn -v \
+# 	&& rm -rf apache-maven-3.5.4-bin.tar.gz \
+# 	&& cd /root/Tars/java && source /etc/profile && mvn clean install && mvn clean install -f core/client.pom.xml \
+# 	&& mvn clean install -f core/server.pom.xml \
+# 	&& cd /root/init && mvn archetype:generate -DgroupId=com.tangramor -DartifactId=TestJava -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false \
+# 	&& cd /root/Tars/java/examples/quickstart-server/ && mvn tars:tars2java && mvn package \
+# 	&& yum clean all && rm -rf /var/cache/yum
 
 # Whether mount Tars process path to outside, default to false (support windows)
 ENV MOUNT_DATA false
