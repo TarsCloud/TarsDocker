@@ -20,8 +20,7 @@ case ${1} in
 		/usr/sbin/init
 		source /etc/profile
 		source ~/.bashrc
-		cd /usr/local/app/tars && ./tars_install.sh
-		cd /usr/local/tarsweb/ && npm run prd
+		cd /usr/local/tars/cpp/deploy && ./docker-init.sh
 		tail -f /dev/null
 		;;
 	*)

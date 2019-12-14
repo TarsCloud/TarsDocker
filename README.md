@@ -26,33 +26,53 @@ Use command as follow to check whether docker install correctly or not.
 docker version
 ```
 
-### Pull the images
-Please replace the ${your_machine_ip} and ${your_mysql_ip} with your machine ip and your mysql ip, and then run the following commands.
+### Install Mysql By Docker
 ```sh
 docker pull mysql:5.6
-docker pull tarsdocker/tars
 docker run --name mysql -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 -v /data/mysql-data:/var/lib/mysql mysql:5.6
-docker run -d -it --name=tars --link mysql -e MOUNT_DATA=true -e DBIP=${your_mysql_ip} -e DBPort=3306 -e DBUser=root -e DBPassword=root@appinside -p 3000:3000 -v /data:/data tarsdocker/tars
 ```
 
-**NOTICE**:
-You can  check ${your_mysql_ip} using follow commands
-``` sh
-docker inspect --format='{{.NetworkSettings.IPAddress}}' mysql
+**NOTICE:--net=host Indicates that MySQL is bound to the machine IP **
+
+
+## Install Tars By Docker
+
+You can install Tars in two machine, one is master, anther is slave. And you can only install master.
+
+MYSQL_HOST: mysql ip address
+
+MYSQL_ROOT_PASSWORD: mysql root password
+
+INET: The name of the network interface (as you can see in ifconfig, such as eth0) indicates the native IP bound by the framework. Note that it cannot be 127.0.0.1
+
+REBUILD: Whether to rebuild the database is usually false. If there is an error in the intermediate installation and you want to reset the database, you can set it to true
+
+SLAVE: slave node
+
+```sh
+docker pull tarsdocker/tars:2
+#install master in one machine 
+docker run -d --net=host -e MYSQL_HOST=xxxxx -e MYSQL_ROOT_PASSWORD=xxxxx \
+        -eREBUILD=false -eINET=eth0 -eSLAVE=false \
+        -v/data/log/app_log:/usr/local/app/tars/app_log \
+        -v/data/log/web/web_log:/usr/local/app/web/log \
+        -v/data/log/auth/web_log:/usr/local/app/web/demo/log \
+        -v/data/patchs:/usr/local/app/patchs \
+        tarsdocker/tars:2 sh /root/tars-install/docker-init.sh
+
+#install slave in anther machine 
+docker run -d --net=host -e MYSQL_HOST=xxxxx -e MYSQL_ROOT_PASSWORD=xxxxx \
+        -eREBUILD=false -eINET=eth0 -eSLAVE=true \
+        -v/data/log/app_log:/usr/local/app/tars/app_log \
+        -v/data/log/web/web_log:/usr/local/app/web/log \
+        -v/data/log/auth/web_log:/usr/local/app/web/demo/log \
+        -v/data/patchs:/usr/local/app/patchs \
+        tarsdocker/tars:2 sh /root/tars-install/docker-init.sh
 ```
 
-Then access `http://${your_machine_ip}:3000` to enjoy tars.
+**NOTICE:--net=host Indicates that Tars is bound to the machine IP **
 
-### Parameter explanation
-MYSQL_ROOT_PASSWORD: provide mysql root password for mysql docker
-
-DBIP: provide mysql host for tars docker
-
-DBPort: provide mysql's port for tars docker
-
-DBUser: provide mysql admin's username for tars docker
-
-DBPassword: provide mysql admin's password for tars docker
+access: `http://${master}:3000` to tars web.
 
 
 ### Scale up tarsnode
