@@ -1,18 +1,19 @@
+[查看中文版本](README.zh.md)
+
 # Tars Docker
 
-## Introduction
-Tars comes from the robot in Interstellar movie. Tars is a high-performance RPC framework based on name service and Tars protocol, also integrated administration platform, and implemented hosting-service via flexible schedule. More information please see [here](https://github.com/TarsCloud/Tars/blob/master/Install.md).
+## Intro
 
-Tars docker provides docker images for tars framework, which make it deploy easily and efficiently. This repository provides 2 images: tars and tarsnode.
+Tars [here](https://github.com/TarsCloud/Tars/blob/master/Install.md)
 
-tars: An image to run tarsregistry, tarsAdminRegistry, tarsnode, tarsconfig, tarspatch, and tarsweb service, which can run apps including cpp, java, php, nodejs and golang, also provides the development environment for tars.
-
-tarsnode: An image to run tarsnode for scale, supporting apps including cpp, java, php, nodejs and golang.
+Directory Intro:
+- framework: Docker build script of Tars Docker, Docker includes tars framework and web.
 
 ## Usage
-### Docker instalation
+### Docker Install
 
-For example, run the follow commands in Centos: 
+Install Docker in Centos:
+
 ```sh
 sudo su
 yum install -y yum-utils device-mapper-persistent-data lvm2
@@ -21,51 +22,77 @@ yum install -y docker-ce
 systemctl start docker
 systemctl enable docker
 ```
-Use command as follow to check whether docker install correctly or not.
+
+see Docker version:
 ```sh
 docker version
 ```
 
-### Pull the images
-Please replace the ${your_machine_ip} and ${your_mysql_ip} with your machine ip and your mysql ip, and then run the following commands.
+### Install Mysql
+
+Install mysql by docker
+
 ```sh
 docker pull mysql:5.6
-docker pull tarsdocker/tars
-docker run --name mysql -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 -v /data/mysql-data:/var/lib/mysql mysql:5.6
-docker run -d -it --name=tars --link mysql -e MOUNT_DATA=true -e DBIP=${your_mysql_ip} -e DBPort=3306 -e DBUser=root -e DBPassword=root@appinside -p 3000:3000 -v /data:/data tarsdocker/tars
+docker run --name mysql --net-host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 \
+-v /data/mysql-data:/var/lib/mysql  \
+-v /etc/localtime:/etc/localtime \
+mysql:5.6
+
+```
+ 
+### Install Tars Framework
+
+**If you want build docker yourself, See[here](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)**
+
+1. Pull Images
+
+```sh
+docker pull tarscloud/framework
 ```
 
-**NOTICE**:
-You can  check ${your_mysql_ip} using follow commands
-``` sh
-docker inspect --format='{{.NetworkSettings.IPAddress}}' mysql
+2. Start Images
+
+```
+docker run -d --net=host -e MYSQL_HOST=xxxxx -e MYSQL_ROOT_PASSWORD=xxxxx \
+        -eREBUILD=false -eINET=enp3s0 -eSLAVE=false \
+        -v/data/log/app_log:/usr/local/app/tars/app_log \
+        -v/data/log/web_log:/usr/local/app/web/log \
+        -v/data/patchs:/usr/local/app/patchs \
+        -v/etc/localtime:/etc/localtime \
+        tars-docker:v1 sh /root/tars-install/docker-init.sh
 ```
 
-Then access `http://${your_machine_ip}:3000` to enjoy tars.
+MYSQL_HOST: mysql ip address
 
-### Parameter explanation
-MYSQL_ROOT_PASSWORD: provide mysql root password for mysql docker
+MYSQL_ROOT_PASSWORD: mysql root password
 
-DBIP: provide mysql host for tars docker
+INET: The name of the network interface (as you can see in ifconfig, such as eth0) indicates the native IP bound by the framework. Note that it cannot be 127.0.0.1
 
-DBPort: provide mysql's port for tars docker
+REBUILD: Whether to rebuild the database is usually false. If there is an error in the intermediate installation and you want to reset the database, you can set it to true
 
-DBUser: provide mysql admin's username for tars docker
+SLAVE: slave node
 
-DBPassword: provide mysql admin's password for tars docker
+Map three directories to the host:
 
+- -v/data/log/app_log:/usr/local/app/tars/app_log, tars application logs
+- -v/data/log/web_log:/usr/local/app/web/log, web log
+- -v/data/log/web_log/auth:/usr/local/app/web/demo/log, web auth log
+- -v/data/patchs:/usr/local/app/patchs, Publish package path
+
+**If you want to deploy multiple nodes, just execute docker run... On different machines. Pay attention to the parameter settings**
+
+**Here, you must use --net=host to indicate that the docker and the host are on the same network**
+
+Access `http://${your_machine_ip}:3000` open tars web
 
 ### Scale up tarsnode
-Please replace the ${registry_ip} with your tarsregistry ip, and then run the following commands.
-```
-docker pull tarsdocker/tarsnode
-docker run -d -it --name tarsnode -e MASTER=${registry_ip} -v /data:/data tarsdocker/tarsnode
-```
-**NOTICE**:
-You can  check ${registry_ip} using follow commands
-``` sh
-docker inspect --format='{{.NetworkSettings.IPAddress}}' tars
-```
+
+
+After Tars framework install, you can deploy tarsnode in other machine, then you can deploy your tars server to these machines through web.
+
+After web(>=1.3.1), you can deploy tarsnode online
+
 
 ## Appreciation
 The building of this repository is based on some people's work.
