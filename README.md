@@ -60,7 +60,7 @@ docker run -d --net=host -e MYSQL_HOST=xxxxx -e MYSQL_ROOT_PASSWORD=xxxxx \
         -v/data/log/web_log:/usr/local/app/web/log \
         -v/data/patchs:/usr/local/app/patchs \
         -v/etc/localtime:/etc/localtime \
-        tars-docker:v1 sh /root/tars-install/docker-init.sh
+        tarscloud/framework
 ```
 
 MYSQL_HOST: mysql ip address

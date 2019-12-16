@@ -31,11 +31,13 @@ docker version
 
 ### Install Mysql
 
-使用docker安装来安装mysql
+使用docker安装来安装mysql(目前只考虑了linux上, 时间和本机同步)
 
 ```sh
 docker pull mysql:5.6
-docker run --name mysql --net-host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 -v /data/mysql-data:/var/lib/mysql mysql:5.6
+docker run --name mysql --net-host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 \
+        -v/etc/localtime:/etc/localtime \
+        -v /data/mysql-data:/var/lib/mysql mysql:5.6
 ```
  
 **注意:--net-host表示Docker网络和本机一样** 
@@ -49,7 +51,7 @@ docker run --name mysql --net-host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p
 docker pull tarscloud/framework
 ```
 
-2. 启动镜像
+2. 启动镜像(目前只考虑了linux上, 时间和本机同步)
 ```sh
 docker run -d --net=host -e MYSQL_HOST=xxxxx -e MYSQL_ROOT_PASSWORD=xxxxx \
         -eREBUILD=false -eINET=eth0 -eSLAVE=false \
@@ -58,7 +60,7 @@ docker run -d --net=host -e MYSQL_HOST=xxxxx -e MYSQL_ROOT_PASSWORD=xxxxx \
         -v/data/log/auth/web_log:/usr/local/app/web/demo/log \
         -v/data/patchs:/usr/local/app/patchs \
         -v/etc/localtime:/etc/localtime \
-        tars-docker:v1 sh /root/tars-install/docker-init.sh
+        tarscloud/framework
 ```
 
 MYSQL_IP: mysql数据库的ip地址
