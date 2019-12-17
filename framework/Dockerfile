@@ -41,6 +41,8 @@ RUN source $HOME/.bashrc; export NVM_NODEJS_ORG_MIRROR=${MIRROR}/nodejs-release;
 	cd /usr/local/tars/cpp/deploy/web/demo;npm install
 
 RUN strip /usr/local/tars/cpp/deploy/framework/servers/tars*/bin/tars*
+RUN cd /usr/local/tars/cpp/deploy/framework/servers/; tar czfv tarsnode.tgz tarsnode
+RUN ls /usr/local/tars/cpp/deploy/framework/servers/
 RUN mkdir -p /usr/local/tars/cpp/deploy/web/client/dist/static/
 RUN cp -rf /usr/local/tars/cpp/deploy/framework/servers/tarsnode.tgz /usr/local/tars/cpp/deploy/web/client/dist/static/
 RUN rm -rf /root/Tars
