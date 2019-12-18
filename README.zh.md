@@ -8,8 +8,8 @@ Tars [here](https://github.com/TarsCloud/Tars/blob/master/Install.md)
 
 目录介绍
 - framework: Tars Docker制作脚本, 制作的docker包含了框架核心服务和web管理平台, 会被dockerhub关联, 自动构建, 并提供下载
-- tars: 早期的制作脚本, 针对新版本源码制作docker会有bug(等待修复中), 具体参见[tars](tars/README.md)
-- tarsnode: 早期的tarsnode脚本, 针对新版本源码制作docker会有bug(等待修复), 具体参见[tars](tars/README.md). 新版本web(>1.3.1)可以在web管理平台在线安装的tarsnoded, 不用docker也比较方便了. 
+- tars: 早期的制作脚本, 针对新版本源码制作docker会有bug(等待修复中), 具体参见 [tars](tars/README.md)
+- tarsnode: 早期的tarsnode脚本, 针对新版本源码制作docker会有bug(等待修复), 具体参见 [tars](tars/README.md). 新版本web(>1.3.1)可以在web管理平台在线安装的tarsnode, 不用docker也比较方便了. 
 
 ## 使用
 ### Docker安装
@@ -35,7 +35,7 @@ docker version
 
 ```sh
 docker pull mysql:5.6
-docker run --name mysql --net-host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 \
+docker run --name mysql --net=host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 \
         -v/etc/localtime:/etc/localtime \
         -v /data/mysql-data:/var/lib/mysql mysql:5.6
 ```
@@ -44,7 +44,7 @@ docker run --name mysql --net-host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p
 
 ### 安装Tars框架
 
-**如果你想源码自己编译docker, 请参见[here](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)**
+**如果你想源码自己编译docker, 请参见 [here](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)**
 
 1. 拉取镜像
 ```sh

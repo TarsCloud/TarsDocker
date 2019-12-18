@@ -34,7 +34,7 @@ Install mysql by docker
 
 ```sh
 docker pull mysql:5.6
-docker run --name mysql --net-host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 \
+docker run --name mysql --net=host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p 3306:3306 \
 -v /data/mysql-data:/var/lib/mysql  \
 -v /etc/localtime:/etc/localtime \
 mysql:5.6
