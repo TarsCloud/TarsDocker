@@ -8,7 +8,7 @@ export DBTarsPass=tars2015
 export REBUILD=false
 export SLAVE=false
 
-MIRROR-http://mirrors.cloud.tencent.com
+MIRROR=http://mirrors.cloud.tencent.com
 
 mkdir -p /usr/local/mysql; ln -s /usr/lib64/ /usr/local/mysql/lib;ln -s /usr/include/mysql  /usr/local/mysql/include; ls /usr/local/mysql/lib/libmysql*;cd /usr/local/mysql/lib/; ln -s libmysqlclient.so.18.0.0 libmysqlclient.a 
 ls -l /usr/local/mysql/lib/libmysql*
