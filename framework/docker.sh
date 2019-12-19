@@ -6,6 +6,6 @@ fi
 
 workdir=$(cd $(dirname $0); pwd)
 
-docker rmi -f tars-framework:$1
-docker build ${workdir}/. -t tars-framework:$1
+docker rmi -f tarscloud/framework:$1
+docker build ${workdir}/. -t tarscloud/framework:$1
 
