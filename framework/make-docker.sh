@@ -30,6 +30,9 @@ source $HOME/.bashrc; export NVM_NODEJS_ORG_MIRROR=${MIRROR}/nodejs-release; \
 	cd /usr/local/tars/cpp/deploy/web; npm install; \
 	cd /usr/local/tars/cpp/deploy/web/demo;npm install
 
+cp -rf /usr/local/tars/cpp/deploy/web/sql/*.sql /usr/local/tars/cpp/deploy/framework/sql/
+cp -rf /usr/local/tars/cpp/deploy/web/demo/sql/*.sql /usr/local/tars/cpp/deploy/framework/sql/
+ 
 strip /usr/local/tars/cpp/deploy/framework/servers/tars*/bin/tars*
 
 TARS=(tarsAdminRegistry tarslog tarsconfig tarsnode  tarsnotify  tarspatch  tarsproperty  tarsqueryproperty  tarsquerystat  tarsregistry  tarsstat) 
