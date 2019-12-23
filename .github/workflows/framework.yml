@@ -1,4 +1,4 @@
-name: tars
+name: framework
 
 on: [push]
 
@@ -10,5 +10,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build tars image
+    - name: Build framework image
       run: docker build ./framework/ --file ./framework/Dockerfile --tag framework:$(date +%s)
