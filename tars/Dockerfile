@@ -67,11 +67,16 @@ RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/my
 	&& go get github.com/TarsCloud/TarsGo/tars \
 	&& cd $GOPATH/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go && go build . \
 	# Get and install nodejs
-	&& wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip;unzip v0.35.1.zip; cp -rf nvm-0.35.1 $HOME/.nvm \
-	&& echo 'NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion";' >> $HOME/.bashrc; \
-	&& source $HOME/.bashrc;nvm install v12.13.0 ;npm install -g npm pm2;cd /root/Tars/web; npm install;cd /root/Tars/web/demo;npm install
+	&& wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip && unzip v0.35.1.zip && cp -rf nvm-0.35.1 /root/.nvm \
+	# && echo 'NVM_DIR="/root/.nvm";' >> /root/.bashrc; \
+	&& echo ". /root/.nvm/nvm.sh" >> /root/.bashrc \
+	&& echo ". /root/.nvm/bash_completion" >> /root/.bashrc \
+	&& cat /root/.bashrc \
+	&& source /root/.bashrc && nvm install v12.13.0 \
+	&& npm install -g npm pm2 \
+	&& cd /root/Tars/web && npm install \
+	&& cd /root/Tars/web/demo && npm install \
 	&& cp -Rf /root/Tars/web /usr/local/tars/cpp/deploy/ \
-
 #	&& wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash \
 #	&& source ~/.bashrc && nvm install v8.11.3 \
 #	&& cp -Rf /root/Tars/web /usr/local/tarsweb && cd /usr/local/tarsweb/ && npm install \
