@@ -13,5 +13,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build tars image
-      run: docker build ./tars/ --file ./tars/Dockerfile --tag tars:$(date +%s)
+    - name: Build tars-dev image
+      run: docker build ./tars/ --file ./tars/Dockerfile --tag tars:dev-$(date +%s)

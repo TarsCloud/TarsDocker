@@ -1,6 +1,9 @@
 name: framework-dev
 
-on: [push]
+on: 
+  push:
+    branches: 
+      - dev
 
 jobs:
 
@@ -11,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build framework-dev image
-      run: docker build ./framework/ --file ./framework/Dockerfile --tag framework:$(date +%s)
+      run: docker build ./framework/ --file ./framework/Dockerfile --tag framework:dev-$(date +%s)
