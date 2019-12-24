@@ -1,4 +1,4 @@
-FROM tarscloud/framework
+FROM centos/systemd
 
 WORKDIR /root/
 
@@ -6,11 +6,12 @@ WORKDIR /root/
 ENV TZ=Asia/Shanghai
 
 # MySQL
-ENV DBIP 127.0.0.1
-ENV DBPort 3306
-ENV DBUser root
-ENV DBPassword root@appinside
-ENV DBTarsPass tars2015
+ENV MYSQL_IP=127.0.0.1
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_ROOT_PASSWORD=root@appinside
+ENV DBTarsPass=tars2015
+ENV REBUILD=false
+ENV SLAVE=false
 
 ENV GOPATH=/usr/local/go
 ENV JAVA_HOME /usr/java/jdk-10.0.2
@@ -45,11 +46,6 @@ RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/my
 	# Start to build
 	&& cd /root/Tars/framework/build/ && ./build.sh all \
 	&& ./build.sh install \
-	&& cd /root/Tars/framework/build/ && make framework-tar \
-	&& make tarsstat-tar && make tarsnotify-tar && make tarsproperty-tar && make tarslog-tar && make tarsquerystat-tar && make tarsqueryproperty-tar \
-	&& mkdir -p /usr/local/app/tars/ && cp /root/Tars/framework/build/framework.tgz /usr/local/app/tars/ && cp /root/Tars/framework/build/t*.tgz /root/ \
-	&& cd /usr/local/app/tars/ && tar xzfv framework.tgz && rm -rf framework.tgz \
-	&& mkdir -p /usr/local/app/patchs/tars.upload \
 	&& cd /tmp && curl -fsSL https://getcomposer.org/installer | php \
 	&& chmod +x composer.phar && mv composer.phar /usr/local/bin/composer \
 	&& cd /root/Tars/php/tars-extension/ && phpize --clean && phpize \
@@ -65,9 +61,14 @@ RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/my
 	&& go get github.com/TarsCloud/TarsGo/tars \
 	&& cd $GOPATH/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go && go build . \
 	# Get and install nodejs
-	&& wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash \
-	&& source ~/.bashrc && nvm install v8.11.3 \
-	&& cp -Rf /root/Tars/web /usr/local/tarsweb && cd /usr/local/tarsweb/ && npm install \
+	&& wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip;unzip v0.35.1.zip; cp -rf nvm-0.35.1 $HOME/.nvm \
+	&& echo 'NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion";' >> $HOME/.bashrc; \
+	&& source $HOME/.bashrc;nvm install v12.13.0 ;npm install -g npm pm2;cd /root/Tars/web; npm install;cd /root/Tars/web/demo;npm install
+	&& cp -Rf /root/Tars/web /usr/local/tars/cpp/deploy/ \
+
+#	&& wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash \
+#	&& source ~/.bashrc && nvm install v8.11.3 \
+#	&& cp -Rf /root/Tars/web /usr/local/tarsweb && cd /usr/local/tarsweb/ && npm install \
 	&& npm install -g pm2 @tars/deploy @tars/stream @tars/rpc @tars/logs @tars/config @tars/monitor @tars/notify @tars/utils @tars/dyeing @tars/registry \
 	# Get and install JDK
 	&& mkdir -p /root/init && cd /root/init/ \
@@ -93,7 +94,7 @@ RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/my
 	&& mvn clean install -f core/server.pom.xml \
 	&& cd /root/init && mvn archetype:generate -DgroupId=com.tangramor -DartifactId=TestJava -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false \
 	&& cd /root/Tars/java/examples/quickstart-server/ && mvn tars:tars2java && mvn package \
-	&& mkdir -p /root/sql && cp -rf /root/Tars/framework/sql/* /root/sql/ \
+#	&& mkdir -p /root/sql && cp -rf /root/Tars/framework/sql/* /root/sql/ \
 	&& cd /root/Tars/framework/build/ && ./build.sh cleanall \
 	&& yum clean all && rm -rf /var/cache/yum
 
@@ -104,7 +105,7 @@ ENV MOUNT_DATA false
 ENV INET_NAME eth0
 
 VOLUME ["/data"]
-	
+
 # copy source
 # COPY install.sh /root/init/
 # COPY entrypoint.sh /sbin/
