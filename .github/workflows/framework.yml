@@ -1,0 +1,14 @@
+name: framework
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build framework image
+      run: docker build ./framework/ --file ./framework/Dockerfile --tag framework:$(date +%s)
