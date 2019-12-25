@@ -8,10 +8,7 @@ export DBTarsPass=tars2015
 export REBUILD=false
 export SLAVE=false
 
-MIRROR=http://mirrors.cloud.tencent.com
-
-mkdir -p /usr/local/mysql; ln -s /usr/lib64/ /usr/local/mysql/lib;ln -s /usr/include/mysql  /usr/local/mysql/include; ls /usr/local/mysql/lib/libmysql*;cd /usr/local/mysql/lib/; ln -s libmysqlclient.so.18.0.0 libmysqlclient.a 
-ls -l /usr/local/mysql/lib/libmysql*
+# MIRROR=http://mirrors.cloud.tencent.com
 
 mkdir -p /data && chmod u+x /root/Tars/framework/build/build.sh 
 
@@ -19,16 +16,30 @@ cd /root/Tars/framework/build/ && ./build.sh all \
 	&& ./build.sh install \
 	&& cp -rf /root/Tars/web /usr/local/tars/cpp/deploy/
 
-wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip;unzip v0.35.1.zip; cp -rf nvm-0.35.1 $HOME/.nvm
+# wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip;unzip v0.35.1.zip; cp -rf nvm-0.35.1 $HOME/.nvm
 
-echo 'NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion";' >> $HOME/.bashrc;
+# echo 'NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion";' >> $HOME/.bashrc;
 
-source $HOME/.bashrc; export NVM_NODEJS_ORG_MIRROR=${MIRROR}/nodejs-release; \
-	nvm install v12.13.0 ; \
-	npm config set registry ${MIRROR}/npm/; \
-	npm install -g npm pm2; \
-	cd /usr/local/tars/cpp/deploy/web; npm install; \
-	cd /usr/local/tars/cpp/deploy/web/demo;npm install
+mkdir -p /data/tars/app_log
+mkdir -p /data/tars/web_log/demo_log
+mkdir -p /data/tars/patchs
+
+mkdir -p /usr/local/app/tars/
+mkdir -p /usr/local/app/web/
+mkdir -p /usr/local/app/web/demo/
+
+ln -s /data/tars/app_log /usr/local/app/tars/app_log 
+ln -s /data/tars/web_log /usr/local/app/web/log 
+ln -s /data/tars/web_log/demo_log /usr/local/app/web/demo/log 
+ln -s /data/tars/patchs /usr/local/app/patchs 
+
+# source $HOME/.bashrc; export NVM_NODEJS_ORG_MIRROR=${MIRROR}/nodejs-release; \
+	# nvm install v12.13.0 ; \
+	# npm config set registry ${MIRROR}/npm/; \
+	# npm install -g npm pm2; \
+source $HOME/.bashrc	
+cd /usr/local/tars/cpp/deploy/web; npm install; 
+cd /usr/local/tars/cpp/deploy/web/demo;npm install
 
 cp -rf /usr/local/tars/cpp/deploy/web/sql/*.sql /usr/local/tars/cpp/deploy/framework/sql/
 cp -rf /usr/local/tars/cpp/deploy/web/demo/sql/*.sql /usr/local/tars/cpp/deploy/framework/sql/

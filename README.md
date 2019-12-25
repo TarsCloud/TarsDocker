@@ -56,9 +56,7 @@ docker pull tarscloud/framework
 ```
 docker run -d --net=host -e MYSQL_HOST=xxxxx -e MYSQL_ROOT_PASSWORD=xxxxx \
         -eREBUILD=false -eINET=enp3s0 -eSLAVE=false \
-        -v/data/log/app_log:/usr/local/app/tars/app_log \
-        -v/data/log/web_log:/usr/local/app/web/log \
-        -v/data/patchs:/usr/local/app/patchs \
+        -v/data/tars:/data/tars \
         -v/etc/localtime:/etc/localtime \
         tarscloud/framework
 ```
@@ -73,12 +71,9 @@ REBUILD: Whether to rebuild the database is usually false. If there is an error 
 
 SLAVE: slave node
 
-Map three directories to the host:
+Map directory to the host:
 
-- -v/data/log/app_log:/usr/local/app/tars/app_log, tars application logs
-- -v/data/log/web_log:/usr/local/app/web/log, web log
-- -v/data/log/web_log/auth:/usr/local/app/web/demo/log, web auth log
-- -v/data/patchs:/usr/local/app/patchs, Publish package path
+- -v/data/tars:/data/tars, include: tars application logs, web log, Publish package path
 
 **If you want to deploy multiple nodes, just execute docker run... On different machines. Pay attention to the parameter settings**
 
