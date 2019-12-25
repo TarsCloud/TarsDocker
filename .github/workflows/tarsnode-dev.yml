@@ -1,0 +1,16 @@
+name: tarsnode-dev
+
+on: 
+  push:
+    branches: 
+      - dev
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build tarsnode-dev image
+      run: docker build ./tarsnode/ --file ./tarsnode/Dockerfile --tag tarsnode:$(date +%s)
