@@ -9,7 +9,7 @@ RUN yum makecache fast; yum install -y yum-utils psmisc mysql-devel  net-tools w
 
 RUN rpm -ivh https://repo.mysql.com/mysql80-community-release-el7.rpm
 RUN yum install -y mysql-community-client
-RUN which mysql
+# RUN which mysql
 
 RUN	mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && ln -s /usr/include/mysql /usr/local/mysql/include && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf && ldconfig \
 	&& cd /usr/local/mysql/lib/ && rm -f libmysqlclient.a && ls -l /usr/local/mysql/lib/ && ln -s libmysqlclient.so.*.*.* libmysqlclient.a 
