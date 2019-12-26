@@ -16,8 +16,8 @@ RUN	mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && 
 
 RUN	cd /root/ && git clone https://github.com/TarsCloud/Tars \
 	&& cd /root/Tars/ && git submodule update --init --recursive framework \
-	&& git submodule update --init --recursive web
-	&& mkdir -p /data && chmod u+x /root/Tars/framework/build/build.sh 
+	&& git submodule update --init --recursive web \
+	&& mkdir -p /data && chmod u+x /root/Tars/framework/build/build.sh \
 	&& cd /root/Tars/framework/build/ && ./build.sh all \
 	&& ./build.sh install \
 	&& cp -rf /root/Tars/web /usr/local/tars/cpp/deploy/
@@ -34,10 +34,6 @@ RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip && unzip v0.35.1.zip 
 
 RUN ${TARS_INSTALL}/tar-server.sh
 
-# COPY tar-server.sh /usr/local/tars/cpp/deploy/framework/servers/
-# COPY make-docker.sh /root/
-# RUN /root/make-docker.sh
-	
 ENTRYPOINT [ "/usr/local/tars/cpp/deploy/docker-init.sh" ]
 
 EXPOSE 3000
