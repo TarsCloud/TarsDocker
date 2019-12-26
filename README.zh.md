@@ -55,7 +55,7 @@ docker run --name mysql --net=host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p
 
 **注意: 区别在于是否希望把业务服务部署在镜像内(不推荐, 不方便Tars框架升级)**
 
-### 2.3.1 使用framework
+### 2.3.1 使用tarscloud/framework部署
 1. 拉取镜像
 ```sh
 docker pull tarscloud/framework
@@ -70,7 +70,7 @@ docker run -d --net=host -e MYSQL_HOST=xxxxx -e MYSQL_ROOT_PASSWORD=xxxxx \
         tarscloud/framework
 ```
 
-### 2.3.2 使用tars
+### 2.3.2 使用tarscloud/tars部署
 1. 拉取镜像
 ```sh
 docker pull tarscloud/tars

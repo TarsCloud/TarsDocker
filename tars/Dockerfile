@@ -43,6 +43,7 @@ RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/my
     && cd /root/Tars/framework/build/ && ./build.sh all \
 	&& ./build.sh install \
 	#php
+	&& cd /tmp && curl -fsSL https://getcomposer.org/installer | php \
 	&& chmod +x composer.phar && mv composer.phar /usr/local/bin/composer \
 	&& cd /root/Tars/php/tars-extension/ && phpize --clean && phpize \
 	&& ./configure --enable-phptars --with-php-config=/usr/bin/php-config && make && make install \

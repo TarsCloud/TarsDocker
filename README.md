@@ -51,7 +51,7 @@ mysql:5.6
  
 ### 2 <a id="chapter-2"></a> Install Tars Framework
 
-**If you want build docker yourself, See[here](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)**
+**If you want build docker yourself, See[here](https://github.com/TarsCloud/Tars/blob/master/Install.md)**
 
 1. Pull Images
 
