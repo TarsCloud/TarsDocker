@@ -16,20 +16,35 @@
 # * specific language governing permissions and limitations under the License.
 # */
 
-MachineIp=$(ip addr | grep inet | grep ${INET} | awk '{print $2;}' | sed 's|/.*$||')
-
-# echo "runuser: ${runuser}, ip:${ip}, port:${port}, machine_ip:${machine_ip}, registryAddress:${registryAddress}"
-cd /root
+MachineIp=$(ip addr | grep inet | grep eth0 | awk '{print $2;}' | sed 's|/.*$||')
 
 while [ 1 ]
-	rm -rf tarsnode
+do
+	rm -rf get_tarsnode.sh
 
-	wget http://${webHost}/tarsnode?ip=${MachineIp}&runuser=root
+	wget -O get_tarsnode.sh "http://172.16.0.7:3000/get_tarsnode?ip=${MachineIp}&runuser=root"
 
-	if [ -f tarsnode-install.sh ]; then
-		chmod a+x tarsnode
-		./tarsnode
-	fi 
+	sleep 1
 
+	if [ -f "get_tarsnode.sh" ]; then
+		
+		chmod a+x get_tarsnode.sh
+
+		./get_tarsnode.sh
+
+		if [ -f "/usr/local/app/tars/tarsnode/util/check.sh" ]; then
+
+			echo "install tarsnode succ, check tarsnode alive"
+
+			while [ 1 ]
+			do
+				sleep 3
+				/usr/local/app/tars/tarsnode/util/check.sh
+			done
+		fi
+
+	fi
+
+	echo "install tarsnode failed, retry 3 seconds later..."
 	sleep 3
-fi
+done

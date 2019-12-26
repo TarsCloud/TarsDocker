@@ -1,13 +1,21 @@
 [查看中文版本](README.zh.md)
 
-# Tars Docker
+# Directory
+> * [Intro](#chapter-1)
+> * [Docker Deploy Tars](#chapter-2)
+> * [Expand tarsnode](#chapter-3)
 
+# 1 <a id="chapter-1"></a>Intro
 ## Intro
 
-Tars [here](https://github.com/TarsCloud/Tars/blob/master/Install.md)
+Tars See [here](https://github.com/TarsCloud/Tars/blob/master/Install.md)
+
+Before deploy Tars, Please Read [here](https://github.com/TarsCloud/Tars/blob/master/Deploy.md)
 
 Directory Intro:
-- framework: Docker build script of Tars Docker, Docker includes tars framework and web.
+- framework: Docker build script of Tars, Docker includes tars framework and web.
+- tars: Docker build script of Tars, compare to framework, add java, nodejs environment, you can deploy server implement by java/nodejs/php to docker
+- tarsnode: Docker build script of tarsnode, add java, nodejs environment, you can deploy server implement by java/nodejs/php to docker
 
 ## Usage
 ### Docker Install
@@ -41,7 +49,7 @@ mysql:5.6
 
 ```
  
-### Install Tars Framework
+### 2 <a id="chapter-2"></a> Install Tars Framework
 
 **If you want build docker yourself, See[here](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)**
 
@@ -81,7 +89,71 @@ Map directory to the host:
 
 Access `http://${your_machine_ip}:3000` open tars web
 
-### Scale up tarsnode
+### 3 <a id="chapter-3"></a>Scale up tarsnode
+
+After the tars framework is installed, tarsnode can be deployed to other nodes, so that business services can be deployed to these nodes through the management platform.
+
+There are several ways to expand node machines:
+
+- Web online installation
+- Script installation of node machine
+- Docker installation
+
+### 3.1 Web online installation
+
+web(>=1.4.1)提供了在线安装tarsnode的功能, 安装时需要输入节点机的ip, 密码等信息, 完成自动tarsnode的安装(需要自己增加crontab监控tarsnode)
+
+注意:
+- tarsnode.tgz安装包是在部署时, copy到web/files目录下的
+- 如果不存在, 需要自己生成tarsnode.tgz, 如下操作
+>- 编译framework, make install
+>- 进入/usr/local/tars/cpp/framework/servers
+>- tar czf tarsnode.tgz tarsnode
+>- 将tarsnode.tgz copy 到web/files目录下
+>- 节点机需要支持wget命令
+
+### 3.2 节点机脚本安装
+
+节点机上也可以自动去安装tarsnode, 前提是节点机能正常访问web, 且web支持online安装
+
+在节点上运行:
+```
+wget http://webhost/get_tarsnode?ip=xxx&runuser=root
+chmod a+x get_tarsnode
+./get_tarsnode
+```
+
+参数说明:
+- ip: 本机ip
+- runuser: 运行tarsnode的用户
+
+即完成tarsnode的安装, 然后添加监控:
+
+在crontab配置一个进程监控，确保TARS框架服务在出现异常后能够重新启动。
+```
+* * * * * /usr/local/app/tars/tarsnode/util/monitor.sh
+```
+
+### 3.3 docker化安装
+
+如果希望业务服务运行在一个docker里面, 可以采用该方式:
+
+```sh
+docker pull tarscloud/tarsnode
+```
+
+```sh
+docker run -d --net=host -eINET=eth0 -eWEB_HOST=xxxxx \
+        -v/data/tars:/data/tars \
+        -v/etc/localtime:/etc/localtime \
+        tarscloud/tarsnode
+```
+
+这种方式通常使用在k8s的部署中才使用, 此时不需要--net=host, docker被k8s管理.
+
+### 3.4 注意事项
+
+tars和tarsnode的镜像和老版本相比, 去掉了ip变化后的更新db的逻辑, 建议stateful headless模式部署, 节点机都用域名来管理.
 
 
 After Tars framework install, you can deploy tarsnode in other machine, then you can deploy your tars server to these machines through web.

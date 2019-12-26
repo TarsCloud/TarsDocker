@@ -31,8 +31,8 @@ RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/my
 	&& yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
 	&& yum -y install yum-utils && yum-config-manager --enable remi-php72 \
 	&& yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
-	&& yum -y install golang make wget cmake mysql mysql-devel unzip iproute which glibc-devel flex bison ncurses-devel \
-	&& yum -y install protobuf-devel zlib-devel kde-l10n-Chinese glibc-common hiredis-devel rapidjson-devel boost boost-devel \
+	&& yum -y install golang make cmake mysql-devel iproute which glibc-devel ncurses-devel \
+	&& yum -y install protobuf-devel kde-l10n-Chinese glibc-common \
 	&& yum -y install php php-cli php-devel php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata 
 
 	# Set timezone
@@ -124,12 +124,12 @@ RUN	mkdir -p /root/init && cd /root/init/ \
 RUN yum clean all && rm -rf /var/cache/yum
 
 # Whether mount Tars process path to outside, default to false (support windows)
-ENV MOUNT_DATA false
+# ENV MOUNT_DATA false
 
 # Network interface (if use --net=host, maybe network interface does not named eth0)
-ENV INET_NAME eth0
+# ENV INET_NAME eth0
 
-VOLUME ["/data"]
+# VOLUME ["/data"]
 
 # copy source
 # COPY install.sh /root/init/
