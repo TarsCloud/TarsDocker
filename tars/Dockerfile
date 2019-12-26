@@ -48,6 +48,7 @@ RUN	yum install -y mysql mysql-devel \
 	# Start to build
     && cd /root/Tars/framework/build/ && ./build.sh all \
 	&& ./build.sh install \
+	&& make clean \
 	#php
 	&& cd /tmp && curl -fsSL https://getcomposer.org/installer | php \
 	&& chmod +x composer.phar && mv composer.phar /usr/local/bin/composer \
@@ -87,7 +88,6 @@ RUN	yum install -y mysql mysql-devel \
 	&& echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /root/.bashrc \
 	&& echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /root/.bashrc \
 	&& echo "export PATH JAVA_HOME CLASSPATH" >> /root/.bashrc \
-	&& cd /root/Tars/framework/build/ && ./build.sh cleanall \
 	&& yum clean all && rm -rf /var/cache/yum
 
 RUN ${TARS_INSTALL}/tar-server.sh
