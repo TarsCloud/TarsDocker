@@ -141,14 +141,14 @@ After install tarsnode, add monitor in crontab:
 If you want the business service to run in a docker, you can use this method:
 
 ```sh
-docker pull tarscloud/tarsnode
+docker pull tarscloud/tars-node
 ```
 
 ```sh
 docker run -d --net=host -eINET=eth0 -eWEB_HOST=xxxxx \
         -v/data/tars:/data/tars \
         -v/etc/localtime:/etc/localtime \
-        tarscloud/tarsnode
+        tarscloud/tars-node
 ```
 
 This method is usually used in k8s deployment. At this time, it does not need to --net=host. Docker is managed by k8s

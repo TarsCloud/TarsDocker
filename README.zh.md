@@ -157,14 +157,14 @@ chmod a+x get_tarsnode
 如果希望业务服务运行在一个docker里面, 可以采用该方式:
 
 ```sh
-docker pull tarscloud/tarsnode
+docker pull tarscloud/tars-node
 ```
 
 ```sh
 docker run -d --net=host -eINET=eth0 -eWEB_HOST=xxxxx \
         -v/data/tars:/data/tars \
         -v/etc/localtime:/etc/localtime \
-        tarscloud/tarsnode
+        tarscloud/tars-node
 ```
 
 这种方式通常使用在k8s的部署中才使用, 此时不需要--net=host, docker被k8s管理.
