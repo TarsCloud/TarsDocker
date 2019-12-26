@@ -101,42 +101,44 @@ There are several ways to expand node machines:
 
 ### 3.1 Web online installation
 
-web(>=1.4.1)提供了在线安装tarsnode的功能, 安装时需要输入节点机的ip, 密码等信息, 完成自动tarsnode的安装(需要自己增加crontab监控tarsnode)
+Web provides the function of online installation of tarsnode. When installing, you need to input the IP, password and other information of the node machine to complete the installation of automatic tarsnode (you need to add crontab to monitor tarsnode)
 
-注意:
-- tarsnode.tgz安装包是在部署时, copy到web/files目录下的
-- 如果不存在, 需要自己生成tarsnode.tgz, 如下操作
->- 编译framework, make install
->- 进入/usr/local/tars/cpp/framework/servers
->- tar czf tarsnode.tgz tarsnode
->- 将tarsnode.tgz copy 到web/files目录下
->- 节点机需要支持wget命令
+NOTICE:
+- The tarsnode.tgz installation package is copied to the web/files directory during deployment
+- If not, you need to generate tarsnode.tgz yourself, as follows
+>- Compile framework, make install
+```
+cd /usr/local/tars/cpp/framework/servers
+tar czf tarsnode.tgz tarsnode
+cp tarsnode.tgz yourweb/files
+```
 
-### 3.2 节点机脚本安装
+**Node machine needs to support WGet command**
 
-节点机上也可以自动去安装tarsnode, 前提是节点机能正常访问web, 且web支持online安装
+### 3.2 Script installation of node machine
 
-在节点上运行:
+Tarsnode can also be installed automatically on the node machine, provided that the node can access the web normally and the web supports online installation.
+
+Run on node machine:
+
 ```
 wget http://webhost/get_tarsnode?ip=xxx&runuser=root
 chmod a+x get_tarsnode
 ./get_tarsnode
 ```
 
-参数说明:
-- ip: 本机ip
-- runuser: 运行tarsnode的用户
+NOTICE:
+- ip: local node machine ip
+- runuser: run tarsnode user
 
-即完成tarsnode的安装, 然后添加监控:
-
-在crontab配置一个进程监控，确保TARS框架服务在出现异常后能够重新启动。
+After install tarsnode, add monitor in crontab:
 ```
 * * * * * /usr/local/app/tars/tarsnode/util/monitor.sh
 ```
 
-### 3.3 docker化安装
+### 3.3 Install as a tarsnode docker
 
-如果希望业务服务运行在一个docker里面, 可以采用该方式:
+If you want the business service to run in a docker, you can use this method:
 
 ```sh
 docker pull tarscloud/tarsnode
@@ -149,17 +151,11 @@ docker run -d --net=host -eINET=eth0 -eWEB_HOST=xxxxx \
         tarscloud/tarsnode
 ```
 
-这种方式通常使用在k8s的部署中才使用, 此时不需要--net=host, docker被k8s管理.
+This method is usually used in k8s deployment. At this time, it does not need to --net=host. Docker is managed by k8s
 
-### 3.4 注意事项
+### 3.4 Matters needing attention
 
-tars和tarsnode的镜像和老版本相比, 去掉了ip变化后的更新db的逻辑, 建议stateful headless模式部署, 节点机都用域名来管理.
-
-
-After Tars framework install, you can deploy tarsnode in other machine, then you can deploy your tars server to these machines through web.
-
-After web(>=1.3.1), you can deploy tarsnode online
-
+Compared with the old version, the image of tars and tarsnode removes the logic of updating dB after IP changes. It is recommended to deploy the stateful headless mode, and the node machines are managed by domain names.
 
 ## Appreciation
 The building of this repository is based on some people's work.

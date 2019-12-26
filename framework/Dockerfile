@@ -3,7 +3,7 @@ FROM centos/systemd
 
 WORKDIR /root/
 
-# COPY MariaDB.repo /etc/yum.repos.d/
+ENV TARS_INSTALL  /usr/local/tars/cpp/deploy
 
 RUN yum makecache fast; yum install -y yum-utils psmisc mysql-devel  net-tools wget unzip telnet mysql-devel git gcc gcc-c++ cmake make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel
 
@@ -31,6 +31,7 @@ RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip && unzip v0.35.1.zip 
 	&& source $HOME/.bashrc	\
 	&& cd /usr/local/tars/cpp/deploy/web && npm install \
 	&& cd /usr/local/tars/cpp/deploy/web/demo && npm install
+
 
 RUN ${TARS_INSTALL}/tar-server.sh
 
