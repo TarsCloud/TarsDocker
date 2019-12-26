@@ -18,13 +18,19 @@ ENV MAVEN_HOME /usr/local/apache-maven-3.5.4
 
 ENV TARS_INSTALL /usr/local/tars/cpp/deploy
 
+RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
+
+#RUN rpm -ivh https://repo.mysql.com/mysql80-community-release-el7.rpm
+#RUN rpm -ivh https://repo.mysql.com/mysql80-community-release-el7.rpm
+
 # Install
 # RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/mysql80-community-release-el7-1.noarch.rpm \
-RUN	yum -y install epel-release \
+RUN	yum install -y mysql mysql-devel \
+	&& yum -y install epel-release \
 	&& yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
 	&& yum -y install yum-utils && yum-config-manager --enable remi-php72 \
 	&& yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
-	&& yum -y install golang make cmake mysql-devel unzip iproute which glibc-devel flex bison ncurses-devel \
+	&& yum -y install golang make cmake unzip iproute which glibc-devel flex bison ncurses-devel \
 	&& yum -y install protobuf-devel kde-l10n-Chinese glibc-common boost boost-devel \
 	&& yum -y install php php-cli php-devel php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata \
     && mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && ln -s /usr/include/mysql /usr/local/mysql/include && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf && ldconfig \

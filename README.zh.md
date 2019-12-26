@@ -7,9 +7,9 @@
 
 # 1 <a id="chapter-1"></a>介绍
 
-Tars介绍请参见 [here](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)
+Tars介绍请[参见](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)
 
-在部署Tars之前, 请务必阅读Tars部署的基本概念 [here](https://github.com/TarsCloud/Tars/blob/master/Deploy.zh.md)
+在部署Tars之前, 请务必阅读Tars部署的[基本概念](https://github.com/TarsCloud/Tars/blob/master/Deploy.zh.md)
 
 目录介绍
 - framework: Tars框架Docker制作脚本, 制作的docker包含了框架核心服务和web管理平台
@@ -49,7 +49,7 @@ docker run --name mysql --net=host -e MYSQL_ROOT_PASSWORD='root@appinside' -d -p
 
 ## 2.3 安装Tars框架
 
-**如果你想源码自己编译docker, 请参见 [here](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)**
+**如果你想源码自己编译docker, 请[参见](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)**
 
 使用docker安装Tars框架, 有两个镜像可供选择: framework & tars
 
@@ -104,7 +104,7 @@ SLAVE: 是否是从节点, 可以部署多台机器, 通常一主一从即可.
 
 **这里必须使用 --net=host, 表示docker和宿主机在相同网络** 
 
-详细说明可以参见: [here](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)
+详细说明可以[参见](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)
 
 安装完毕后, 访问 `http://${your_machine_ip}:3000` 打开web管理平台
 
@@ -122,13 +122,16 @@ Tars框架安装好以后, 可以在其他节点机部署tarsnode, 这样业务�
 web(>=1.4.1)提供了在线安装tarsnode的功能, 安装时需要输入节点机的ip, 密码等信息, 完成自动tarsnode的安装(需要自己增加crontab监控tarsnode)
 
 注意:
-- tarsnode.tgz安装包是在部署时, copy到web/files目录下的
+- tarsnode.tgz安装包是在部署时, 安装脚本自动copy到web/files目录下的
 - 如果不存在, 需要自己生成tarsnode.tgz, 如下操作
 >- 编译framework, make install
->- 进入/usr/local/tars/cpp/framework/servers
->- tar czf tarsnode.tgz tarsnode
->- 将tarsnode.tgz copy 到web/files目录下
->- 节点机需要支持wget命令
+```
+cd /usr/local/tars/cpp/framework/servers
+tar czf tarsnode.tgz tarsnode
+cp tarsnode.tgz yourweb/files
+```
+
+**节点机需要支持wget命令**
 
 ### 3.2 节点机脚本安装
 

@@ -5,10 +5,15 @@ WORKDIR /root/
 
 ENV TARS_INSTALL  /usr/local/tars/cpp/deploy
 
+RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
+
 RUN yum makecache fast \
-	&& yum install -y yum-utils psmisc file which net-tools wget unzip telnet mysql-devel git gcc gcc-c++ cmake make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel \
+	&& yum install -y yum-utils psmisc file which net-tools wget unzip telnet git gcc gcc-c++ cmake make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel \
+	&& yum install -y mysql mysql-devel \
 	&& yum clean all && rm -rf /var/cache/yum
 
+#RUN rpm -ivh https://repo.mysql.com/mysql80-community-release-el7.rpm
+#RUN yum install -y mysql mariadb-libs mariadb-devel
 
 #RUN rpm -ivh https://repo.mysql.com/mysql80-community-release-el7.rpm
 #RUN yum install -y mysql-community-client
