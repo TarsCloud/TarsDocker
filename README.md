@@ -149,7 +149,15 @@ docker run -d --net=host -eINET=eth0 -eWEB_HOST=xxxxx \
         -v/data/tars:/data/tars \
         -v/etc/localtime:/etc/localtime \
         tarscloud/tars-node
+
+#for example:
+docker run -d --net=host -eINET=eth0 -eWEB_HOST=http://172.16.0.7:3000 \
+        -v/data/tars:/data/tars \
+        -v/etc/localtime:/etc/localtime \
+        tarscloud/tars-node    
 ```
+
+**NOTICE: http://172.16.0.7:3000 is the url of Tars Web**
 
 This method is usually used in k8s deployment. At this time, it does not need to --net=host. Docker is managed by k8s
 

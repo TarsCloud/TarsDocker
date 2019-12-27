@@ -72,9 +72,9 @@ RUN	yum install -y mysql mysql-devel \
 	&& source /root/.bashrc \
 	&& nvm install v12.13.0 \
 	&& npm install -g npm pm2 \
-	&& cd /root/Tars/web && npm install \
-	&& cd /root/Tars/web/demo && npm install \
 	&& cp -Rf /root/Tars/web /usr/local/tars/cpp/deploy/ \
+	&& cd /usr/local/tars/cpp/deploy/web && npm install \
+	&& cd /usr/local/tars/cpp/deploy/web/demo && npm install \
 	&& source /root/.bashrc && npm install -g pm2 @tars/deploy @tars/stream @tars/rpc @tars/logs @tars/config @tars/monitor @tars/notify @tars/utils @tars/dyeing @tars/registry \
 	# Get and install JDK
 	&& mkdir -p /root/init && cd /root/init/ \
@@ -88,6 +88,7 @@ RUN	yum install -y mysql mysql-devel \
 	&& echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /root/.bashrc \
 	&& echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /root/.bashrc \
 	&& echo "export PATH JAVA_HOME CLASSPATH" >> /root/.bashrc \
+	&& rm -rf /root/Tars \
 	&& yum clean all && rm -rf /var/cache/yum
 
 RUN ${TARS_INSTALL}/tar-server.sh
