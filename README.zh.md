@@ -2,6 +2,8 @@
 
 Tars整体介绍文档请阅读: https://tarscloud.gitbook.io/
 
+该文档是整体文档中的一小节, 请以整体文档为准!
+
 # 目录
 > * [介绍](#chapter-1)
 > * [Docker部署Tars框架](#chapter-2)
@@ -9,8 +11,6 @@ Tars整体介绍文档请阅读: https://tarscloud.gitbook.io/
 
 
 # 1 <a id="chapter-1"></a>介绍
-
-Tars介绍请[参见](https://github.com/TarsCloud/Tars/blob/master/Install.zh.md)
 
 在部署Tars之前, 请务必阅读Tars部署的[基本概念](https://github.com/TarsCloud/Tars/blob/master/Deploy.zh.md)
 
