@@ -2,7 +2,7 @@ FROM centos/systemd
 
 WORKDIR /root/
 
-ENV WEBHOST=http://127.0.0.1
+ENV WEB_HOST=http://127.0.0.1:3000
 ENV INET=eth0
 ENV GOPATH=/usr/local/go
 ENV JAVA_HOME /usr/java/jdk-10.0.2

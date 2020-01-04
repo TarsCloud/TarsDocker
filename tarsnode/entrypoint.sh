@@ -22,7 +22,7 @@ while [ 1 ]
 do
 	rm -rf get_tarsnode.sh
 
-	wget -O get_tarsnode.sh "http://172.16.0.7:3000/get_tarsnode?ip=${MachineIp}&runuser=root"
+	wget -O get_tarsnode.sh "http://${WEB_HOST}/get_tarsnode?ip=${MachineIp}&runuser=root"
 
 	sleep 1
 

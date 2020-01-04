@@ -1,0 +1,189 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tars
+spec:
+  replicas: {{.Values.tars.replicas}} 
+  selector:
+    matchLabels:
+      app: tars
+  template:
+    metadata:
+      labels:
+        app: tars
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: tars
+          image: {{.Values.tars.image}}
+          command: ["sh", "-c"]
+          args: 
+          - mkdir -p /data/log/${POD_NAME}/app_log;
+            mkdir -p /data/log/${POD_NAME}/web;
+            mkdir -p /data/log/${POD_NAME}/demo;
+            rm -rf /data/tars;mkdir -p /data/tars;
+            ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
+            ln -s  /data/log/${POD_NAME}/web /data/tars/web_log;
+            ln -s  /data/log/${POD_NAME}/demo /data/tars/web_log/demo_log;
+            /usr/local/tars/cpp/deploy/docker-init.sh
+          env:
+          - name: USER_CENTER_HOST
+            value: http://auth.{{.Values.tars.namespace}}.{{.Values.tars.host}}
+          - name: COOKIE_DOMAIN
+            value: .{{.Values.tars.namespace}}.{{.Values.tars.host}}
+          - name: TARS_WEB_STRICT
+            value: "true"
+          - name: MYSQL_HOST
+            value: mysql-service
+          - name: MYSQL_ROOT_PASSWORD
+            value: "{{.Values.mysql.password}}"
+          - name: INET
+            value: "eth0"
+          - name: REBUILD
+            value: "false"
+          - name: SLAVE
+            value: "false"
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          volumeMounts:
+          - name: localtime
+            mountPath: /etc/localtime
+          - name: data
+            mountPath: /data/log
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime 
+        - name: data
+          hostPath:
+            path: {{.Values.tars.data}}/{{.Values.tars.namespace}}
+            type: DirectoryOrCreate
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry-service
+spec:
+  ports:
+  - port: 17890
+    protocol: TCP
+    targetPort: 17890
+  selector:
+    app: tars
+  clusterIP: None
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-web-tars
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: tars
+  type: ClusterIP
+
+ 
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web-tars
+spec:
+  rules:
+  - host: {{.Values.tars.namespace}}.{{.Values.tars.host}} 
+    http:
+      paths:
+      - backend:
+          serviceName: ingress-web-tars
+          servicePort: 3000
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-auth-tars
+spec:
+  ports:
+  - port: 3001
+    protocol: TCP
+    targetPort: 3001
+  selector:
+    app: tars
+  type: ClusterIP
+
+ 
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: auth-tars
+spec:
+  rules:
+  - host: auth.{{.Values.tars.namespace}}.{{.Values.tars.host}} 
+    http:
+      paths:
+      - backend:
+          serviceName: ingress-auth-tars
+          servicePort: 3001
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tars-node
+spec:
+  replicas: {{.Values.tarsnode.replicas}} 
+  selector:
+    matchLabels:
+      app: tars-node
+  template:
+    metadata:
+      labels:
+        app: tars-node
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: tars
+          image: {{.Values.tarsnode.image}} 
+          imagePullPolicy: Always
+          command: ["sh", "-c"]
+          args: 
+          - mkdir -p /data/log/${POD_NAME}/app_log;
+            rm -rf /data/tars;mkdir -p /data/tars;
+            ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
+            /sbin/entrypoint.sh
+          env:
+          - name: WEB_HOST
+            value: {{.Values.tars.host}} 
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          volumeMounts:
+          - name: localtime
+            mountPath: /etc/localtime
+          - name: data
+            mountPath: /data/log
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime 
+        - name: data
+          hostPath:
+            path: {{.Values.tars.data}}/{{.Values.tars.namespace}}
+            type: DirectoryOrCreate

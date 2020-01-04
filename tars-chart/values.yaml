@@ -1,0 +1,18 @@
+# Default values for tars-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+tars:
+  namespace: tars-k8s
+  data: /data/tars-data
+  image: tarscloud/framework
+  replicas: 2
+  host: tars.cloud.com
+tarsnode:
+  image: tarscloud/tars-node
+  replicas: 2
+mysql:
+  image: mysql:5.6
+  rebuild: "false"
+  password: "Tars@2019"
+  data: /data/mysql-data
