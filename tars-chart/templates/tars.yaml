@@ -1,9 +1,27 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tars-svc
+spec:
+  ports:
+  - port: 17890
+    protocol: TCP
+    targetPort: 17890
+  selector:
+    app: tars
+  clusterIP: None
+  type: ClusterIP
+
+---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: tars
 spec:
   replicas: {{.Values.tars.replicas}} 
+  serviceName: tars-svc
   selector:
     matchLabels:
       app: tars
@@ -19,16 +37,33 @@ spec:
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
-            mkdir -p /data/log/${POD_NAME}/web;
-            mkdir -p /data/log/${POD_NAME}/demo;
+            mkdir -p /data/log/${POD_NAME}/patchs;
+            mkdir -p /data/log/${POD_NAME}/web_log;
+            mkdir -p /data/log/${POD_NAME}/demo_log;
             rm -rf /data/tars;mkdir -p /data/tars;
-            ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
-            ln -s  /data/log/${POD_NAME}/web /data/tars/web_log;
-            ln -s  /data/log/${POD_NAME}/demo /data/tars/web_log/demo_log;
+
+            if [ ! -f "/data/tars/app_log" ]; then
+              ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
+            fi
+
+            if [ ! -f "/data/tars/web_log" ]; then
+              ln -s  /data/log/${POD_NAME}/web_log /data/tars/web_log;
+            fi
+
+            if [ ! -f "/data/tars/demo_log" ]; then
+              ln -s  /data/log/${POD_NAME}/demo_log /data/tars/demo_log;
+            fi
+
+            if [ ! -f "/data/tars/patchs" ]; then
+              ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
+            fi
+
+            export HOSTNAME="${POD_NAME}.tars-svc.{{.Values.tars.namespace}}.svc.cluster.local"
+            
             /usr/local/tars/cpp/deploy/docker-init.sh
           env:
           - name: USER_CENTER_HOST
-            value: http://auth.{{.Values.tars.namespace}}.{{.Values.tars.host}}
+            value: http://auth.{{.Values.tars.namespace}}.{{.Values.tars.host}}:{{.Values.tars.port}}
           - name: COOKIE_DOMAIN
             value: .{{.Values.tars.namespace}}.{{.Values.tars.host}}
           - name: TARS_WEB_STRICT
@@ -142,12 +177,29 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: Service
+metadata:
+  name: tars-node-svc
+spec:
+  ports:
+  - port: 19385
+    protocol: TCP
+    targetPort: 19853
+  selector:
+    app: tars-node
+  clusterIP: None
+  type: ClusterIP
+
+---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: tars-node
 spec:
   replicas: {{.Values.tarsnode.replicas}} 
+  serviceName: tars-node-svc
   selector:
     matchLabels:
       app: tars-node
@@ -165,11 +217,16 @@ spec:
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
             rm -rf /data/tars;mkdir -p /data/tars;
-            ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
+
+            if [ ! -f "/data/tars/app_log" ]; then
+              ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
+            fi
+
+            export HOSTNAME="${POD_NAME}.tars-node-svc.{{.Values.tars.namespace}}.svc.cluster.local"
+            export WEB_HOST=http://${POD_NAME}:3000
+
             /sbin/entrypoint.sh
           env:
-          - name: WEB_HOST
-            value: {{.Values.tars.host}} 
           - name: POD_NAME
             valueFrom:
               fieldRef:

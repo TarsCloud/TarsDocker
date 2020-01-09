@@ -5,14 +5,15 @@
 tars:
   namespace: tars-k8s
   data: /data/tars-data
-  image: tarscloud/framework
+  image: core.harbor.tarscloud.vip/tars/tars-docker:v2.1
   replicas: 2
-  host: tars.cloud.com
+  host: cloud.com
+  port: 6080
 tarsnode:
-  image: tarscloud/tars-node
+  image: core.harbor.tarscloud.vip/tars/tars-node:v1.6
   replicas: 2
 mysql:
   image: mysql:5.6
-  rebuild: "false"
+  rebuild: "true"
   password: "Tars@2019"
   data: /data/mysql-data
