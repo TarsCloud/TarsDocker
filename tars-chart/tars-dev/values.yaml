@@ -1,0 +1,55 @@
+# Default values for tars-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+tars:
+  namespace: tars-k8s
+  data: /data/tars-data
+  image: tarscloud/framework
+  replicas: 2
+  host: cloud.com
+  port: 6080
+  pullPolicy: IfNotPresent
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+tarsnode:
+  image: tarscloud/tars-node
+  replicas: 2
+  pullPolicy: IfNotPresent
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+mysql:
+  image: mysql:5.6
+  rebuild: "true"
+  password: "Tars@2019"
+  data: /data/mysql-data
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi

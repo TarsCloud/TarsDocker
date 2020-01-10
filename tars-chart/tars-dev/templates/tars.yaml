@@ -34,6 +34,9 @@ spec:
       containers:
         - name: tars
           image: {{.Values.tars.image}}
+          imagePullPolicy: {{ .Values.tars.pullPolicy }}
+          resources:
+            {{- toYaml .Values.tars.resources | nindent 12 }}
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
@@ -212,7 +215,9 @@ spec:
       containers:
         - name: tars
           image: {{.Values.tarsnode.image}} 
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.tarsnode.pullPolicy }}
+          resources:
+            {{- toYaml .Values.tarsnode.resources | nindent 12 }}
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;

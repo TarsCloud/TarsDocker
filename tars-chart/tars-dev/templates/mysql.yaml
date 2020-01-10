@@ -62,6 +62,8 @@ spec:
       containers:
       - name: mysql
         image: {{.Values.mysql.image}}
+        resources:
+          {{- toYaml .Values.tarsnode.resources | nindent 10 }}
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: {{.Values.mysql.password}}
