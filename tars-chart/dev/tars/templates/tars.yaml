@@ -40,6 +40,9 @@ spec:
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
+
+            INDEX=`echo ${POD_NAME} | cut -d '-' -f2`
+
             mkdir -p /data/log/${POD_NAME}/patchs;
             mkdir -p /data/log/${POD_NAME}/web_log;
             mkdir -p /data/log/${POD_NAME}/demo_log;
@@ -61,8 +64,14 @@ spec:
               ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
             fi
 
-            export HOSTNAME="${POD_NAME}.tars-svc.{{.Values.tars.namespace}}.svc.cluster.local"
-            
+            if [ "${INDEX}" == "0"]; then
+              export SLAVE=false
+            else
+              export SLAVE=true
+            fi
+
+            export HOSTNAME="${POD_NAME}.tars-svc"
+           
             /usr/local/tars/cpp/deploy/docker-init.sh
           env:
           - name: USER_CENTER_HOST
@@ -78,8 +87,6 @@ spec:
           - name: INET
             value: "eth0"
           - name: REBUILD
-            value: "false"
-          - name: SLAVE
             value: "false"
           - name: POD_NAME
             valueFrom:
@@ -104,22 +111,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: registry-service
-spec:
-  ports:
-  - port: 17890
-    protocol: TCP
-    targetPort: 17890
-  selector:
-    app: tars
-  clusterIP: None
-  type: ClusterIP
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
   name: ingress-web-tars
 spec:
   ports:
@@ -127,7 +118,7 @@ spec:
     protocol: TCP
     targetPort: 3000
   selector:
-    app: tars
+    statefulset.kubernetes.io/pod-name: tars-0
   type: ClusterIP
 
  
@@ -159,7 +150,7 @@ spec:
     protocol: TCP
     targetPort: 3001
   selector:
-    app: tars
+    statefulset.kubernetes.io/pod-name: tars-0
   type: ClusterIP
 
  
@@ -227,7 +218,7 @@ spec:
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
             fi
 
-            export HOSTNAME="${POD_NAME}.tars-node-svc.{{.Values.tars.namespace}}.svc.cluster.local"
+            export HOSTNAME="${POD_NAME}.tars-node-svc"
             export WEB_HOST=http://${POD_NAME}:3000
 
             /sbin/entrypoint.sh

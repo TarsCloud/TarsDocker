@@ -3,21 +3,11 @@ entries:
   tars:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-01-10T22:32:30.566683282+08:00"
+    created: "2020-01-10T22:56:15.83397473+08:00"
     description: A Helm chart for Tars
-    digest: 8b443016ba7e0d132084051d1ac00fe0e0b73ff5850be8f2542a844db1d7dbb3
+    digest: 2de560bee55a62b0594d134111daadf032927def8da8050a531b9683cc6c8193
     name: tars
     urls:
     - https://tarscloud.github.io/TarsDocker/charts/dev/tars-0.1.0.tgz
     version: 0.1.0
-  tars-dev:
-  - apiVersion: v1
-    appVersion: "1.0"
-    created: "2020-01-10T22:32:30.573880299+08:00"
-    description: A Helm chart for Tars
-    digest: 48c69db9aa7f08fccd6f15b96880b4dade69f073454e782f386a614cf57c4032
-    name: tars-dev
-    urls:
-    - https://tarscloud.github.io/TarsDocker/charts/dev/tars-dev-0.1.0.tgz
-    version: 0.1.0
-generated: "2020-01-10T22:32:30.558139496+08:00"
+generated: "2020-01-10T22:56:15.82592845+08:00"

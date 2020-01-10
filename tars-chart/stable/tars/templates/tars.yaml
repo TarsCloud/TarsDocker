@@ -61,8 +61,16 @@ spec:
               ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
             fi
 
-            export HOSTNAME="${POD_NAME}.tars-svc.{{.Values.tars.namespace}}.svc.cluster.local"
-            
+            export HOSTNAME="${POD_NAME}.tars-svc"
+
+            INDEX=`echo ${POD_NAME} | cut -d '-' -f2`
+
+            if [ "${INDEX}" == "0"]; then
+              export SLAVE=false
+            else
+              export SLAVE=true
+            fi
+
             /usr/local/tars/cpp/deploy/docker-init.sh
           env:
           - name: USER_CENTER_HOST
@@ -98,22 +106,6 @@ spec:
           hostPath:
             path: {{.Values.tars.data}}/{{.Values.tars.namespace}}
             type: DirectoryOrCreate
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: registry-service
-spec:
-  ports:
-  - port: 17890
-    protocol: TCP
-    targetPort: 17890
-  selector:
-    app: tars
-  clusterIP: None
-  type: ClusterIP
 
 ---
 
@@ -227,7 +219,7 @@ spec:
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
             fi
 
-            export HOSTNAME="${POD_NAME}.tars-node-svc.{{.Values.tars.namespace}}.svc.cluster.local"
+            export HOSTNAME="${POD_NAME}.tars-node-svc"
             export WEB_HOST=http://${POD_NAME}:3000
 
             /sbin/entrypoint.sh
