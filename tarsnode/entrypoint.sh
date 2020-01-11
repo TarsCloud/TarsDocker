@@ -24,6 +24,8 @@ else
 	MachineIp=$(ip addr | grep inet | grep eth0 | awk '{print $2;}' | sed 's|/.*$||')
 fi
 
+mkdir -p /data/tars/app_log
+
 while [ 1 ]
 do
 	rm -rf get_tarsnode.sh
