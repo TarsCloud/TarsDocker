@@ -3,12 +3,12 @@
 # Declare variables to be passed into your templates.
 
 tars:
-  namespace: tars-k8s
+  namespace: tars
   data: /data/tars-data
   image: tarscloud/framework:stable
   replicas: 2
-  host: cloud.com
-  port: 6080
+  host: domain.com
+  port: 80
   pullPolicy: IfNotPresent
   resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -23,7 +23,7 @@ tars:
   #   memory: 128Mi
 tarsnode:
   image: tarscloud/tars-node:stable
-  replicas: 2
+  replicas: 3
   pullPolicy: IfNotPresent
   resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

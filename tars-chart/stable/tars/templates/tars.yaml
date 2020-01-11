@@ -43,6 +43,9 @@ spec:
             mkdir -p /data/log/${POD_NAME}/patchs;
             mkdir -p /data/log/${POD_NAME}/web_log;
             mkdir -p /data/log/${POD_NAME}/demo_log;
+
+            echo "mkdir succ"
+
             rm -rf /data/tars;mkdir -p /data/tars;
 
             if [ ! -f "/data/tars/app_log" ]; then
@@ -61,15 +64,17 @@ spec:
               ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
             fi
 
-            export HOSTNAME="${POD_NAME}.tars-svc"
+            export HOSTNAME="${POD_NAME}.tars-svc";
 
-            INDEX=`echo ${POD_NAME} | cut -d '-' -f2`
+            echo "HOSTNAME1:${HOSTNAME}, POD_NAME:${POD_NAME}";
 
-            if [ "${INDEX}" == "0" ]; then
-              export SLAVE=false
-            else
-              export SLAVE=true
+            export SLAVE="true";
+
+            if [ "${POD_NAME}" == "tars-0" ]; then
+              SLAVE="false";
             fi
+
+            echo "HOSTNAME2:${HOSTNAME}, POD_NAME:${POD_NAME}, SLAVE:${SLAVE}";
 
             /usr/local/tars/cpp/deploy/docker-init.sh
           env:
@@ -219,8 +224,8 @@ spec:
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
             fi
 
-            export HOSTNAME="${POD_NAME}.tars-node-svc"
-            export WEB_HOST=http://${POD_NAME}:3000
+            export HOSTNAME="${POD_NAME}.tars-node-svc";
+            export WEB_HOST=http://tars-0.tars-svc:3000;
 
             /sbin/entrypoint.sh
           env:
