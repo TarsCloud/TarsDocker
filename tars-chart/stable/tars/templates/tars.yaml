@@ -64,9 +64,7 @@ spec:
               ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
             fi
 
-            export HOSTNAME="${POD_NAME}.tars-svc";
-
-            echo "HOSTNAME1:${HOSTNAME}, POD_NAME:${POD_NAME}";
+            export DOMAIN="${POD_NAME}.tars-svc";
 
             export SLAVE="true";
 
@@ -74,7 +72,7 @@ spec:
               SLAVE="false";
             fi
 
-            echo "HOSTNAME2:${HOSTNAME}, POD_NAME:${POD_NAME}, SLAVE:${SLAVE}";
+            echo "DOMAIN:${DOMAIN}, POD_NAME:${POD_NAME}, SLAVE:${SLAVE}";
 
             /usr/local/tars/cpp/deploy/docker-init.sh
           env:
@@ -91,8 +89,6 @@ spec:
           - name: INET
             value: "eth0"
           - name: REBUILD
-            value: "false"
-          - name: SLAVE
             value: "false"
           - name: POD_NAME
             valueFrom:
@@ -224,7 +220,7 @@ spec:
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
             fi
 
-            export HOSTNAME="${POD_NAME}.tars-node-svc";
+            export DOMAIN="${POD_NAME}.tars-node-svc";
             export WEB_HOST=http://tars-0.tars-svc:3000;
 
             /sbin/entrypoint.sh
