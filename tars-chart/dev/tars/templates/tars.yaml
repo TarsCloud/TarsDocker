@@ -64,7 +64,7 @@ spec:
               ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
             fi
 
-            if [ "${INDEX}" == "0"]; then
+            if [ "${INDEX}" == "0" ]; then
               export SLAVE=false
             else
               export SLAVE=true

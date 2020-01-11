@@ -65,7 +65,7 @@ spec:
 
             INDEX=`echo ${POD_NAME} | cut -d '-' -f2`
 
-            if [ "${INDEX}" == "0"]; then
+            if [ "${INDEX}" == "0" ]; then
               export SLAVE=false
             else
               export SLAVE=true
