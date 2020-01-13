@@ -40,9 +40,7 @@ spec:
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
-            mkdir -p /data/log/${POD_NAME}/patchs;
-            mkdir -p /data/log/${POD_NAME}/web_log;
-            mkdir -p /data/log/${POD_NAME}/demo_log;
+
             rm -rf /data/tars;mkdir -p /data/tars;
 
             echo "mkdir succ"
@@ -53,16 +51,8 @@ spec:
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
             fi
 
-            if [ ! -f "/data/tars/web_log" ]; then
-              ln -s  /data/log/${POD_NAME}/web_log /data/tars/web_log;
-            fi
-
-            if [ ! -f "/data/tars/demo_log" ]; then
-              ln -s  /data/log/${POD_NAME}/demo_log /data/tars/demo_log;
-            fi
-
-            if [ ! -f "/data/tars/patchs" ]; then
-              ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
+            if [ ! -f "/data/tars/tarsnode-data" ]; then
+              ln -s  /data/log/${POD_NAME}/tarsnode-data /data/tars/tarsnode-data;
             fi
 
             export DOMAIN="${POD_NAME}.tars-svc";
@@ -71,6 +61,23 @@ spec:
 
             if [ "${POD_NAME}" == "tars-0" ]; then
               SLAVE="false";
+
+              mkdir -p /data/log/${POD_NAME}/patchs;
+              mkdir -p /data/log/${POD_NAME}/web_log;
+              mkdir -p /data/log/${POD_NAME}/demo_log;
+              mkdir -p /data/log/${POD_NAME}/tarsnode-data;
+  
+              if [ ! -f "/data/tars/web_log" ]; then
+                ln -s  /data/log/${POD_NAME}/web_log /data/tars/web_log;
+              fi
+
+              if [ ! -f "/data/tars/demo_log" ]; then
+                ln -s  /data/log/${POD_NAME}/demo_log /data/tars/demo_log;
+              fi
+
+              if [ ! -f "/data/tars/patchs" ]; then
+                ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
+              fi
             fi
 
             echo "DOMAIN:${DOMAIN}, POD_NAME:${POD_NAME}, SLAVE:${SLAVE}";
@@ -215,10 +222,16 @@ spec:
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
+            mkdir -p /data/log/${POD_NAME}/tarsnode-data;
+
             rm -rf /data/tars;mkdir -p /data/tars;
 
             if [ ! -f "/data/tars/app_log" ]; then
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
+            fi
+
+            if [ ! -f "/data/tars/tarsnode-data" ]; then
+              ln -s  /data/log/${POD_NAME}/tarsnode-data /data/tars/tarsnode-data;
             fi
 
             export DOMAIN="${POD_NAME}.tars-node-svc"

@@ -40,9 +40,6 @@ spec:
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
-            mkdir -p /data/log/${POD_NAME}/patchs;
-            mkdir -p /data/log/${POD_NAME}/web_log;
-            mkdir -p /data/log/${POD_NAME}/demo_log;
 
             echo "mkdir succ"
 
@@ -52,24 +49,32 @@ spec:
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
             fi
 
-            if [ ! -f "/data/tars/web_log" ]; then
-              ln -s  /data/log/${POD_NAME}/web_log /data/tars/web_log;
+            if [ ! -f "/data/tars/tarsnode-data" ]; then
+              ln -s  /data/log/${POD_NAME}/tarsnode-data /data/tars/tarsnode-data;
             fi
-
-            if [ ! -f "/data/tars/demo_log" ]; then
-              ln -s  /data/log/${POD_NAME}/demo_log /data/tars/demo_log;
-            fi
-
-            if [ ! -f "/data/tars/patchs" ]; then
-              ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
-            fi
-
+                        
             export DOMAIN="${POD_NAME}.tars-svc";
 
             export SLAVE="true";
 
             if [ "${POD_NAME}" == "tars-0" ]; then
               SLAVE="false";
+
+              mkdir -p /data/log/${POD_NAME}/patchs;
+              mkdir -p /data/log/${POD_NAME}/web_log;
+              mkdir -p /data/log/${POD_NAME}/demo_log;
+
+              if [ ! -f "/data/tars/web_log" ]; then
+                ln -s  /data/log/${POD_NAME}/web_log /data/tars/web_log;
+              fi
+
+              if [ ! -f "/data/tars/demo_log" ]; then
+                ln -s  /data/log/${POD_NAME}/demo_log /data/tars/demo_log;
+              fi
+
+              if [ ! -f "/data/tars/patchs" ]; then
+                ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
+              fi
             fi
 
             echo "DOMAIN:${DOMAIN}, POD_NAME:${POD_NAME}, SLAVE:${SLAVE}";
@@ -218,6 +223,10 @@ spec:
 
             if [ ! -f "/data/tars/app_log" ]; then
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
+            fi
+
+            if [ ! -f "/data/tars/tarsnode-data" ]; then
+              ln -s  /data/log/${POD_NAME}/tarsnode-data /data/tars/tarsnode-data;
             fi
 
             export DOMAIN="${POD_NAME}.tars-node-svc";

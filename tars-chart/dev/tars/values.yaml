@@ -5,7 +5,7 @@
 tars:
   namespace: tars-k8s
   data: /data/tars-data
-  image: tarscloud/framework
+  image: tarscloud/framework:dev
   replicas: 2
   host: cloud.com
   port: 6080
@@ -22,7 +22,7 @@ tars:
   #   cpu: 100m
   #   memory: 128Mi
 tarsnode:
-  image: tarscloud/tars-node
+  image: tarscloud/tars-node:dev
   replicas: 2
   pullPolicy: IfNotPresent
   resources: {}
