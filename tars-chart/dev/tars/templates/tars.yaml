@@ -40,6 +40,7 @@ spec:
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
+            mkdir -p /data/log/${POD_NAME}/tarsnode-data;
 
             rm -rf /data/tars;mkdir -p /data/tars;
 
@@ -65,7 +66,6 @@ spec:
               mkdir -p /data/log/${POD_NAME}/patchs;
               mkdir -p /data/log/${POD_NAME}/web_log;
               mkdir -p /data/log/${POD_NAME}/demo_log;
-              mkdir -p /data/log/${POD_NAME}/tarsnode-data;
   
               if [ ! -f "/data/tars/web_log" ]; then
                 ln -s  /data/log/${POD_NAME}/web_log /data/tars/web_log;
@@ -89,7 +89,7 @@ spec:
           - name: COOKIE_DOMAIN
             value: .{{.Values.tars.namespace}}.{{.Values.tars.host}}
           - name: TARS_WEB_STRICT
-            value: "true"
+            value: "{{.Values.tars.strict}}"
           - name: MYSQL_HOST
             value: mysql-service
           - name: MYSQL_ROOT_PASSWORD

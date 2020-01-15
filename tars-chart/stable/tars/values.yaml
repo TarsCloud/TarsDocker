@@ -9,6 +9,7 @@ tars:
   replicas: 2
   host: domain.com
   port: 80
+  strict: "false"
   pullPolicy: IfNotPresent
   resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
