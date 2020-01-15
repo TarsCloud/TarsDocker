@@ -16,10 +16,8 @@
 # * specific language governing permissions and limitations under the License.
 # */
 
-HOSTNAME=`echo ${HOSTNAME}`
-
-if [ "$HOSTNAME" == "true" ]; then
-	MachineIp=`hostname`
+if [ "$DOMAIN" != "" ]; then
+	MachineIp=${DOMAIN}
 else
 	MachineIp=$(ip addr | grep inet | grep eth0 | awk '{print $2;}' | sed 's|/.*$||')
 fi
