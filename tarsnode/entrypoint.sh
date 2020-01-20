@@ -22,7 +22,14 @@ else
 	MachineIp=$(ip addr | grep inet | grep eth0 | awk '{print $2;}' | sed 's|/.*$||')
 fi
 
+mkdir -p /usr/local/app/tars/
+mkdir -p /usr/local/app/tars/tarsnode
+
 mkdir -p /data/tars/app_log
+mkdir -p /data/tars/tarsnode-data
+
+ln -s /data/tars/app_log /usr/local/app/tars/app_log 
+ln -s /data/tars/tarsnode-data /usr/local/app/tars/tarsnode/data
 
 while [ 1 ]
 do
