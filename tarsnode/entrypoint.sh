@@ -31,6 +31,8 @@ mkdir -p /data/tars/tarsnode-data
 ln -s /data/tars/app_log /usr/local/app/tars/app_log 
 ln -s /data/tars/tarsnode-data /usr/local/app/tars/tarsnode/data
 
+trap 'exit' SIGTERM SIGINT
+
 while [ 1 ]
 do
 	rm -rf get_tarsnode.sh
