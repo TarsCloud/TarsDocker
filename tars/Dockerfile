@@ -39,12 +39,9 @@ RUN	yum install -y mysql \
     && mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && ln -s /usr/include/mysql /usr/local/mysql/include && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf && ldconfig \
 #	&& cd /usr/local/mysql/lib/ && rm -f libmysqlclient.a && ls -l /usr/local/mysql/lib/ && ln -s libmysqlclient.so.*.*.* libmysqlclient.a \
 	# Get latest tars src
-	&& cd /root/ && git clone https://github.com/TarsCloud/Tars \
-	&& cd /root/Tars/ && git submodule update --init --recursive framework \
-	&& git submodule update --init --recursive web \
-	&& git submodule update --init --recursive php \
-	&& git submodule update --init --recursive go \
-	&& git submodule update --init --recursive java \
+	&& mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive \
+	&& mkdir -p /root/Tars && git clone https://github.com/TarsCloud/TarsWeb web \
+	&& mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsPHP/TarsPHP php --recursive \
 	&& mkdir -p /data && chmod u+x /root/Tars/framework/build/build.sh \
 	# Modify for MySQL 8
 	&& sed -i '32s/rt/rt crypto ssl/' /root/Tars/framework/CMakeLists.txt \
