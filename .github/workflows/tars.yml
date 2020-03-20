@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build tars image
-      run: docker build ./tars/ --file ./tars/Dockerfile --tag tarscloude/tars:latest
+      run: docker build ./tars/ --file ./tars/Dockerfile --tag tarscloud/tars:latest
     - name: docker push
       run: docker login -u ${{ secrets.name }} -p ${{ secrets.pass }} && docker push tarscloud/tars:latest
