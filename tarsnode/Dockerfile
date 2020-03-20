@@ -12,21 +12,19 @@ RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
 
 # Install
 # RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/mysql80-community-release-el7-1.noarch.rpm \
-RUN	yum install -y mysql mysql-devel \	
+RUN	yum install -y mysql-devel \	
 	&& yum -y install epel-release \
 	&& yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
 	&& yum -y install yum-utils && yum-config-manager --enable remi-php72 \
 	&& yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
-	&& yum -y install golang make cmake iproute which glibc-devel ncurses-devel \
+	&& yum -y install golang make iproute which glibc-devel ncurses-devel \
 	&& yum -y install protobuf-devel kde-l10n-Chinese glibc-common \
 	&& yum -y install php php-cli php-devel php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata  \
 	#install mysql lib
 	&& mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && ln -s /usr/include/mysql /usr/local/mysql/include && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf && ldconfig \
 	# && cd /usr/local/mysql/lib/ && rm -f libmysqlclient.a && ls -l /usr/local/mysql/lib/ && ln -s libmysqlclient.so.*.*.* libmysqlclient.a \
 	# Get latest tars src
-	&& cd /root/ && git clone https://github.com/TarsCloud/Tars \
-	&& cd /root/Tars/ \
-	&& git submodule update --init --recursive php \
+	&& mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsPHP/TarsPHP php --recursive \
 	#intall php
 	&& cd /tmp && curl -fsSL https://getcomposer.org/installer | php \
 	&& chmod +x composer.phar && mv composer.phar /usr/local/bin/composer \
@@ -54,7 +52,7 @@ RUN	yum install -y mysql mysql-devel \
 	&& source /root/.bashrc && npm install -g pm2 @tars/deploy @tars/stream @tars/rpc @tars/logs @tars/config @tars/monitor @tars/notify @tars/utils @tars/dyeing @tars/registry \
 	# Get and install JDK
 	&& mkdir -p /root/init && cd /root/init/ \
-	&& wget https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/RCG/common/x86_64/jdk-10.0.2_linux-x64_bin.rpm \
+	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/jdk-10.0.2_linux-x64_bin.rpm \
 	&& rpm -ivh /root/init/jdk-10.0.2_linux-x64_bin.rpm && rm -rf /root/init/jdk-10.0.2_linux-x64_bin.rpm \
 	&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /etc/profile \
 	&& echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /etc/profile \
