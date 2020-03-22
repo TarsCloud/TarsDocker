@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build base image
-      run: docker build ./basedocker/ --file ./basedocker/Dockerfile --tag tarscloud/tars-base:latest
+      run: docker build ./basedocker/ --file ./basedocker/full/Dockerfile --tag tarscloud/tars-env-full:latest
     - name: docker push
-      run: docker login -u ${{ secrets.name }} -p ${{ secrets.pass }} && docker push tarscloud/tars-base:latest
+      run: docker login -u ${{ secrets.name }} -p ${{ secrets.pass }} && docker push tarscloud/tars-env-full:latest
