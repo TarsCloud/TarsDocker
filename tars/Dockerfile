@@ -32,9 +32,13 @@ RUN	yum install -y mysql mysql-devel \
 	&& yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
 	&& yum -y install golang make cmake unzip iproute which glibc-devel flex bison ncurses-devel \
 	&& yum -y install protobuf-devel kde-l10n-Chinese glibc-common boost boost-devel \
-	&& yum -y install php php-cli php-devel php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata \
-    && mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && ln -s /usr/include/mysql /usr/local/mysql/include && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf && ldconfig \
-#	&& cd /usr/local/mysql/lib/ && rm -f libmysqlclient.a && ls -l /usr/local/mysql/lib/ && ln -s libmysqlclient.so.*.*.* libmysqlclient.a \
+	&& yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata \
+	&& yum -y install centos-release-scl \
+	&& yum -y install devtoolset-7-gcc*
+# Enable gcc 7
+SHELL [ "/usr/bin/scl", "enable", "devtoolset-7"]
+RUN mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && ln -s /usr/include/mysql /usr/local/mysql/include && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf && ldconfig \
+	#	&& cd /usr/local/mysql/lib/ && rm -f libmysqlclient.a && ls -l /usr/local/mysql/lib/ && ln -s libmysqlclient.so.*.*.* libmysqlclient.a \
 	# Get latest tars src
 	&& cd /root/ && git clone https://github.com/TarsCloud/Tars \
 	&& cd /root/Tars/ && git submodule update --init --recursive framework \
@@ -46,7 +50,7 @@ RUN	yum install -y mysql mysql-devel \
 	# Modify for MySQL 8
 	&& sed -i '32s/rt/rt crypto ssl/' /root/Tars/framework/CMakeLists.txt \
 	# Start to build
-    && cd /root/Tars/framework/build/ && ./build.sh all \
+	&& cd /root/Tars/framework/build/ && ./build.sh all \
 	&& ./build.sh install \
 	&& make clean \
 	#php
@@ -55,12 +59,10 @@ RUN	yum install -y mysql mysql-devel \
 	&& cd /root/Tars/php/tars-extension/ && phpize --clean && phpize \
 	&& ./configure --enable-phptars --with-php-config=/usr/bin/php-config && make && make install \
 	&& echo "extension=phptars.so" > /etc/php.d/phptars.ini \
-	# Install PHP swoole module
-	&& cd /root && wget -c -t 0 https://github.com/swoole/swoole-src/archive/v2.2.0.tar.gz \
-	&& tar zxf v2.2.0.tar.gz && cd swoole-src-2.2.0 && phpize && ./configure && make && make install \
-	&& echo "extension=swoole.so" > /etc/php.d/swoole.ini \
-	&& cd /root && rm -rf v2.2.0.tar.gz swoole-src-2.2.0 \
 	&& mkdir -p /root/phptars && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars \
+	# Install PHP swoole module
+	&& pecl install swoole \
+	&& echo "extension=swoole.so" > /etc/php.d/swoole.ini \
 	# Install tars go
 	&& go get github.com/TarsCloud/TarsGo/tars \
 	&& cd $GOPATH/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go && go build . \
