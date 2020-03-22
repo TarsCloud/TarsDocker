@@ -12,13 +12,13 @@ RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
 
 # Install
 # RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/mysql80-community-release-el7-1.noarch.rpm \
-RUN	yum install -y mysql mysql-devel \	
+RUN	yum install -y mysql-devel \	
 	&& yum -y install epel-release \
 	&& yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
 	&& yum -y install yum-utils \
 	&& yum-config-manager --enable remi-php72 \
 	&& yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
-	&& yum -y install golang make cmake iproute which glibc-devel ncurses-devel \
+	&& yum -y install golang make iproute which glibc-devel ncurses-devel \
 	&& yum -y install protobuf-devel kde-l10n-Chinese glibc-common \
 	&& yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata  \
 	&& yum -y install centos-release-scl \
@@ -72,12 +72,18 @@ RUN mkdir -p /usr/local/mysql \
 	&& source /root/.bashrc \
 	&& npm install -g pm2 @tars/deploy @tars/stream @tars/rpc @tars/logs @tars/config @tars/monitor @tars/notify @tars/utils @tars/dyeing @tars/registry \
 	# Get and install JDK
-	&& mkdir -p /root/init \
+	<<<<<<< HEAD
+&& mkdir -p /root/init \
 	&& cd /root/init/ \
 	&& wget https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/RCG/common/x86_64/jdk-10.0.2_linux-x64_bin.rpm \
 	&& rpm -ivh /root/init/jdk-10.0.2_linux-x64_bin.rpm \
 	&& rm -rf /root/init/jdk-10.0.2_linux-x64_bin.rpm \
-	&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /etc/profile \
+	=======
+&& mkdir -p /root/init && cd /root/init/ \
+	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/jdk-10.0.2_linux-x64_bin.rpm \
+	&& rpm -ivh /root/init/jdk-10.0.2_linux-x64_bin.rpm && rm -rf /root/init/jdk-10.0.2_linux-x64_bin.rpm \
+	>>>>>>> origin
+&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /etc/profile \
 	&& echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /etc/profile \
 	&& echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /etc/profile \
 	&& echo "export PATH JAVA_HOME CLASSPATH" >> /etc/profile \

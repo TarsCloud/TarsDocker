@@ -18,34 +18,35 @@ ENV MAVEN_HOME /usr/local/apache-maven-3.5.4
 
 ENV TARS_INSTALL /usr/local/tars/cpp/deploy
 
-RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
+# RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
 
 #RUN rpm -ivh https://repo.mysql.com/mysql80-community-release-el7.rpm
 #RUN rpm -ivh https://repo.mysql.com/mysql80-community-release-el7.rpm
 
 # Install
 # RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/mysql80-community-release-el7-1.noarch.rpm \
-RUN	yum install -y mysql mysql-devel \
+RUN	yum install -y mysql \
 	&& yum -y install epel-release \
-	&& yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
-	&& yum -y install yum-utils && yum-config-manager --enable remi-php72 \
 	&& yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
-	&& yum -y install golang make cmake unzip iproute which glibc-devel flex bison ncurses-devel \
+	&& yum -y install golang make unzip iproute which glibc-devel flex bison ncurses-devel \
 	&& yum -y install protobuf-devel kde-l10n-Chinese glibc-common boost boost-devel \
 	&& yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata \
 	&& yum -y install centos-release-scl \
 	&& yum -y install devtoolset-7-gcc*
 # Enable gcc 7
 SHELL [ "/usr/bin/scl", "enable", "devtoolset-7"]
-RUN mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && ln -s /usr/include/mysql /usr/local/mysql/include && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf && ldconfig \
+RUN mkdir -p /root/cmake/ && cd /root/cmake \
+	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
+	&& tar xzf cmake-3.16.4.tar.gz && cd cmake-3.16.4 && ./configure  && make && make install \
+	&& yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
+	&& yum -y install yum-utils && yum-config-manager --enable remi-php72 \
+	&& yum -y install php php-cli php-devel php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata \
+	&& mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && ln -s /usr/include/mysql /usr/local/mysql/include && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf && ldconfig \
 	#	&& cd /usr/local/mysql/lib/ && rm -f libmysqlclient.a && ls -l /usr/local/mysql/lib/ && ln -s libmysqlclient.so.*.*.* libmysqlclient.a \
 	# Get latest tars src
-	&& cd /root/ && git clone https://github.com/TarsCloud/Tars \
-	&& cd /root/Tars/ && git submodule update --init --recursive framework \
-	&& git submodule update --init --recursive web \
-	&& git submodule update --init --recursive php \
-	&& git submodule update --init --recursive go \
-	&& git submodule update --init --recursive java \
+	&& mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive \
+	&& mkdir -p /root/Tars && git clone https://github.com/TarsCloud/TarsWeb web \
+	&& mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsPHP/TarsPHP php --recursive \
 	&& mkdir -p /data && chmod u+x /root/Tars/framework/build/build.sh \
 	# Modify for MySQL 8
 	&& sed -i '32s/rt/rt crypto ssl/' /root/Tars/framework/CMakeLists.txt \
@@ -80,7 +81,7 @@ RUN mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && 
 	&& source /root/.bashrc && npm install -g pm2 @tars/deploy @tars/stream @tars/rpc @tars/logs @tars/config @tars/monitor @tars/notify @tars/utils @tars/dyeing @tars/registry \
 	# Get and install JDK
 	&& mkdir -p /root/init && cd /root/init/ \
-	&& wget https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/RCG/common/x86_64/jdk-10.0.2_linux-x64_bin.rpm \
+	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/jdk-10.0.2_linux-x64_bin.rpm \
 	&& rpm -ivh /root/init/jdk-10.0.2_linux-x64_bin.rpm && rm -rf /root/init/jdk-10.0.2_linux-x64_bin.rpm \
 	&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /etc/profile \
 	&& echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /etc/profile \

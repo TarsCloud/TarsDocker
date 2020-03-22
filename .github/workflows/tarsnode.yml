@@ -4,7 +4,8 @@ on:
   push:
     branches: 
       - master
-      
+  schedule:
+    - cron: '0 23 * * *'      
 jobs:
 
   build:
@@ -14,4 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build tarsnode image
-      run: docker build ./tarsnode/ --file ./tarsnode/Dockerfile --tag tarsnode:$(date +%s)
+      run: docker build ./tarsnode/ --file ./tarsnode/Dockerfile --tag tarscloud/tars-node:latest
+    - name: docker push
+      run: docker login -u ${{ secrets.name }} -p ${{ secrets.pass }} && docker push tarscloud/tars-node:latest
