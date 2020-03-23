@@ -63,6 +63,10 @@ RUN	yum install -y mysql \
 	&& echo "extension=phptars.so" > /etc/php.d/phptars.ini \
 	&& mkdir -p /root/phptars && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars \
 	# Install PHP swoole module
+	&& cd /tmp \
+	&& wget http://pear.php.net/go-pear.phar \
+	&& php go-pear.phar \
+	&& rm -f go-pear.phar \
 	&& pecl install swoole \
 	&& echo "extension=swoole.so" > /etc/php.d/swoole.ini \
 	# Install tars go
