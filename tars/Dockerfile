@@ -32,10 +32,11 @@ RUN	yum install -y mysql \
 	&& yum -y install protobuf-devel kde-l10n-Chinese glibc-common boost boost-devel \
 	&& yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata \
 	&& yum -y install centos-release-scl \
-	&& yum -y install devtoolset-7-gcc*
-# Enable gcc 7
-SHELL [ "/usr/bin/scl", "enable", "devtoolset-7"]
-RUN mkdir -p /root/cmake/ && cd /root/cmake \
+	&& yum -y install devtoolset-7-gcc* \
+	# enbale gcc7
+	&& scl enable devtoolset-7 bash \
+	&& source scl_source enable devtoolset-7 \
+	&& mkdir -p /root/cmake/ && cd /root/cmake \
 	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
 	&& tar xzf cmake-3.16.4.tar.gz && cd cmake-3.16.4 && ./configure  && make && make install \
 	&& yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \

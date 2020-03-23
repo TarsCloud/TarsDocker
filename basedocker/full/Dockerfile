@@ -19,10 +19,11 @@ RUN	yum install -y mysql mysql-devel \
     && yum -y install protobuf-devel kde-l10n-Chinese glibc-common \
     && yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata  \
     && yum -y install centos-release-scl \
-    && yum -y install devtoolset-7-gcc*
-# Enable gcc 7
-SHELL [ "/usr/bin/scl", "enable", "devtoolset-7"]
-RUN mkdir -p /usr/local/mysql \
+    && yum -y install devtoolset-7-gcc* \
+    ## enbale gcc7
+    && scl enable devtoolset-7 bash \
+    && source scl_source enable devtoolset-7 \
+    && mkdir -p /usr/local/mysql \
     #install mysql lib
     && ln -s /usr/lib64/mysql /usr/local/mysql/lib \
     && ln -s /usr/include/mysql /usr/local/mysql/include \
