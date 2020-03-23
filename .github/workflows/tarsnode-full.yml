@@ -1,0 +1,20 @@
+name: tarsnode-full
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "./tarsnode/full/**"
+  schedule:
+    - cron: "0 23 * * *"
+jobs:
+  build-full:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build tarsnode latest full image
+        run: |
+          cp ./tarsnode/entrypoint.sh ./tarsnode/full/entrypoint.sh
+          cd ./tarsnode/full
+          docker build . --file Dockerfile --tag tarscloud/tars-node:latest
