@@ -5,16 +5,16 @@ WORKDIR /root/
 
 ENV TARS_INSTALL  /usr/local/tars/cpp/deploy
 
-RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
+# RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
 
 RUN yum makecache fast \
-	&& yum install -y yum-utils psmisc file which net-tools wget unzip telnet git gcc gcc-c++ cmake make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel \
-	&& yum install -y mysql mysql-devel \
-	&& mkdir -p /usr/local/mysql && ln -s /usr/lib64/mysql /usr/local/mysql/lib && ln -s /usr/include/mysql /usr/local/mysql/include && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf && ldconfig  \
-#	&& cd /usr/local/mysql/lib/ && rm -f libmysqlclient.a && ls -l /usr/local/mysql/lib/ && ln -s libmysqlclient.so.*.*.* libmysqlclient.a 
-	&& cd /root/ && git clone https://github.com/TarsCloud/Tars \
-	&& cd /root/Tars/ && git submodule update --init --recursive framework \
-	&& git submodule update --init --recursive web \
+	&& yum install -y yum-utils psmisc file which net-tools wget unzip telnet git gcc gcc-c++ make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel \
+	&& yum install -y mysql \
+	&& mkdir -p /root/cmake/ && cd /root/cmake \
+	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
+	&& tar xzf cmake-3.16.4.tar.gz && cd cmake-3.16.4 && ./configure  && make && make install \
+	&& mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive \
+	&& git clone https://github.com/TarsCloud/TarsWeb web \
 	&& mkdir -p /data && chmod u+x /root/Tars/framework/build/build.sh \
 	&& cd /root/Tars/framework/build/ && ./build.sh all \
 	&& ./build.sh install \
