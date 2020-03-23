@@ -13,6 +13,6 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build tarsnode-php-dev image
         run: |
-          cp entrypoint.sh ./tarsnode/php/entrypoint.sh 
+          cp ./tarsnode/entrypoint.sh ./tarsnode/php/entrypoint.sh 
           cd ./tarsnode/php
           docker build . --file Dockerfile --tag tarsnode:php-$(date +%s)
