@@ -14,5 +14,5 @@ jobs:
       - name: Build tarsnode-php-dev image
         run: |
           cp ./tarsnode/entrypoint.sh ./tarsnode/php/entrypoint.sh 
-          cd ./tarsnode/php
+          cd ./tarsnode/php 
           docker build . --file Dockerfile --tag tarsnode:php-$(date +%s)
