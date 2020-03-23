@@ -18,3 +18,4 @@ jobs:
           cp ./tarsnode/entrypoint.sh ./tarsnode/full/entrypoint.sh
           cd ./tarsnode/full
           docker build . --file Dockerfile --tag tarscloud/tars-node:latest
+
