@@ -75,7 +75,7 @@ RUN	yum install -y mysql-devel \
 	# Get and install JDK
 	&& mkdir -p /root/init \
 	&& cd /root/init/ \
-	&& wget https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/RCG/common/x86_64/jdk-10.0.2_linux-x64_bin.rpm \
+	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/jdk-10.0.2_linux-x64_bin.rpm \
 	&& rpm -ivh /root/init/jdk-10.0.2_linux-x64_bin.rpm \
 	&& rm -rf /root/init/jdk-10.0.2_linux-x64_bin.rpm \
 	&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /etc/profile \
