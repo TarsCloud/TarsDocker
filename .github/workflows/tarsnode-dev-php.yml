@@ -1,4 +1,4 @@
-name: tarsnode-dev
+name: tarsnode-dev-php
 
 on:
   push:
