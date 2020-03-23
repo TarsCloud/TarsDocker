@@ -1,0 +1,26 @@
+name: tarsnode-dev
+
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  build-full:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build tarsnode-full-dev image
+        run: |
+          cp entrypoint.sh ./tarsnode/full/entrypoint.sh 
+          cd ./tarsnode/full
+          docker build . --file Dockerfile --tag tarsnode:full-$(date +%s)
+  build-php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build tarsnode-php-dev image
+        run: |
+          cp entrypoint.sh ./tarsnode/php/entrypoint.sh 
+          cd ./tarsnode/php
+          docker build . --file Dockerfile --tag tarsnode:php-$(date +%s)

@@ -165,6 +165,17 @@ This method is usually used in k8s deployment. At this time, it does not need to
 
 Compared with the old version, the image of tars and tarsnode removes the logic of updating dB after IP changes. It is recommended to deploy the stateful headless mode, and the node machines are managed by domain names.
 
+### 3.5 Use docker-compose
+
+You can also use docker-compose to start tars by these steps:
+
+```shell script
+$ cd ${your_path}/TarsDocker/docker-compose/mysql
+$ docker-compose up -d
+$ cd ${your_path}/TarsDocker/docker-compose/framework
+$ docker-compose up -d
+```
+
 ## Appreciation
 The building of this repository is based on some people's work.
 

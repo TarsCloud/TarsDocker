@@ -34,32 +34,54 @@ spec:
       containers:
         - name: tars
           image: {{.Values.tars.image}}
+          imagePullPolicy: {{ .Values.tars.pullPolicy }}
+          resources:
+            {{- toYaml .Values.tars.resources | nindent 12 }}
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
-            mkdir -p /data/log/${POD_NAME}/patchs;
-            mkdir -p /data/log/${POD_NAME}/web_log;
-            mkdir -p /data/log/${POD_NAME}/demo_log;
+            mkdir -p /data/log/${POD_NAME}/tarsnode-data;
+
+            rm -rf /data/tars;mkdir -p /data/tars;
+
+            echo "mkdir succ"
+
             rm -rf /data/tars;mkdir -p /data/tars;
 
             if [ ! -f "/data/tars/app_log" ]; then
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
             fi
 
-            if [ ! -f "/data/tars/web_log" ]; then
-              ln -s  /data/log/${POD_NAME}/web_log /data/tars/web_log;
+            if [ ! -f "/data/tars/tarsnode-data" ]; then
+              ln -s  /data/log/${POD_NAME}/tarsnode-data /data/tars/tarsnode-data;
             fi
 
-            if [ ! -f "/data/tars/demo_log" ]; then
-              ln -s  /data/log/${POD_NAME}/demo_log /data/tars/demo_log;
+            export DOMAIN="${POD_NAME}.tars-svc";
+
+            export SLAVE="true";
+
+            if [ "${POD_NAME}" == "tars-0" ]; then
+              SLAVE="false";
+
+              mkdir -p /data/log/${POD_NAME}/patchs;
+              mkdir -p /data/log/${POD_NAME}/web_log;
+              mkdir -p /data/log/${POD_NAME}/demo_log;
+  
+              if [ ! -f "/data/tars/web_log" ]; then
+                ln -s  /data/log/${POD_NAME}/web_log /data/tars/web_log;
+              fi
+
+              if [ ! -f "/data/tars/demo_log" ]; then
+                ln -s  /data/log/${POD_NAME}/demo_log /data/tars/demo_log;
+              fi
+
+              if [ ! -f "/data/tars/patchs" ]; then
+                ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
+              fi
             fi
 
-            if [ ! -f "/data/tars/patchs" ]; then
-              ln -s  /data/log/${POD_NAME}/patchs /data/tars/patchs;
-            fi
+            echo "DOMAIN:${DOMAIN}, POD_NAME:${POD_NAME}, SLAVE:${SLAVE}";
 
-            export HOSTNAME="${POD_NAME}.tars-svc.{{.Values.tars.namespace}}.svc.cluster.local"
-            
             /usr/local/tars/cpp/deploy/docker-init.sh
           env:
           - name: USER_CENTER_HOST
@@ -67,7 +89,7 @@ spec:
           - name: COOKIE_DOMAIN
             value: .{{.Values.tars.namespace}}.{{.Values.tars.host}}
           - name: TARS_WEB_STRICT
-            value: "true"
+            value: "{{.Values.tars.strict}}"
           - name: MYSQL_HOST
             value: mysql-service
           - name: MYSQL_ROOT_PASSWORD
@@ -75,8 +97,6 @@ spec:
           - name: INET
             value: "eth0"
           - name: REBUILD
-            value: "false"
-          - name: SLAVE
             value: "false"
           - name: POD_NAME
             valueFrom:
@@ -101,22 +121,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: registry-service
-spec:
-  ports:
-  - port: 17890
-    protocol: TCP
-    targetPort: 17890
-  selector:
-    app: tars
-  clusterIP: None
-  type: ClusterIP
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
   name: ingress-web-tars
 spec:
   ports:
@@ -124,7 +128,7 @@ spec:
     protocol: TCP
     targetPort: 3000
   selector:
-    app: tars
+    statefulset.kubernetes.io/pod-name: tars-0
   type: ClusterIP
 
  
@@ -156,7 +160,7 @@ spec:
     protocol: TCP
     targetPort: 3001
   selector:
-    app: tars
+    statefulset.kubernetes.io/pod-name: tars-0
   type: ClusterIP
 
  
@@ -212,18 +216,26 @@ spec:
       containers:
         - name: tars
           image: {{.Values.tarsnode.image}} 
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.tarsnode.pullPolicy }}
+          resources:
+            {{- toYaml .Values.tarsnode.resources | nindent 12 }}
           command: ["sh", "-c"]
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
+            mkdir -p /data/log/${POD_NAME}/tarsnode-data;
+
             rm -rf /data/tars;mkdir -p /data/tars;
 
             if [ ! -f "/data/tars/app_log" ]; then
               ln -s  /data/log/${POD_NAME}/app_log /data/tars/app_log;
             fi
 
-            export HOSTNAME="${POD_NAME}.tars-node-svc.{{.Values.tars.namespace}}.svc.cluster.local"
-            export WEB_HOST=http://${POD_NAME}:3000
+            if [ ! -f "/data/tars/tarsnode-data" ]; then
+              ln -s  /data/log/${POD_NAME}/tarsnode-data /data/tars/tarsnode-data;
+            fi
+
+            export DOMAIN="${POD_NAME}.tars-node-svc"
+            export WEB_HOST=http://tars-0.tars-svc:3000
 
             /sbin/entrypoint.sh
           env:

@@ -1,0 +1,16 @@
+version: '3'
+services:
+  mysql:
+    # network_mode: "host"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root@123456"
+      MYSQL_USER: 'root'
+      MYSQL_PASS: 'root@123456'
+    image: "docker.io/mysql:5.6"
+    volumes:
+      - "./db:/var/lib/mysql"
+      - "./conf/my.cnf:/etc/my.cnf"
+    privileged: true
+    ports:
+      - "3306:3306"
+    container_name: mysql

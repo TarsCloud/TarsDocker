@@ -1,0 +1,17 @@
+version: '3'
+services:
+  tars:
+    image: 'tarscloud/framework:stable'
+    container_name: "framework"
+    environment:
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_ROOT_PASSWORD=root@123456
+      - MYSQL_USER=root
+      - MYSQL_PORT=3306
+      - REBUILD=false
+      - INET=eth0
+      - SLAVE=false
+    volumes:
+      - './data/tars:/data/tars'
+      - '/etc/localtime:/etc/localtime'
+    network_mode: 'host'
