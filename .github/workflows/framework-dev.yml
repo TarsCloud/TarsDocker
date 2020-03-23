@@ -1,0 +1,15 @@
+name: framework-dev
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "./framework/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build framework-dev image
+        run: docker build ./framework/ --file ./framework/Dockerfile --tag framework:dev-$(date +%s)
