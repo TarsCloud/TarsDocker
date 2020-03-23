@@ -16,5 +16,3 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build framework image
       run: docker build ./framework/ --file ./framework/Dockerfile --tag tarscloud/framework:latest
-    - name: docker push
-      run: docker login -u ${{ secrets.name }} -p ${{ secrets.pass }} && docker push tarscloud/framework:latest

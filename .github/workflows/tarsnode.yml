@@ -16,5 +16,3 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build tarsnode image
       run: docker build ./tarsnode/ --file ./tarsnode/Dockerfile --tag tarscloud/tars-node:latest
-    - name: docker push
-      run: docker login -u ${{ secrets.name }} -p ${{ secrets.pass }} && docker push tarscloud/tars-node:latest
