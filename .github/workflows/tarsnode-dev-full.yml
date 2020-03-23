@@ -1,0 +1,19 @@
+name: tarsnode-dev-full
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "./tarsnode/full/**"
+jobs:
+  build-full:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build tarsnode-full-dev image
+        run: |
+          cp ./tarsnode/entrypoint.sh ./tarsnode/full/entrypoint.sh 
+          cd ./tarsnode/full
+          docker build . --file Dockerfile --tag tarsnode:full-$(date +%s)
