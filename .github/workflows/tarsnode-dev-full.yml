@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - dev
+    paths:
+      - "./tarsnode/full/**"
 jobs:
   build-full:
     runs-on: ubuntu-latest
