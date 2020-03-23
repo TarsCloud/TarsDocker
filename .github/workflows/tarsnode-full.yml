@@ -16,6 +16,5 @@ jobs:
       - name: Build tarsnode latest full image
         run: |
           cp ./tarsnode/entrypoint.sh ./tarsnode/full/entrypoint.sh
-          cd ./tarsnode/full
+          cd ./tarsnode/full 
           docker build . --file Dockerfile --tag tarscloud/tars-node:latest
-
