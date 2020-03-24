@@ -6,8 +6,6 @@ on:
       - master
     paths:
       - "./tarsnode/php/**"
-  schedule:
-    - cron: "0 23 * * *"
 jobs:
   build-php:
     runs-on: ubuntu-latest
