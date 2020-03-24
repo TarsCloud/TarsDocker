@@ -1,18 +1,15 @@
 name: tars
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - master
-  schedule:
-    - cron: '0 23 * * *'      
+    paths:
+      - "./tars/**"
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Build tars image
-      run: docker build ./tars/ --file ./tars/Dockerfile --tag tarscloud/tars:latest
+      - uses: actions/checkout@v1
+      - name: Build tars image
+        run: docker build ./tars/ --file ./tars/Dockerfile --tag tarscloud/tars:latest

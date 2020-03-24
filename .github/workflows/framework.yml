@@ -1,18 +1,15 @@
 name: framework
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - master
-  schedule:
-    - cron: '0 23 * * *'
+    paths:
+      - "./framework/**"
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Build framework image
-      run: docker build ./framework/ --file ./framework/Dockerfile --tag tarscloud/framework:latest
+      - uses: actions/checkout@v1
+      - name: Build framework image
+        run: docker build ./framework/ --file ./framework/Dockerfile --tag tarscloud/framework:latest

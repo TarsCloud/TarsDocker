@@ -22,10 +22,11 @@ RUN	yum install -y mysql-devel \
 	&& yum -y install protobuf-devel kde-l10n-Chinese glibc-common \
 	&& yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata  \
 	&& yum -y install centos-release-scl \
-	&& yum -y install devtoolset-7-gcc*
-# Enable gcc 7
-SHELL [ "/usr/bin/scl", "enable", "devtoolset-7"]
-RUN mkdir -p /usr/local/mysql \
+	&& yum -y install devtoolset-7-gcc* \
+	# Enable gcc 7
+	&& scl enable devtoolset-7 bash \
+	&& source scl_source enable devtoolset-7 \
+	&& mkdir -p /usr/local/mysql \
 	#install mysql lib
 	&& ln -s /usr/lib64/mysql /usr/local/mysql/lib \
 	&& ln -s /usr/include/mysql /usr/local/mysql/include \
@@ -74,7 +75,7 @@ RUN mkdir -p /usr/local/mysql \
 	# Get and install JDK
 	&& mkdir -p /root/init \
 	&& cd /root/init/ \
-	&& wget https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/RCG/common/x86_64/jdk-10.0.2_linux-x64_bin.rpm \
+	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/jdk-10.0.2_linux-x64_bin.rpm \
 	&& rpm -ivh /root/init/jdk-10.0.2_linux-x64_bin.rpm \
 	&& rm -rf /root/init/jdk-10.0.2_linux-x64_bin.rpm \
 	&& echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /etc/profile \
@@ -93,7 +94,6 @@ RUN mkdir -p /usr/local/mysql \
 
 # Network interface (if use --net=host, maybe network interface does not named eth0)
 # ENV INET_NAME eth0
-
 # VOLUME ["/data"]
 
 # copy source
@@ -105,4 +105,3 @@ COPY entrypoint.sh /sbin/
 RUN chmod 755 /sbin/entrypoint.sh
 
 ENTRYPOINT [ "/sbin/entrypoint.sh" ]
-

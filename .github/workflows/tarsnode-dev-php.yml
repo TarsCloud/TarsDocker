@@ -1,0 +1,18 @@
+name: tarsnode-dev-php
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "./tarsnode/php/**"
+jobs:
+  build-php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build tarsnode-php-dev image
+        run: |
+          cp ./tarsnode/entrypoint.sh ./tarsnode/php/entrypoint.sh 
+          cd ./tarsnode/php 
+          docker build . --file Dockerfile --tag tarsnode:php-$(date +%s)

@@ -1,17 +1,15 @@
 name: tars-dev
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - dev
-
+    paths:
+      - "./tars/**"
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Build tars-dev image
-      run: docker build ./tars/ --file ./tars/Dockerfile --tag tars:dev-$(date +%s)
+      - uses: actions/checkout@v1
+      - name: Build tars-dev image
+        run: docker build ./tars/ --file ./tars/Dockerfile --tag tars:dev-$(date +%s)
