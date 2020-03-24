@@ -94,7 +94,6 @@ RUN	yum install -y mysql-devel \
 
 # Network interface (if use --net=host, maybe network interface does not named eth0)
 # ENV INET_NAME eth0
-
 # VOLUME ["/data"]
 
 # copy source
