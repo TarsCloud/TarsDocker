@@ -85,5 +85,3 @@ RUN	yum install -y mysql mysql-devel \
     && echo "export PATH JAVA_HOME CLASSPATH" >> /root/.bashrc \
     && yum clean all \
     && rm -rf /var/cache/yum
-
-
