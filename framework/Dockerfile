@@ -37,4 +37,3 @@ ENTRYPOINT [ "/usr/local/tars/cpp/deploy/docker-init.sh" ]
 
 EXPOSE 3000
 EXPOSE 3001
-
