@@ -112,7 +112,6 @@ RUN ${TARS_INSTALL}/tar-server.sh
 # copy source
 # COPY install.sh /root/init/
 # COPY entrypoint.sh /sbin/
-
 # ADD confs /root/confs
 
 # RUN chmod 755 /sbin/entrypoint.sh
