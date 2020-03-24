@@ -6,6 +6,11 @@ on:
       - master
     paths:
       - "tarsnode/php/**"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "tarsnode/php/**"
 jobs:
   build-php:
     runs-on: ubuntu-latest

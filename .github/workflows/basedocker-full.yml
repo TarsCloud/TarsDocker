@@ -6,6 +6,11 @@ on:
       - master
     paths:
       - "basedocker/full/*"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "basedocker/full/*"
 jobs:
   build:
     runs-on: ubuntu-latest

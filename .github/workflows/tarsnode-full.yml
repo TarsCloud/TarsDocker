@@ -6,6 +6,11 @@ on:
       - master
     paths:
       - "tarsnode/full/**"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "tarsnode/full/**"
 jobs:
   build-full:
     runs-on: ubuntu-latest
