@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - "./tarsnode/full/**"
+      - "tarsnode/full/**"
 jobs:
   build-full:
     runs-on: ubuntu-latest

@@ -5,7 +5,7 @@ on:
     branches:
       - dev
     paths:
-      - "./tarsnode/php/**"
+      - "tarsnode/php/**"
 jobs:
   build-php:
     runs-on: ubuntu-latest

@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - "./tars/**"
+      - "tars/**"
 jobs:
   build:
     runs-on: ubuntu-latest

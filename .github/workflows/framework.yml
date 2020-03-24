@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - "./framework/**"
+      - "framework/**"
 jobs:
   build:
     runs-on: ubuntu-latest

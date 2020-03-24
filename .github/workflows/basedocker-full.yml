@@ -1,11 +1,11 @@
-name: basedocker
+name: basedocker-full
 
 on:
   push:
     branches:
       - master
     paths:
-      - "./basedocker/**"
+      - "basedocker/full/*"
 jobs:
   build:
     runs-on: ubuntu-latest
