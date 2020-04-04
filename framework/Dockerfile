@@ -9,7 +9,6 @@ ENV TARS_INSTALL  /usr/local/tars/cpp/deploy
 
 RUN yum makecache fast \
 	&& yum install -y yum-utils psmisc file which net-tools wget unzip telnet git gcc gcc-c++ make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel \
-	&& yum install -y mysql \
 	&& mkdir -p /root/cmake/ && cd /root/cmake \
 	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
 	&& tar xzf cmake-3.16.4.tar.gz && cd cmake-3.16.4 && ./configure  && make && make install \
@@ -26,8 +25,6 @@ RUN yum makecache fast \
 	&& nvm install v12.13.0 \
 	&& npm install -g npm pm2 \
 	&& source $HOME/.bashrc	\
-	&& cd /usr/local/tars/cpp/deploy/web && npm install \
-	&& cd /usr/local/tars/cpp/deploy/web/demo && npm install \
 	&& rm -rf /root/Tars \
 	&& yum clean all && rm -rf /var/cache/yum 
 
