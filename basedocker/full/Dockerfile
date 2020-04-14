@@ -17,7 +17,7 @@ RUN	yum install -y mysql mysql-devel \
     && yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
     && yum -y install golang make cmake iproute which glibc-devel ncurses-devel \
     && yum -y install protobuf-devel kde-l10n-Chinese glibc-common \
-    && yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils tzdata  \
+    && yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils php-mbstring tzdata  \
     && yum -y install centos-release-scl \
     && yum -y install devtoolset-7-gcc* \
     ## enbale gcc7
