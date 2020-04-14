@@ -5,31 +5,25 @@ WORKDIR /root/
 ENV GOPATH=/usr/local/go
 ENV JAVA_HOME /usr/java/jdk-10.0.2
 
-RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
-
 # Install
-# RUN yum -y install https://repo.mysql.com/yum/mysql-8.0-community/el/7/x86_64/mysql80-community-release-el7-1.noarch.rpm \
-RUN	yum install -y mysql mysql-devel \	
-    && yum -y install epel-release \
+RUN yum -y install epel-release \
     && yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
     && yum -y install yum-utils \
     && yum-config-manager --enable remi-php72 \
     && yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
-    && yum -y install golang make cmake iproute which glibc-devel ncurses-devel \
+    && yum -y install golang make iproute which glibc-devel \
     && yum -y install protobuf-devel kde-l10n-Chinese glibc-common \
     && yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils php-mbstring tzdata  \
     && yum -y install centos-release-scl \
-    && yum -y install devtoolset-7-gcc* \
+    && yum -y install devtoolset-7-gcc* 
+    ## cmake
+RUN mkdir -p /root/cmake/ && cd /root/cmake \
+    && wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
+    && tar xzf cmake-3.16.4.tar.gz && cd cmake-3.16.4 && ./configure  && make && make install && rm -rf /root/cmake \
     ## enbale gcc7
     && scl enable devtoolset-7 bash \
     && source scl_source enable devtoolset-7 \
-    && mkdir -p /usr/local/mysql \
-    #install mysql lib
-    && ln -s /usr/lib64/mysql /usr/local/mysql/lib \
-    && ln -s /usr/include/mysql /usr/local/mysql/include \
-    && echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf \
     && ldconfig \
-    # && cd /usr/local/mysql/lib/ && rm -f libmysqlclient.a && ls -l /usr/local/mysql/lib/ && ln -s libmysqlclient.so.*.*.* libmysqlclient.a \
     # Get latest tars src
     && cd /root/ \
     && git clone https://github.com/TarsCloud/Tars \

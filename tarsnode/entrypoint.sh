@@ -26,9 +26,11 @@ mkdir -p /usr/local/app/tars/
 mkdir -p /usr/local/app/tars/tarsnode
 
 mkdir -p /data/tars/app_log
+mkdir -p /data/tars/remote_app_log
 mkdir -p /data/tars/tarsnode-data
 
 ln -s /data/tars/app_log /usr/local/app/tars/app_log 
+ln -s /data/tars/remote_app_log /usr/local/app/tars/remote_app_log 
 ln -s /data/tars/tarsnode-data /usr/local/app/tars/tarsnode/data
 
 trap 'exit' SIGTERM SIGINT
