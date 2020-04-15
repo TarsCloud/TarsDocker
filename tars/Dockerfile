@@ -10,7 +10,7 @@ RUN yum install -y bison flex \
 
 RUN source /root/.bashrc \
     && cd /usr/local/tars/cpp/deploy/  \
-    && git clone https://github.com/TarsCloud/TarsWeb web  \
+    && git clone https://github.com/TarsCloud/TarsWeb web 
 
 RUN /usr/local/tars/cpp/deploy/tar-server.sh
 
