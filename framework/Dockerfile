@@ -9,6 +9,7 @@ ENV TARS_INSTALL  /usr/local/tars/cpp/deploy
 
 RUN yum makecache fast \
 	&& yum install -y yum-utils psmisc file which net-tools wget unzip telnet git gcc gcc-c++ make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel \
+	# Install cmake
 	&& mkdir -p /tmp/cmake/  \
 	&& cd /tmp/cmake \
 	&& wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
@@ -16,6 +17,7 @@ RUN yum makecache fast \
 	&& cd cmake-3.16.4 \
 	&& ./configure  \
 	&& make && make install \
+	# Install Tars framework
 	&& mkdir -p /tmp/Tars \
 	&& cd /tmp/Tars \
 	&& git clone https://github.com/TarsCloud/TarsFramework framework --recursive \
@@ -27,6 +29,7 @@ RUN yum makecache fast \
 	&& ./build.sh install \
 	&& cp -rf /tmp/Tars/web /usr/local/tars/cpp/deploy/ \
 	&& cd /tmp \
+	# Install node environment
 	&& wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
 	&& unzip v0.35.1.zip \
 	&& cp -rf /tmp/nvm-0.35.1 /root/.nvm \
@@ -36,6 +39,7 @@ RUN yum makecache fast \
 	&& nvm install v12.13.0 \
 	&& npm install -g npm pm2 \
 	&& source $HOME/.bashrc	\
+	# Clean build dependents
 	&& rm -rf /tmp/* \
 	&& yum remove -y yum-utils unzip git glibc-devel ncurses-devel protobuf-devel zlib-devel openssl-devel \
 	&& yum autoremove -y \
