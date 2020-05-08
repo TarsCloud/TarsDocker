@@ -1,5 +1,5 @@
 #!/bin/bash
-frameworkLatestTag=$1
+frameworkRelease=$1
 
 function LOG_ERROR()
 {
@@ -29,21 +29,15 @@ function LOG_INFO()
 
 
 WORKING_DIR=$(cd $(dirname "$0") && pwd)
-LOG_INFO "Building framework docker image for $frameworkLatestTag deploy"
+LOG_INFO "Building framework docker image for $frameworkRelease test"
 
 # read version information from tag
-tagVersions=(${frameworkLatestTag//./ })
+releaseVersions=(${frameworkRelease//./ })
 mainVersion=0
 subVersion=0
-buildNum=0
-for ((i=0; i<${#tagVersions[@]}; i++))
+for ((i=0; i<${#releaseVersions[@]}; i++))
 do
-    version=${tagVersions[$i]}
-    if [ ${version: 0: 1} = "v" ]; then
-        version=${version: 1}
-    elif [ ${version: 0: 1} = "V" ]; then
-        version=${version: 1}
-    fi
+    version=${releaseVersions[$i]}
     case $i in
         0)
             mainVersion=$version
@@ -51,39 +45,35 @@ do
         1)
             subVersion=$version
             ;;
-        2)
-            buildNum=$version
-            ;;
     esac
 done
 
 LOG_INFO "Main version detected: $mainVersion"
 LOG_INFO "  Subversion detected: $subVersion"
-LOG_INFO "Build number detected: $buildNum"
 
 # clone framework source code
 # TarsFramework
-mkdir -p /tmp/framework-auto-build
-rm -rf /tmp/framework-auto-build/framework
-cd /tmp/framework-auto-build
-LOG_INFO "Checkout to TarsFramework tag:$frameworkLatestTag"
-git clone --branch $frameworkLatestTag https://github.com/TarsCloud/TarsFramework framework --recursive
+mkdir -p /tmp/framework-auto-test
+rm -rf /tmp/framework-auto-test/framework
+cd /tmp/framework-auto-test
+LOG_INFO "Checkout to TarsFramework release/$frameworkRelease"
+git clone --branch "release/$frameworkRelease" https://github.com/TarsCloud/TarsFramework framework --recursive
 errNo=$(echo $?)
 if [ $errNo != '0' ]; then
-    LOG_ERROR "Failed to checkout TarsFramework tag $frameworkLatestTag"
+    LOG_ERROR "Failed to checkout TarsFramework release $frameworkRelease"
     exit $errNo
 fi
 
 # TarsWeb
-cd /tmp/framework-auto-build/
-rm -rf /tmp/framework-auto-build/web
+cd /tmp/framework-auto-test/
+rm -rf /tmp/framework-auto-test/web
 git clone --branch "release/$mainVersion.$subVersion" https://github.com/TarsCloud/TarsWeb web
 errNo=$(echo $?)
 if [ $errNo != '0' ]; then
     LOG_ERROR "Failed to checkout TarsWeb release/$mainVersion.$subVersion"
     exit $errNo
 fi
-cd /tmp/framework-auto-build/web
+cd /tmp/framework-auto-test/web
 # get latest tag for the detected version sequence in case release branch contains undeploied changes.
 webLatestTag=$(git describe --tags `git rev-list --tags --max-count=1`  --abbrev=0 --always)
 LOG_INFO "Tag $webLatestTag for TarsWeb detected"
@@ -95,8 +85,8 @@ if [ $errNo != '0' ]; then
 fi
 
 # build docker image
-LOG_INFO "Building framework docker image tarscloud/framework:$frameworkLatestTag"
-docker build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$frameworkLatestTag --build-arg FRAMEWORK_TAG=$frameworkLatestTag --build-arg WEB_TAG=$webLatestTag
+LOG_INFO "Building framework docker image tarscloud/framework:$frameworkRelease"
+docker build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$frameworkRelease --build-arg FRAMEWORK_TAG="release/$frameworkRelease" --build-arg WEB_TAG=$webLatestTag
 errNo=$(echo $?)
 if [ $errNo != '0' ]; then
     LOG_ERROR "Failed to build framework docker, tag: $frameworkLatestTag"
@@ -104,16 +94,14 @@ if [ $errNo != '0' ]; then
 fi
 
 # test docker image
-cd /tmp/framework-auto-build/
+cd /tmp/framework-auto-test/
 git clone https://github.com/TarsCloud/TarsDemo
 cd TarsDemo
 LOG_INFO "Starting framework image test."
-# run TarsDemo to test framework based on local image before docker push
-./autorun.sh $frameworkLatestTag latest false false
+# run TarsDemo to test framework based on local image
+./autorun.sh $frameworkRelease latest false false
 errNo=$(echo $?)
 if [ $errNo != '0' ]; then
     LOG_ERROR "Framework test failed, tag: $frameworkLatestTag"
     exit $errNo
 fi
-# push docker image
-docker push tarscloud/framework:$frameworkLatestTag
