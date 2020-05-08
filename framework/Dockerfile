@@ -5,8 +5,10 @@ WORKDIR /root/
 
 ENV TARS_INSTALL  /usr/local/tars/cpp/deploy
 
-# RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
+ARG FRAMEWORK_TAG=master
+ARG WEB_TAG=master 
 
+# RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
 RUN yum makecache fast \
 	&& yum install -y yum-utils psmisc file which net-tools wget unzip telnet git gcc gcc-c++ make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel \
 	# Install cmake
@@ -20,8 +22,8 @@ RUN yum makecache fast \
 	# Install Tars framework
 	&& mkdir -p /tmp/Tars \
 	&& cd /tmp/Tars \
-	&& git clone https://github.com/TarsCloud/TarsFramework framework --recursive \
-	&& git clone https://github.com/TarsCloud/TarsWeb web \
+	&& git clone --branch $FRAMEWORK_TAG https://github.com/TarsCloud/TarsFramework framework --recursive \
+	&& git clone --branch $WEB_TAG https://github.com/TarsCloud/TarsWeb web \
 	&& mkdir -p /data \
 	&& chmod u+x /tmp/Tars/framework/build/build.sh \
 	&& cd /tmp/Tars/framework/build/ \
@@ -44,9 +46,8 @@ RUN yum makecache fast \
 	&& yum remove -y yum-utils unzip git glibc-devel ncurses-devel protobuf-devel zlib-devel openssl-devel \
 	&& yum autoremove -y \
 	&& yum clean all \
-	&& rm -rf /var/cache/yum
-
-RUN ${TARS_INSTALL}/tar-server.sh
+	&& rm -rf /var/cache/yum \
+	&& ${TARS_INSTALL}/tar-server.sh
 
 ENTRYPOINT [ "/usr/local/tars/cpp/deploy/docker-init.sh" ]
 
