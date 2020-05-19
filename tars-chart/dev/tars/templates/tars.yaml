@@ -223,6 +223,7 @@ spec:
           args: 
           - mkdir -p /data/log/${POD_NAME}/app_log;
             mkdir -p /data/log/${POD_NAME}/tarsnode-data;
+            mkdir -p /data/log/${POD_NAME}/remote_app_log;
 
             rm -rf /data/tars;mkdir -p /data/tars;
 
@@ -232,6 +233,10 @@ spec:
 
             if [ ! -f "/data/tars/tarsnode-data" ]; then
               ln -s  /data/log/${POD_NAME}/tarsnode-data /data/tars/tarsnode-data;
+            fi
+
+            if [ ! -f "/data/tars/remote_app_log" ]; then
+              ln -s  /data/log/${POD_NAME}/remote_app_log /data/tars/remote_app_log;
             fi
 
             export DOMAIN="${POD_NAME}.tars-node-svc"
