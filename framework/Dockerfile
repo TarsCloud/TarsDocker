@@ -10,7 +10,7 @@ ARG WEB_TAG=master
 
 # RUN rpm -ivh https://repo.mysql.com/mysql57-community-release-el7.rpm
 RUN yum makecache fast \
-	&& yum install -y yum-utils psmisc file which net-tools wget unzip telnet git gcc gcc-c++ make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel \
+	&& yum install -y yum-utils mysql psmisc file which net-tools wget unzip telnet git gcc gcc-c++ make glibc-devel flex bison ncurses-devel protobuf-devel zlib-devel openssl-devel \
 	# Install cmake
 	&& mkdir -p /tmp/cmake/  \
 	&& cd /tmp/cmake \
