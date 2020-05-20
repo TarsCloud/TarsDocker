@@ -10,7 +10,7 @@ RUN yum -y install epel-release \
     && yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
     && yum -y install yum-utils \
     && yum-config-manager --enable remi-php72 \
-    && yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
+    && yum -y install yum-utils mysql file psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
     && yum -y install golang make iproute which glibc-devel \
     && yum -y install protobuf-devel kde-l10n-Chinese glibc-common \
     && yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils php-mbstring tzdata  \
