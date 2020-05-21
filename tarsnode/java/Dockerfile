@@ -5,6 +5,7 @@ WORKDIR /root/
 ENV JAVA_HOME /usr/java/jdk1.8.0_202-amd64
     # Get and install JDK
 RUN  mkdir -p /root/init \
+    && yum install -y wget \
     && cd /root/init/ \
     && wget https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/RCG/common/x86_64/jdk-8u202-linux-x64.rpm \
     && rpm -ivh /root/init/jdk-8u202-linux-x64.rpm \
