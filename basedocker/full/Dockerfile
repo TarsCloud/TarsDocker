@@ -10,7 +10,7 @@ RUN yum -y install epel-release \
     && yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
     && yum -y install yum-utils \
     && yum-config-manager --enable remi-php72 \
-    && yum -y install yum-utils psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
+    && yum -y install yum-utils mysql file psmisc net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
     && yum -y install golang make iproute which glibc-devel \
     && yum -y install protobuf-devel kde-l10n-Chinese glibc-common \
     && yum -y install php php-cli php-devel php-pear php-mcrypt php-cli php-gd php-curl php-mysql php-zip php-fileinfo php-phpiredis php-seld-phar-utils php-mbstring tzdata  \
@@ -66,14 +66,14 @@ RUN mkdir -p /root/cmake/ && cd /root/cmake \
     # Get and install JDK
     && mkdir -p /root/init \
     && cd /root/init/ \
-    && wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/jdk-10.0.2_linux-x64_bin.rpm \
-    && rpm -ivh /root/init/jdk-10.0.2_linux-x64_bin.rpm \
-    && rm -rf /root/init/jdk-10.0.2_linux-x64_bin.rpm \
-    && echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /etc/profile \
+    && wget https://mirror.its.sfu.ca/mirror/CentOS-Third-Party/RCG/common/x86_64/jdk-8u202-linux-x64.rpm \
+    && rpm -ivh /root/init/jdk-8u202-linux-x64.rpm \
+    && rm -rf /root/init/jdk-8u202-linux-x64.rpm \
+    && echo "export JAVA_HOME=/usr/java/jdk1.8.0_202-amd64" >> /etc/profile \
     && echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /etc/profile \
     && echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /etc/profile \
     && echo "export PATH JAVA_HOME CLASSPATH" >> /etc/profile \
-    && echo "export JAVA_HOME=/usr/java/jdk-10.0.2" >> /root/.bashrc \
+    && echo "export JAVA_HOME=/usr/java/jdk1.8.0_202-amd64" >> /root/.bashrc \
     && echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /root/.bashrc \
     && echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /root/.bashrc \
     && echo "export PATH JAVA_HOME CLASSPATH" >> /root/.bashrc \
