@@ -105,6 +105,7 @@ fi
 
 # test docker image
 cd /tmp/framework-auto-build/
+rm -rf /tmp/framework-auto-build/TarsDemo
 git clone https://github.com/TarsCloud/TarsDemo
 cd TarsDemo
 LOG_INFO "Starting framework image test."
