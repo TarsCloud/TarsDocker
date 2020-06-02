@@ -5,7 +5,7 @@
 tars:
   namespace: tars
   data: /data/tars-data
-  image: tarscloud/framework:stable
+  image: tarscloud/framework:v2.4.1
   replicas: 2
   host: domain.com
   port: 80
