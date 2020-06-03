@@ -40,7 +40,7 @@ tarsnode:
 
 mysql:
   image: mysql:5.6
-  rebuild: "true"
+  rebuild: "false"
   password: "Tars@2019"
   data: /data/mysql-data
   resources: {}
