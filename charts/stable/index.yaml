@@ -3,7 +3,16 @@ entries:
   tars:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-02T18:56:39.636031723+08:00"
+    created: "2020-06-03T20:54:03.007311035+08:00"
+    description: A Helm chart for Tars
+    digest: 48a45b6eeea6e62696d23d716dfe3e41e584aac552b76093e0fcffe7ce9f0dc3
+    name: tars
+    urls:
+    - https://tarscloud.github.io/TarsDocker/charts/stable/tars-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2020-06-03T20:54:03.007133334+08:00"
     description: A Helm chart for Tars
     digest: 77c0e5a500dc0c74e6b176d8c42ee9d19401ea32e52e9e3b6e00a399506a1158
     name: tars
@@ -12,7 +21,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-02T18:56:39.629730881+08:00"
+    created: "2020-06-03T20:54:03.006952608+08:00"
     description: A Helm chart for Tars
     digest: 70709c8fb76e4b6033dae632ef250f69e2ede01d323555d326a1d9e35b7ebebb
     name: tars
@@ -21,11 +30,11 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-02T18:56:39.620587265+08:00"
+    created: "2020-06-03T20:54:03.00671446+08:00"
     description: A Helm chart for Tars
     digest: 08cdde3ef77cac00ebf97e7e635770b7f035cb54ee0fb1c3a57212cdd1d28c86
     name: tars
     urls:
     - https://tarscloud.github.io/TarsDocker/charts/stable/tars-0.1.0.tgz
     version: 0.1.0
-generated: "2020-06-02T18:56:39.613891212+08:00"
+generated: "2020-06-03T20:54:03.006332125+08:00"
