@@ -10,6 +10,7 @@ data:
     [mysqld]
     server-id=1
     log-bin
+    expire_logs_days = 30
 
 ---
 apiVersion: v1
