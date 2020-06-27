@@ -77,7 +77,7 @@ LOG_INFO "change context to /tmp/framework-auto-build/"
 LOG_INFO "Building framework docker image tarscloud/framework:$tarsTag"
 docker build . --file "Dockerfile-Deploy" --tag tarscloud/framework:$tarsTag
 
-if [ $errNo != '0' ]; then
+if [ "$errNo" != '0' ]; then
     LOG_ERROR "Failed to build framework docker, tag: $tarsTag"
     exit $errNo
 fi
@@ -90,7 +90,7 @@ LOG_INFO "Starting framework image test."
 # run TarsDemo to test framework based on local image before docker push
 ./autorun.sh $tarsTag latest false false
 errNo=$(echo $?)
-if [ $errNo != '0' ]; then
+if [ "$errNo" != '0' ]; then
     LOG_ERROR "Framework test failed, tag: $tarsTag"
     exit $errNo
 fi
