@@ -76,7 +76,7 @@ LOG_INFO "change context to /tmp/framework-auto-build/"
 
 LOG_INFO "Building framework docker image tarscloud/framework:$tarsTag"
 docker build . --file "Dockerfile-Deploy" --tag tarscloud/framework:$tarsTag
-
+errNo=$(echo $?)
 if [ "$errNo" != '0' ]; then
     LOG_ERROR "Failed to build framework docker, tag: $tarsTag"
     exit $errNo
