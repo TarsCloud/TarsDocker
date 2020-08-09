@@ -76,4 +76,4 @@ if [ $errNo != '0' ]; then
     exit $errNo
 fi
 # push docker image
-# docker push tarscloud/framework:latest
+docker push tarscloud/framework:latest
