@@ -4,13 +4,9 @@ on:
   push:
     branches:
       - arm 
-    paths:
-      - "basedocker/full/*"
   pull_request:
     branches:
       - arm
-    paths:
-      - "basedocker/full/*"
 jobs:
   build:
     runs-on: ubuntu-latest
