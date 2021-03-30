@@ -47,7 +47,7 @@ RUN mkdir -p /root/cmake/ && cd /root/cmake \
 #     && echo "extension=swoole.so" > /etc/php.d/swoole.ini 
 
     # Install tars go
-RUN  go get github.com/TarsCloud/TarsGo/tars \
+RUN go env -w GOPROXY=https://goproxy.cn && go get github.com/TarsCloud/TarsGo/tars \
     && cd $GOPATH/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go \
     && go build . 
 

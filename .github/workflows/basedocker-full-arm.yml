@@ -1,4 +1,4 @@
-name: basedocker-full
+name: basedocker-full-arm
 
 on:
   push:
