@@ -2,13 +2,13 @@ FROM tarscloud/tars-env-full
 
 WORKDIR /root/
 
-RUN yum install -y bison flex \
+RUN apt install -y bison flex \
     && mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive \
     && cd /root/Tars/framework/build/ && cmake .. && make -j4 && make install \
     && rm -rf /root/Tars \
-    && yum clean all && rm -rf /var/cache/yum 
+    && apt-get clean
 
-RUN source /root/.bashrc \
+RUN . /root/.bashrc \
     && cd /usr/local/tars/cpp/deploy/  \
     && git clone https://github.com/TarsCloud/TarsWeb web 
 

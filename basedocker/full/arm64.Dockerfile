@@ -66,4 +66,4 @@ RUN export NVM_DIR=/root/.nvm && . /root/.nvm/nvm.sh \
     && npm install -g npm pm2 
 
     # Get and install JDK
-RUN apt install -y openjdk-14-jdk
+RUN apt install -y openjdk-11-jdk
