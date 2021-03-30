@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: buildx
-        run: export DOCKER_CLI_EXPERIMENTAL=enabled && docker run --rm --privileged && docker buildx create --use --name tars-builder && docker buildx inspect tars-builder --bootstrap && docker buildx ls
+        run: export DOCKER_CLI_EXPERIMENTAL=enabled && docker buildx create --use --name tars-builder && docker buildx inspect tars-builder --bootstrap && docker buildx ls
       - name: docker login
         run: docker login -u ${{ secrets.name }} -p ${{ secrets.pass }} 
       - name: docker build
