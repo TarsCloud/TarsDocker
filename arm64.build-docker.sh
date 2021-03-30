@@ -7,6 +7,10 @@ fi
 COMMAND=$1
 TAG="arm64-$2"
 
+export DOCKER_CLI_EXPERIMENTAL=enabled
+docker buildx create --use --name tars-builder
+docker buildx inspect tars-builder --bootstrap 
+
 case $1 in
     "base")
         docker buildx build -t tarscloud/tars-env-full --platform=linux/amd64,linux/arm64 -f basedocker/full/arm64.Dockerfile basedocker/full 
