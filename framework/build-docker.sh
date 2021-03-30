@@ -96,7 +96,14 @@ fi
 
 # build docker image
 LOG_INFO "Building framework docker image tarscloud/framework:$frameworkLatestTag"
-docker build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$frameworkLatestTag --build-arg FRAMEWORK_TAG=$frameworkLatestTag --build-arg WEB_TAG=$webLatestTag
+
+export DOCKER_CLI_EXPERIMENTAL=enabled 
+docker buildx create --use --name tars-builder 
+docker buildx inspect tars-builder --bootstrap
+docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
+
+docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$frameworkLatestTag --build-arg FRAMEWORK_TAG=$frameworkLatestTag --build-arg WEB_TAG=$webLatestTag
+
 errNo=$(echo $?)
 if [ $errNo != '0' ]; then
     LOG_ERROR "Failed to build framework docker, tag: $frameworkLatestTag"
@@ -117,4 +124,4 @@ if [ $errNo != '0' ]; then
     exit $errNo
 fi
 # push docker image
-docker push tarscloud/framework:$frameworkLatestTag
+#docker push tarscloud/framework:$frameworkLatestTag
