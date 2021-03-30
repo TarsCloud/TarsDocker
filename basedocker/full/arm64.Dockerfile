@@ -15,39 +15,40 @@ RUN apt install -y zlib1g-dev curl libssl-dev
 RUN apt install -y wget
 
     ## cmake
-RUN mkdir -p /root/cmake/ && cd /root/cmake \
-    && wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
-    && tar xzf cmake-3.16.4.tar.gz && cd cmake-3.16.4 && ./configure  && make -j4 && make install && rm -rf /root/cmake 
+#RUN mkdir -p /root/cmake/ && cd /root/cmake \
+#    && wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
+#    && tar xzf cmake-3.16.4.tar.gz && cd cmake-3.16.4 && ./configure  && make -j4 && make install && rm -rf /root/cmake 
 
+RUN apt install -y cmake && cmake --version
 # #intall php tars
-# RUN apt install -y php php-mysql php-gd tzdata
+ RUN apt install -y php php-mysql php-gd tzdata
 
-# RUN cd /root/ \
-#     && git clone git://github.com/TarsCloud/Tars \
-#     && cd /root/Tars/ \
-#     && git submodule update --init --recursive php  
+RUN cd /root/ \
+     && git clone git://github.com/TarsCloud/Tars \
+     && cd /root/Tars/ \
+     && git submodule update --init --recursive php  
 
-# RUN apt install -y php-dev
+ RUN apt install -y php-dev
 
-# RUN cd /tmp \
-#     && curl -fsSL https://getcomposer.org/installer | php \
-#     && chmod +x composer.phar \
-#     && mv composer.phar /usr/local/bin/composer \
-#     && cd /root/Tars/php/tars-extension/ \
-#     && phpize --clean \
-#     && phpize \
-#     && ./configure --enable-phptars --with-php-config=/usr/bin/php-config \
-#     && make \
-#     && make install && mkdir -p /etc/php.d/\
-#     && echo "extension=phptars.so" > /etc/php.d/phptars.ini \
-#     && mkdir -p /root/phptars \
-#     && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars \
-#     # Install PHP swoole module
-#     && pecl install swoole \
-#     && echo "extension=swoole.so" > /etc/php.d/swoole.ini 
+ RUN cd /tmp \
+     && curl -fsSL https://getcomposer.org/installer | php \
+     && chmod +x composer.phar \
+     && mv composer.phar /usr/local/bin/composer \
+     && cd /root/Tars/php/tars-extension/ \
+     && phpize --clean \
+     && phpize \
+     && ./configure --enable-phptars --with-php-config=/usr/bin/php-config \
+     && make \
+     && make install && mkdir -p /etc/php.d/\
+     && echo "extension=phptars.so" > /etc/php.d/phptars.ini \
+     && mkdir -p /root/phptars \
+     && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars \
+     # Install PHP swoole module
+     && pecl install swoole \
+     && echo "extension=swoole.so" > /etc/php.d/swoole.ini 
 
     # Install tars go
-RUN go env -w GOPROXY=https://goproxy.cn && go get github.com/TarsCloud/TarsGo/tars \
+RUN go get github.com/TarsCloud/TarsGo/tars \
     && cd $GOPATH/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go \
     && go build . 
 
