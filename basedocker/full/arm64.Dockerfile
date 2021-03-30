@@ -19,30 +19,32 @@ RUN mkdir -p /root/cmake/ && cd /root/cmake \
     && wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
     && tar xzf cmake-3.16.4.tar.gz && cd cmake-3.16.4 && ./configure  && make -j4 && make install && rm -rf /root/cmake 
 
-# RUN git config --global http.proxy http://127.0.0.1:51148
+# #intall php tars
+# RUN apt install -y php php-mysql php-gd tzdata
 
-#intall php tars
-RUN apt install -y php php-mysql php-gd tzdata \
-    && cd /root/ \
-    && git clone https://github.com/TarsCloud/Tars \
-    && cd /root/Tars/ \
-    && git submodule update --init --recursive php  \
-    && cd /tmp \
-    && curl -fsSL https://getcomposer.org/installer | php \
-    && chmod +x composer.phar \
-    && mv composer.phar /usr/local/bin/composer \
-    && cd /root/Tars/php/tars-extension/ \
-    && phpize --clean \
-    && phpize \
-    && ./configure --enable-phptars --with-php-config=/usr/bin/php-config \
-    && make \
-    && make install \
-    && echo "extension=phptars.so" > /etc/php.d/phptars.ini \
-    && mkdir -p /root/phptars \
-    && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars \
-    # Install PHP swoole module
-    && pecl install swoole \
-    && echo "extension=swoole.so" > /etc/php.d/swoole.ini 
+# RUN cd /root/ \
+#     && git clone git://github.com/TarsCloud/Tars \
+#     && cd /root/Tars/ \
+#     && git submodule update --init --recursive php  
+
+# RUN apt install -y php-dev
+
+# RUN cd /tmp \
+#     && curl -fsSL https://getcomposer.org/installer | php \
+#     && chmod +x composer.phar \
+#     && mv composer.phar /usr/local/bin/composer \
+#     && cd /root/Tars/php/tars-extension/ \
+#     && phpize --clean \
+#     && phpize \
+#     && ./configure --enable-phptars --with-php-config=/usr/bin/php-config \
+#     && make \
+#     && make install && mkdir -p /etc/php.d/\
+#     && echo "extension=phptars.so" > /etc/php.d/phptars.ini \
+#     && mkdir -p /root/phptars \
+#     && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars \
+#     # Install PHP swoole module
+#     && pecl install swoole \
+#     && echo "extension=swoole.so" > /etc/php.d/swoole.ini 
 
     # Install tars go
 RUN  go get github.com/TarsCloud/TarsGo/tars \
@@ -53,15 +55,14 @@ RUN  go get github.com/TarsCloud/TarsGo/tars \
 RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
     && unzip v0.35.1.zip \
     && cp -rf nvm-0.35.1 /root/.nvm \
-    # && echo 'NVM_DIR="/root/.nvm";' >> /root/.bashrc; \
-    && echo ". /root/.nvm/nvm.sh" >> /root/.bashrc \
-    && echo ". /root/.nvm/bash_completion" >> /root/.bashrc \
-    && source /root/.bashrc \
-    && nvm install v12.13.0 \
-    && npm install -g npm pm2 \
-    #tars nodejs 
-    && source /root/.bashrc \
-    && npm install -g pm2 
+    # && echo 'NVM_DIR="/root/.nvm";' >> /root/.zshrc; \
+    && echo ". /root/.nvm/nvm.sh" >> /root/.zshrc \
+    && echo ". /root/.nvm/bash_completion" >> /root/.zshrc 
+
+# RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN export NVM_DIR=/root/.nvm && . /root/.nvm/nvm.sh \
+    && nvm install v12.13 \
+    && npm install -g npm pm2 
 
     # Get and install JDK
 RUN apt install -y openjdk-14-jdk

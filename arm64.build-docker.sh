@@ -9,7 +9,8 @@ TAG="arm64-$2"
 
 case $1 in
     "base")
-        docker build -t tarscloud/tars-env-full:$TAG -f basedocker/full/arm64.Dockerfile basedocker/full 
+        docker buildx build -t tarscloud/tars-env-full --platform=linux/amd64,linux/arm64 -f basedocker/full/arm64.Dockerfile basedocker/full 
+        # docker build -t tarscloud/tars-env-full:$TAG -f basedocker/full/arm64.Dockerfile basedocker/full 
         ;;
     "tars")
         docker build -t tarscloud/tars:$TAG tars
