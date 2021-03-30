@@ -1,0 +1,49 @@
+# pull source and build docker auto in docker hub
+FROM ubuntu:20.04
+
+WORKDIR /root/
+
+ENV TARS_INSTALL  /usr/local/tars/cpp/deploy
+ENV DEBIAN_FRONTEND=noninteractive
+
+COPY framework /tmp/Tars/framework
+COPY web /tmp/Tars/web
+
+
+# Install
+RUN apt update 
+RUN apt install -y mysql-client git build-essential unzip make golang
+RUN apt install -y libprotobuf-dev libprotobuf-c-dev 
+RUN apt install -y zlib1g-dev curl libssl-dev
+RUN apt install -y wget
+RUN apt install -y cmake
+RUN apt-get clean
+
+# Get and install nodejs
+RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
+	&& unzip v0.35.1.zip \
+	&& cp -rf nvm-0.35.1 /root/.nvm \
+	# && echo 'NVM_DIR="/root/.nvm";' >> /root/.zshrc; \
+	&& echo ". /root/.nvm/nvm.sh" >> /root/.zshrc \
+	&& echo ". /root/.nvm/bash_completion" >> /root/.zshrc 
+
+# RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN export NVM_DIR=/root/.nvm && . /root/.nvm/nvm.sh \
+	&& nvm install v12.13 \
+	&& npm install -g npm pm2 
+	
+	# Install Tars framework
+RUN	mkdir -p /data \
+	&& chmod u+x /tmp/Tars/framework/build/build.sh \
+	&& cd /tmp/Tars/framework/build/ \
+	&& ./build.sh all \
+	&& ./build.sh install \
+	&& mv /tmp/Tars/web /usr/local/tars/cpp/deploy/ \
+	&& rm -rf /tmp 
+
+RUN	${TARS_INSTALL}/tar-server.sh
+
+ENTRYPOINT [ "/usr/local/tars/cpp/deploy/docker-init.sh" ]
+
+EXPOSE 3000
+EXPOSE 3001
