@@ -6,6 +6,7 @@ on:
       - dev
     paths:
       - "framework/**"
+      - ".github/workflows/framework-dev.yml"
   pull_request:
     branches:
       - dev

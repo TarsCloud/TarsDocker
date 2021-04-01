@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - "tars/**"
+      - ".github/workflows/tars.yml"
   pull_request:
     branches:
       - master
