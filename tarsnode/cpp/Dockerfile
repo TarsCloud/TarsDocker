@@ -4,8 +4,8 @@ WORKDIR /root/
 
 # Install
 RUN apt update 
-RUN apt install -y build-essential unzip make golang cmake curl wget libprotobuf-dev libprotobuf-c-dev  zlib1g-dev libssl-dev
-RUN apt-get clean
+RUN apt install -y build-essential unzip make golang cmake curl wget libprotobuf-dev libprotobuf-c-dev  zlib1g-dev libssl-dev \
+    && apt-get clean
 
 # copy source
 COPY entrypoint.sh /sbin/

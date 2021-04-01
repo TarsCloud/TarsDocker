@@ -1,16 +1,73 @@
-FROM tarscloud/tars-env-full
+FROM ubuntu:20.04
+
+ARG FRAMEWORK_TAG=master
+ARG WEB_TAG=master
 
 WORKDIR /root/
 
-RUN apt install -y bison flex \
-    && mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive \
-    && cd /root/Tars/framework/build/ && cmake .. && make -j4 && make install \
-    && rm -rf /root/Tars \
-    && apt-get clean
+ENV GOPATH=/usr/local/go
+ENV DEBIAN_FRONTEND=noninteractive
+ENV SWOOLE_VERSION=v4.4.16 
+# Install
+RUN apt update 
 
-RUN . /root/.bashrc \
-    && cd /usr/local/tars/cpp/deploy/  \
-    && git clone https://github.com/TarsCloud/TarsWeb web 
+RUN apt install -y mysql-client git build-essential unzip make golang cmake flex bison \
+    && apt install -y libprotobuf-dev libprotobuf-c-dev zlib1g-dev libssl-dev \
+    && apt install -y curl wget net-tools iproute2 \
+    #intall php tars
+    && apt install -y php php-dev php-cli php-gd php-curl php-mysql \
+    && apt install -y php-zip php-fileinfo php-redis php-mbstring tzdata git make wget \
+    && apt install -y build-essential libmcrypt-dev php-pear \
+    # Get and install nodejs
+    && apt install -y nodejs npm \ 
+    && npm install -g npm pm2 \
+    # Get and install JDK
+    && apt install -y openjdk-11-jdk \
+    && apt clean
+
+RUN apt install -y python3 python3-pip maven \
+    && pip3 install requests \
+    && apt clean
+
+# Clone Tars repo and init php submodule
+RUN cd /root/ && git clone https://github.com/TarsCloud/Tars.git \
+    && cd /root/Tars/ \
+    && git submodule update --init --recursive php \
+    #intall PHP Tars module
+    && cd /root/Tars/php/tars-extension/ && phpize \
+    && ./configure --enable-phptars && make && make install \
+    && echo "extension=phptars.so" > /etc/php/7.4/cli/conf.d/10-phptars.ini \
+    # Install PHP swoole module
+    && cd /root && git clone https://github.com/swoole/swoole \
+    && cd /root/swoole && git checkout $SWOOLE_VERSION \
+    && cd /root/swoole \
+    && phpize && ./configure --with-php-config=/usr/bin/php-config \
+    && make \
+    && make install \
+    && echo "extension=swoole.so" > /etc/php/7.4/cli/conf.d/20-swoole.ini \
+    # Do somethine clean
+    && cd /root && rm -rf swoole \
+    && mkdir -p /root/phptars && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars 
+
+# Install tars go
+RUN go get github.com/TarsCloud/TarsGo/tars \
+    && cd $GOPATH/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go \
+    && go build .  \
+    && mkdir -p /usr/local/go/bin \
+    && chmod a+x /usr/local/go/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go/tars2go \
+    && ln -s /usr/local/go/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go/tars2go /usr/local/go/bin/tars2go 
+
+RUN mkdir -p /tmp/Tars && cd /tmp/Tars && git clone --branch $FRAMEWORK_TAG https://github.com/TarsCloud/TarsFramework framework --recursive 
+RUN cd /tmp/Tars && git clone --branch $WEB_TAG https://github.com/TarsCloud/TarsWeb web
+
+# # Install tarscpp 
+# RUN mkdir -p /root/Tars && cd /root/Tars \
+#     && git clone https://github.com/TarsCloud/TarsCpp cpp --recursive \
+#     && cd cpp \
+#     && mkdir build \
+#     && cd build \
+#     && cmake .. && make -j4 && make install \
+#     && rm -rf /root/Tars
 
 RUN /usr/local/tars/cpp/deploy/tar-server.sh
 
