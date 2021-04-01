@@ -53,6 +53,7 @@ docker buildx create --use --name tars-builder
 docker buildx inspect tars-builder --bootstrap
 docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
 
+#----------------------------------------------------------------------------------------
 docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64 -o type=docker
 
 errNo=$(echo $?)
@@ -74,6 +75,32 @@ if [ $errNo != '0' ]; then
     LOG_ERROR "Framework test failed, dockerTag: $dockerTag"
     exit $errNo
 fi
+
+
+#----------------------------------------------------------------------------------------
+docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/arm64 -o type=docker
+
+errNo=$(echo $?)
+if [ $errNo != '0' ]; then
+    LOG_ERROR "Failed to build framework docker, tag: $frameworkTag"
+    exit $errNo
+fi
+
+# test docker image
+cd /tmp/framework-auto-build/
+rm -rf /tmp/framework-auto-build/TarsDemo
+git clone --branch arm https://github.com/TarsCloud/TarsDemo
+cd TarsDemo
+LOG_INFO "Starting framework image test."
+# run TarsDemo to test framework based on local image before docker push
+./autorun.sh $dockerTag latest false false
+errNo=$(echo $?)
+if [ $errNo != '0' ]; then
+    LOG_ERROR "Framework test failed, dockerTag: $dockerTag"
+    exit $errNo
+fi
+
+#----------------------------------------------------------------------------------------
 
 if [ "$push" == "true" ]; then
 	# push docker image
