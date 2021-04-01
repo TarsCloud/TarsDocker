@@ -48,11 +48,20 @@ function LOG_INFO()
 WORKING_DIR=$(cd $(dirname "$0") && pwd)
 LOG_INFO "Building framework docker image for framework:$frameworkTag, web:$webTag dockerTag:$dockerTag"
 
+# test docker image
+cd /tmp/framework-auto-build/
+rm -rf /tmp/framework-auto-build/TarsDemo
+git clone --branch arm https://github.com/TarsCloud/TarsDemo
+cd TarsDemo
+
+#--------------------------------------------------------------------------------------------
+
 export DOCKER_CLI_EXPERIMENTAL=enabled 
 docker buildx create --use --name tars-builder 
 docker buildx inspect tars-builder --bootstrap
 docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
 
+#--------------------------------------------------------------------------------------------
 docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/tars:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64 -o type=docker
 
 errNo=$(echo $?)
@@ -61,12 +70,7 @@ if [ $errNo != '0' ]; then
     exit $errNo
 fi
 
-# test docker image
-cd /tmp/framework-auto-build/
-rm -rf /tmp/framework-auto-build/TarsDemo
-git clone --branch arm https://github.com/TarsCloud/TarsDemo
-cd TarsDemo
-LOG_INFO "Starting framework image test."
+LOG_INFO "Starting amd64 framework image test."
 # run TarsDemo to test framework based on local image before docker push
 ./autorun.sh $dockerTag latest false false
 errNo=$(echo $?)
@@ -74,10 +78,31 @@ if [ $errNo != '0' ]; then
     LOG_ERROR "Framework test failed, tag: $frameworkTag"
     exit $errNo
 fi
+
+
+#--------------------------------------------------------------------------------------------
+docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/tars:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/arm64 -o type=docker
+
+errNo=$(echo $?)
+if [ $errNo != '0' ]; then
+    LOG_ERROR "Failed to build framework docker, tag: $frameworkTag"
+    exit $errNo
+fi
+
+LOG_INFO "Starting arm64 framework image test."
+# run TarsDemo to test framework based on local image before docker push
+./autorun.sh $dockerTag latest false false
+errNo=$(echo $?)
+if [ $errNo != '0' ]; then
+    LOG_ERROR "Framework test failed, tag: $frameworkTag"
+    exit $errNo
+fi
+
+#--------------------------------------------------------------------------------------------
+
 # push docker image
 
 if [ "$push" == "true" ]; then
 	docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/tars:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64,linux/arm64 --push
 fi
 
-# docker push tarscloud/tars:$dockerTag

@@ -48,6 +48,15 @@ function LOG_INFO()
 WORKING_DIR=$(cd $(dirname "$0") && pwd)
 LOG_INFO "Building framework docker image for framework:$frameworkTag, web:$webTag, dockerTag: $dockerTag"
 
+
+# test docker image
+cd /tmp/framework-auto-build/
+rm -rf /tmp/framework-auto-build/TarsDemo
+git clone --branch arm https://github.com/TarsCloud/TarsDemo
+cd TarsDemo
+
+#----------------------------------------------------------------------------------------
+
 export DOCKER_CLI_EXPERIMENTAL=enabled 
 docker buildx create --use --name tars-builder 
 docker buildx inspect tars-builder --bootstrap
@@ -62,12 +71,7 @@ if [ $errNo != '0' ]; then
     exit $errNo
 fi
 
-# test docker image
-cd /tmp/framework-auto-build/
-rm -rf /tmp/framework-auto-build/TarsDemo
-git clone --branch arm https://github.com/TarsCloud/TarsDemo
-cd TarsDemo
-LOG_INFO "Starting framework image test."
+LOG_INFO "Starting amd64 framework image test."
 # run TarsDemo to test framework based on local image before docker push
 ./autorun.sh $dockerTag latest false false
 errNo=$(echo $?)
@@ -86,12 +90,7 @@ if [ $errNo != '0' ]; then
     exit $errNo
 fi
 
-# test docker image
-cd /tmp/framework-auto-build/
-rm -rf /tmp/framework-auto-build/TarsDemo
-git clone --branch arm https://github.com/TarsCloud/TarsDemo
-cd TarsDemo
-LOG_INFO "Starting framework image test."
+LOG_INFO "Starting arm64 framework image test."
 # run TarsDemo to test framework based on local image before docker push
 ./autorun.sh $dockerTag latest false false
 errNo=$(echo $?)
