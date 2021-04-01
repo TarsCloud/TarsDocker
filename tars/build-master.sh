@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./build-docker.sh latest latest
+./build-docker.sh master master latest

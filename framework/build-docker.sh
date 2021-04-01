@@ -3,13 +3,20 @@
 if (( $# < 3 ))
 then
     echo $#
-    echo "$0 frameworkTag(for example: v2.4.12) webTag(for example: v2.4.16) dockerTag"
+    echo "$0 frameworkTag(for example: v2.4.12) webTag(for example: v2.4.16) dockerTag push(false/true)"
     exit 1
 fi
 
 frameworkTag=$1
 webTag=$2
 dockerTag=$3
+push=$4
+
+if [ "$push" == "true" ]; then
+	push="true"
+else
+	push="false"
+fi
 
 function LOG_ERROR()
 {
@@ -67,5 +74,8 @@ if [ $errNo != '0' ]; then
     LOG_ERROR "Framework test failed, dockerTag: $dockerTag"
     exit $errNo
 fi
-# push docker image
-docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64,linux/arm64 --push
+
+if [ "$push" == "true" ]; then
+	# push docker image
+	docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64,linux/arm64 --push
+fi
