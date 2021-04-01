@@ -7,28 +7,28 @@ ENV GOPATH=/usr/local/go
 ENV JAVA_HOME /usr/java/jdk-10.0.2
 ENV DEBIAN_FRONTEND=noninteractive
 # Install
-# RUN apt install -y mysql-client net-tools wget unzip telnet zlib-devel openssl-devel git gcc gcc-c++ \
 RUN apt update 
-RUN apt install -y mysql-client git build-essential unzip make golang
-RUN apt install -y libprotobuf-dev libprotobuf-c-dev 
-RUN apt install -y zlib1g-dev curl libssl-dev
-RUN apt install -y wget
 
-## cmake
-#RUN mkdir -p /root/cmake/ && cd /root/cmake \
-#    && wget https://tars-thirdpart-1300910346.cos.ap-guangzhou.myqcloud.com/src/cmake-3.16.4.tar.gz  \
-#    && tar xzf cmake-3.16.4.tar.gz && cd cmake-3.16.4 && ./configure  && make -j4 && make install && rm -rf /root/cmake 
+RUN apt install -y mysql-client git build-essential unzip make golang cmake \
+    && apt install -y libprotobuf-dev libprotobuf-c-dev zlib1g-dev libssl-dev \
+    && apt install -y curl wget net-tools iproute2
 
-RUN apt install -y cmake && cmake --version
-# #intall php tars
-RUN apt install -y php php-mysql php-gd tzdata
+#intall php tars
+RUN apt install -y php php-dev php-cli php-gd php-curl php-mysql \
+    php-zip php-fileinfo php-redis php-mbstring tzdata git make wget \
+    build-essential libmcrypt-dev php-pear
 
+RUN mkdir -p /tmp/pear/cache \
+    && pecl channel-update pecl.php.net \
+    && pecl install swoole \
+    && echo 'extension=swoole.so' >> /etc/php/7.4/cli/conf.d/swoole.ini \
+    && pecl install mcrypt \
+    && echo 'extension=mcrypt.so' >> /etc/php/7.4/cli/conf.d/mcrypt.ini
+    
 RUN cd /root/ \
     && git clone git://github.com/TarsCloud/Tars \
     && cd /root/Tars/ \
     && git submodule update --init --recursive php  
-
-RUN apt install -y php-dev
 
 RUN cd /tmp \
     && curl -fsSL https://getcomposer.org/installer | php \
@@ -53,17 +53,19 @@ RUN go get github.com/TarsCloud/TarsGo/tars \
     && go build . 
 
 # Get and install nodejs
-RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
-    && unzip v0.35.1.zip \
-    && cp -rf nvm-0.35.1 /root/.nvm \
-    # && echo 'NVM_DIR="/root/.nvm";' >> /root/.zshrc; \
-    && echo ". /root/.nvm/nvm.sh" >> /root/.zshrc \
-    && echo ". /root/.nvm/bash_completion" >> /root/.zshrc 
+RUN apt install nodejs npm && npm install -g pm2
 
-# RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-RUN export NVM_DIR=/root/.nvm && . /root/.nvm/nvm.sh \
-    && nvm install v12.13 \
-    && npm install -g npm pm2 
+# RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
+#     && unzip v0.35.1.zip \
+#     && cp -rf nvm-0.35.1 /root/.nvm \
+#     # && echo 'NVM_DIR="/root/.nvm";' >> /root/.zshrc; \
+#     && echo ". /root/.nvm/nvm.sh" >> /root/.zshrc \
+#     && echo ". /root/.nvm/bash_completion" >> /root/.zshrc 
+
+# # RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+# RUN export NVM_DIR=/root/.nvm && . /root/.nvm/nvm.sh \
+#     && nvm install v12.13 \
+#     && npm install -g npm pm2 
 
 # Get and install JDK
 RUN apt install -y openjdk-11-jdk
