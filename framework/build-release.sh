@@ -1,5 +1,33 @@
 #!/bin/bash
 
+function LOG_ERROR()
+{
+    if (( $# < 1 ))
+    then
+        echo -e "\033[33m usesage: LOG_ERROR msg \033[0m";
+    fi
+
+    local msg=$(date +%Y-%m-%d" "%H:%M:%S);
+
+    msg="${msg} $@";
+
+    echo -e "\033[31m $msg \033[0m";        
+}
+
+function LOG_INFO()
+{
+    local msg=$(date +%Y-%m-%d" "%H:%M:%S);
+
+    for p in $@
+    do
+        msg=${msg}" "${p};
+    done
+
+    echo -e "\033[32m $msg \033[0m"         
+}
+
+WORKING_DIR=$(cd $(dirname "$0") && pwd)
+
 # clone framework source code
 # TarsFramework
 mkdir -p /tmp/framework-auto-build
@@ -30,7 +58,7 @@ cd web
 
 webReleaseTag=$(git describe --tags `git rev-list --tags --max-count=1`  --abbrev=0 --always)
 
-./build-docker.sh $frameworkReleaseTag $webReleaseTag $frameworkReleaseTag
+${WORKING_DIR}/build-docker.sh $frameworkReleaseTag $webReleaseTag $frameworkReleaseTag
 
 # function LOG_ERROR()
 # {
