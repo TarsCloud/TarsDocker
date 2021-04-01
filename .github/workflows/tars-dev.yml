@@ -21,4 +21,4 @@ jobs:
       - name: login docker hub
         run: docker login -u ${{ secrets.DOCKER_USER_NAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build tars-dev image
-        run: cd tars && ./build-docker.sh master latest dev
+        run: cd tars && ./build-docker.sh master master dev

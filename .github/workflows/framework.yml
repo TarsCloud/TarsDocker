@@ -19,4 +19,4 @@ jobs:
       - name: login docker hub
         run: docker login -u ${{ secrets.DOCKER_USER_NAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build framework image
-        run: cd framework && ./build-docker.sh master latest latest 
+        run: cd framework && ./build-docker.sh master master latest 
