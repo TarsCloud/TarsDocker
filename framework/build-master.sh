@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./build-docker.sh latest latest latest
+./build-docker.sh master master latest
 
 # function LOG_ERROR()
 # {
