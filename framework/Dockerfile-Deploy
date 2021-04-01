@@ -12,7 +12,7 @@ COPY web /tmp/Tars/web
 
 # Install
 RUN apt update 
-RUN apt install -y mysql-client git build-essential unzip make golang
+RUN apt install -y mysql-client git build-essential unzip make golang flex bison net-tools
 RUN apt install -y libprotobuf-dev libprotobuf-c-dev 
 RUN apt install -y zlib1g-dev curl libssl-dev
 RUN apt install -y wget

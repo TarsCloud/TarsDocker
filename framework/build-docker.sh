@@ -61,6 +61,7 @@ LOG_INFO "Main version detected: $mainVersion"
 LOG_INFO "  Subversion detected: $subVersion"
 LOG_INFO "Build number detected: $buildNum"
 
+if [ "true" == "false" ]; then
 # clone framework source code
 # TarsFramework
 mkdir -p /tmp/framework-auto-build
@@ -96,13 +97,15 @@ fi
 
 # build docker image
 LOG_INFO "Building framework docker image tarscloud/framework:$frameworkLatestTag"
+fi
 
 export DOCKER_CLI_EXPERIMENTAL=enabled 
 docker buildx create --use --name tars-builder 
 docker buildx inspect tars-builder --bootstrap
-docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
+docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
 
-docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$frameworkLatestTag --build-arg FRAMEWORK_TAG=$frameworkLatestTag --build-arg WEB_TAG=$webLatestTag
+#docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$frameworkLatestTag --build-arg FRAMEWORK_TAG=$frameworkLatestTag --build-arg WEB_TAG=$webLatestTag --platform=linux/arm64 -o type=docker
+docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$frameworkLatestTag --build-arg FRAMEWORK_TAG=$frameworkLatestTag --build-arg WEB_TAG=$webLatestTag --platform=linux/amd64 -o type=docker
 
 errNo=$(echo $?)
 if [ $errNo != '0' ]; then
@@ -113,11 +116,12 @@ fi
 # test docker image
 cd /tmp/framework-auto-build/
 rm -rf /tmp/framework-auto-build/TarsDemo
-git clone https://github.com/TarsCloud/TarsDemo
+git clone --branch arm https://github.com/TarsCloud/TarsDemo
 cd TarsDemo
 LOG_INFO "Starting framework image test."
 # run TarsDemo to test framework based on local image before docker push
-./autorun.sh $frameworkLatestTag latest false false
+#./autorun.sh $frameworkLatestTag latest false false
+./autorun.sh $frameworkLatestTag test false false
 errNo=$(echo $?)
 if [ $errNo != '0' ]; then
     LOG_ERROR "Framework test failed, tag: $frameworkLatestTag"

@@ -75,7 +75,14 @@ cd /tmp/framework-auto-build/
 LOG_INFO "change context to /tmp/framework-auto-build/"
 
 LOG_INFO "Building framework docker image tarscloud/framework:$tarsTag"
-docker build . --file "Dockerfile-Deploy" --tag tarscloud/framework:$tarsTag
+
+export DOCKER_CLI_EXPERIMENTAL=enabled
+docker buildx create --use --name tars-builder
+docker buildx inspect tars-builder --bootstrap
+docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
+
+docker buildx docker build . --file "Dockerfile-Deploy" --tag tarscloud/framework:$tarsTag
+
 errNo=$(echo $?)
 if [ "$errNo" != '0' ]; then
     LOG_ERROR "Failed to build framework docker, tag: $tarsTag"
@@ -95,4 +102,4 @@ if [ "$errNo" != '0' ]; then
     exit $errNo
 fi
 # push docker image
-docker push tarscloud/framework:$tarsTag
+#docker push tarscloud/framework:$tarsTag
