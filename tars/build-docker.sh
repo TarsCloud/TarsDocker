@@ -46,7 +46,6 @@ docker buildx create --use --name tars-builder
 docker buildx inspect tars-builder --bootstrap
 docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
 
-#docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/tars:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webLatestTag --platform=linux/arm64 -o type=docker
 docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/tars:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64 -o type=docker
 
 errNo=$(echo $?)
@@ -62,7 +61,6 @@ git clone --branch arm https://github.com/TarsCloud/TarsDemo
 cd TarsDemo
 LOG_INFO "Starting framework image test."
 # run TarsDemo to test framework based on local image before docker push
-#./autorun.sh $dockerTag latest false false
 ./autorun.sh $dockerTag latest false false
 errNo=$(echo $?)
 if [ $errNo != '0' ]; then
@@ -70,4 +68,7 @@ if [ $errNo != '0' ]; then
     exit $errNo
 fi
 # push docker image
-#docker push tarscloud/tars:$dockerTag
+
+docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/tars:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64,linux/arm64 --push
+
+# docker push tarscloud/tars:$dockerTag

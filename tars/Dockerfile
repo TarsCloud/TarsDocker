@@ -58,16 +58,8 @@ RUN go get github.com/TarsCloud/TarsGo/tars \
     && ln -s /usr/local/go/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go/tars2go /usr/local/go/bin/tars2go 
 
 RUN mkdir -p /tmp/Tars && cd /tmp/Tars && git clone --branch $FRAMEWORK_TAG https://github.com/TarsCloud/TarsFramework framework --recursive 
-RUN cd /tmp/Tars && git clone --branch $WEB_TAG https://github.com/TarsCloud/TarsWeb web
-
-# # Install tarscpp 
-# RUN mkdir -p /root/Tars && cd /root/Tars \
-#     && git clone https://github.com/TarsCloud/TarsCpp cpp --recursive \
-#     && cd cpp \
-#     && mkdir build \
-#     && cd build \
-#     && cmake .. && make -j4 && make install \
-#     && rm -rf /root/Tars
+RUN cd /tmp/Tars && git clone --branch $WEB_TAG https://github.com/TarsCloud/TarsWeb web && cp -rf /tmp/Tars/web /usr/local/tars/cpp/deploy/ \
+    && rm -rf /tmp  
 
 RUN /usr/local/tars/cpp/deploy/tar-server.sh
 
