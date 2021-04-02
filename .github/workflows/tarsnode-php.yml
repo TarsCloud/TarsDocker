@@ -1,0 +1,23 @@
+name: tarsnode-php
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "tarsnode/php/*"
+      - ".github/workflows/tarsnode-php.yml"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "tarsnode/php/*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: login docker hub
+        run: docker login -u ${{ secrets.DOCKER_USER_NAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: docker build
+        run: cd tarsnode && ./build-docker.sh php

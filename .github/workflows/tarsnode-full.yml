@@ -1,0 +1,23 @@
+name: tarsnode-full
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "tarsnode/full/*"
+      - ".github/workflows/tarsnode-full.yml"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "tarsnode/full/*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: login docker hub
+        run: docker login -u ${{ secrets.DOCKER_USER_NAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: docker build
+        run: cd tarsnode && ./build-docker.sh full full && ./build-docker.sh full stable && ./build-docker.sh full latest
