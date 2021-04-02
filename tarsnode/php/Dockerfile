@@ -8,7 +8,7 @@ ENV SWOOLE_VERSION=v4.4.16
 ENV DEBIAN_FRONTEND=noninteractive
 
 #intall php tars
-RUN apt install -y php php-dev php-cli php-gd php-curl php-mysql \
+RUN apt update && apt install -y php php-dev php-cli php-gd php-curl php-mysql \
     php-zip php-fileinfo php-redis php-mbstring tzdata git make wget \
     build-essential libmcrypt-dev php-pear
 
