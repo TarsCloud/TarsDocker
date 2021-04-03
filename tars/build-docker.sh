@@ -57,8 +57,8 @@ cd TarsDemo
 #--------------------------------------------------------------------------------------------
 
 export DOCKER_CLI_EXPERIMENTAL=enabled 
-docker buildx create --use --name tars-builder 
-docker buildx inspect tars-builder --bootstrap
+docker buildx create --use --name tars-builder-tars
+docker buildx inspect tars-builder-tars --bootstrap
 docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
 
 #--------------------------------------------------------------------------------------------
