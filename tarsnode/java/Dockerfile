@@ -1,8 +1,8 @@
 FROM ubuntu:20.04
 
 WORKDIR /root/
-
-RUN apt update && apt install -y openjdk-11-jdk && apt-get clean
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y openjdk-11-jdk wget && apt-get clean
 
 # copy source
 COPY entrypoint.sh /sbin/
