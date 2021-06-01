@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - "basedocker/full/*"
       - "tarsnode/cpp/*"
       - ".github/workflows/tarsnode-cpp.yml"
   pull_request:
