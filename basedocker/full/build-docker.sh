@@ -9,6 +9,8 @@ fi
 
 dockerTag=$1
 
+echo "tag:$dockerTag"
+
 export DOCKER_CLI_EXPERIMENTAL=enabled 
 docker buildx create --use --name tars-builder-basedocker
 docker buildx inspect tars-builder-basedocker --bootstrap
