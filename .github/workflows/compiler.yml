@@ -1,0 +1,23 @@
+name: compiler
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "compiler/*"
+      - ".github/workflows/compiler.yml"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "compiler/*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: login docker hub
+        run: docker login -u ${{ secrets.DOCKER_USER_NAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: docker build
+        run: cd compiler && ./build-docker.sh latest
