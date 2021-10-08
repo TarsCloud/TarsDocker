@@ -20,8 +20,8 @@ RUN apt-get clean
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Install Tars framework
-RUN mkdir -p /tmp/Tars && cd /tmp/Tars && git clone --branch $FRAMEWORK_TAG https://github.com/TarsCloud/TarsFramework framework --recursive 
-RUN cd /tmp/Tars && git clone --branch $WEB_TAG https://github.com/TarsCloud/TarsWeb web
+RUN mkdir -p /tmp/Tars && cd /tmp/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive && cd framework && git checkout $FRAMEWORK_TAG && git submodule update --init --recursive
+RUN cd /tmp/Tars && git clone https://github.com/TarsCloud/TarsWeb web && cd web && git checkout $WEB_TAG 
 RUN mkdir -p /data \
 	&& chmod u+x /tmp/Tars/framework/build/build.sh \
 	&& cd /tmp/Tars/framework/build/ \
