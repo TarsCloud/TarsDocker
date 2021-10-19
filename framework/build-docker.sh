@@ -63,7 +63,7 @@ docker buildx inspect tars-builder-framework --bootstrap
 docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
 
 #----------------------------------------------------------------------------------------
-docker buildx build $WORKING_DIR --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64 -o type=docker
+docker buildx build $WORKING_DIR --no-cache --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/framework:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64 -o type=docker
 
 errNo=$(echo $?)
 if [ $errNo != '0' ]; then
