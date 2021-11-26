@@ -20,8 +20,9 @@ RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
 	&& echo ". /root/.nvm/nvm.sh" >> /root/.bashrc \
 	&& echo ". /root/.nvm/bash_completion" >> /root/.bashrc \
 	&& source /root/.bashrc \
-	&& nvm install v12.13.0 \
+	&& nvm install v16.13.0 \
 	&& npm install -g npm pm2 \
+	&& rm v0.35.1.zip \
 	#tars nodejs 
 	&& source /root/.bashrc 
 RUN apt-get clean \

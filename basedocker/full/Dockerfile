@@ -23,8 +23,9 @@ RUN apt install -y mysql-client git build-essential unzip make golang cmake flex
     && echo ". /root/.nvm/nvm.sh" >> /root/.bashrc \
     && echo ". /root/.nvm/bash_completion" >> /root/.bashrc \
     && source /root/.bashrc \
-    && nvm install v12.13.0 \
+    && nvm install v16.13.0 \
     && npm install -g npm pm2 \
+    && rm v0.35.1.zip \
     #tars nodejs 
     && source /root/.bashrc \
     # Get and install JDK
