@@ -13,8 +13,19 @@ RUN apt update
 RUN DEBIAN_FRONTEND=noninteractive apt install -y mysql-client git build-essential unzip make golang flex bison net-tools wget cmake psmisc
 RUN apt install -y libprotobuf-dev libprotobuf-c-dev 
 RUN apt install -y zlib1g-dev curl libssl-dev
-RUN apt install -y nodejs npm
-RUN apt-get clean
+# Get and install nodejs
+RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
+	&& unzip v0.35.1.zip \
+	&& cp -rf nvm-0.35.1 /root/.nvm \
+	&& echo ". /root/.nvm/nvm.sh" >> /root/.bashrc \
+	&& echo ". /root/.nvm/bash_completion" >> /root/.bashrc \
+	&& source /root/.bashrc \
+	&& nvm install v12.13.0 \
+	&& npm install -g npm pm2 \
+	#tars nodejs 
+	&& source /root/.bashrc 
+RUN apt-get clean \
+	&& rm -rf /var/cache/apt
 
 # Get and install nodejs
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
