@@ -1,7 +1,7 @@
 version: '3'
 services:
   tars:
-    image: 'tarscloud/framework:stable'
+    image: 'tarscloud/framework:latest'
     container_name: "framework"
     environment:
       - MYSQL_HOST=127.0.0.1

@@ -19,7 +19,7 @@ RUN apt install -y mysql-client git build-essential unzip make golang cmake flex
 	&& apt install -y php-zip php-fileinfo php-redis php-mbstring tzdata git make wget \
 	&& apt install -y build-essential libmcrypt-dev php-pear \
 	# Get and install nodejs
-	RUN apt install -y npm \
+	&& apt install -y npm \
 	&& npm install -g npm pm2 n \
 	&& n install v16.13.0 \
 	# Get and install JDK
