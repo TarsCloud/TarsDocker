@@ -16,15 +16,9 @@ RUN apt install -y mysql-client git build-essential unzip make golang cmake flex
     && apt install -y php-zip php-fileinfo php-redis php-mbstring tzdata git make wget \
     && apt install -y build-essential libmcrypt-dev php-pear composer\
     # Get and install nodejs
-    && wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
-    && unzip v0.35.1.zip \
-    && cp -rf nvm-0.35.1 /root/.nvm \
-    && echo ". /root/.nvm/nvm.sh" >> /root/.bashrc \
-    && echo ". /root/.nvm/bash_completion" >> /root/.bashrc \
-    && . /root/.bashrc \
+    RUN apt install -y npm \
     && npm install -g npm pm2 n \
     && n install v16.13.0 \
-    && rm v0.35.1.zip \
     # Get and install JDK
     && apt install -y openjdk-11-jdk maven \
     && apt clean \

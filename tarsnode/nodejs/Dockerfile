@@ -5,16 +5,9 @@ WORKDIR /root/
 ENV DEBIAN_FRONTEND=noninteractive
 # Get and install nodejs
 RUN apt update && apt install -y wget
-RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
-    && unzip v0.35.1.zip \
-    && cp -rf nvm-0.35.1 /root/.nvm \
-    && echo ". /root/.nvm/nvm.sh" >> /root/.bashrc \
-    && echo ". /root/.nvm/bash_completion" >> /root/.bashrc \
-    && . /root/.bashrc \
+RUN apt install -y npm \
     && npm install -g npm pm2 n \
-    && n install v16.13.0 \
-    && rm v0.35.1.zip \
-    && rm v0.35.1.zip
+    && n install v16.13.0 
 # copy source
 COPY entrypoint.sh /sbin/
 
