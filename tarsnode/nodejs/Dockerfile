@@ -10,11 +10,10 @@ RUN wget https://github.com/nvm-sh/nvm/archive/v0.35.1.zip \
     && cp -rf nvm-0.35.1 /root/.nvm \
     && echo ". /root/.nvm/nvm.sh" >> /root/.bashrc \
     && echo ". /root/.nvm/bash_completion" >> /root/.bashrc \
-    && source /root/.bashrc \
-    && nvm install v16.13.0 \
-    && npm install -g npm pm2 \
-    #tars nodejs 
-    && source /root/.bashrc \
+    && . /root/.bashrc \
+    && npm install -g npm pm2 n \
+    && n install v16.13.0 \
+    && rm v0.35.1.zip \
     && rm v0.35.1.zip
 # copy source
 COPY entrypoint.sh /sbin/
