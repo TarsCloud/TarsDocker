@@ -52,7 +52,7 @@ LOG_INFO "Building framework docker image for framework:$frameworkTag, web:$webT
 # test docker image
 # cd /tmp/framework-auto-build/
 # rm -rf /tmp/framework-auto-build/TarsDemo
-rum -rf TarsDemo
+ru -rf TarsDemo
 git clone https://github.com/TarsCloud/TarsDemo
 cd TarsDemo
 
