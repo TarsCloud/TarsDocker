@@ -7,6 +7,8 @@ RUN apt update
 RUN apt install -y build-essential unzip make golang cmake curl wget libprotobuf-dev libprotobuf-c-dev  zlib1g-dev libssl-dev \
     && apt-get clean
 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 # copy source
 COPY entrypoint.sh /sbin/
 

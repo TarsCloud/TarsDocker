@@ -8,6 +8,9 @@ RUN apt update && apt install -y wget
 RUN apt install -y npm \
     && npm install -g npm pm2 n \
     && n install v16.13.0 
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 # copy source
 COPY entrypoint.sh /sbin/
 

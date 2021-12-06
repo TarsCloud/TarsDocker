@@ -24,6 +24,8 @@ RUN apt install -y mysql-client git build-essential unzip make golang cmake flex
     && apt clean \
     && rm -rf /var/cache/apt
 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 # Clone Tars repo and init php submodule
 RUN cd /root/ && git clone https://github.com/TarsCloud/Tars.git \
     && cd /root/Tars/ \

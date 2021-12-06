@@ -4,6 +4,8 @@ WORKDIR /root/
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install -y openjdk-11-jdk wget && apt-get clean
 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 # copy source
 COPY entrypoint.sh /sbin/
 
