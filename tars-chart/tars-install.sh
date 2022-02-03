@@ -1,7 +1,7 @@
 
 
 user="tars-test"
-NS=`helm list | grep ${user} | awk '{print $1}'`
+NS=`helm list --namespace ${user} | grep ${user} | awk '{print $1}'`
 echo $NS, $user
 
 if [ "$NS" == "" ]; then
@@ -10,6 +10,6 @@ if [ "$NS" == "" ]; then
     helm install $user ./stable/tars --namespace $user --set tarsnode.replicas=1,tars.namespace=$user
 else
     echo "upgrade tars-k8s"
-    helm upgrade $user ./stable/tars
+    helm upgrade $user ./stable/tars --namespace $user
 
 fi

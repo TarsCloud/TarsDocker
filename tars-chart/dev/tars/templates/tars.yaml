@@ -146,7 +146,8 @@ spec:
       - backend:
           service: 
             name: ingress-web-tars
-            port: 3000
+            port: 
+              number: 3000
         path: /
         pathType: Prefix
 
@@ -181,7 +182,8 @@ spec:
       - backend:
           service:
             name: ingress-auth-tars
-            port: 3001
+            port: 
+              number: 3001
         path: /
         pathType: Prefix
 
