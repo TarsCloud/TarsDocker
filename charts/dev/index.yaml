@@ -3,7 +3,16 @@ entries:
   tars:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.136627549+08:00"
+    created: "2022-02-03T09:31:04.78105192+08:00"
+    description: A Helm chart for Tars
+    digest: 4510dc0e3e7f7336ad12e7462a0ad650f816b2ce4721da88b559b847dd640e1e
+    name: tars
+    urls:
+    - https://tarscloud.github.io/TarsDocker/charts/dev/tars-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2022-02-03T09:31:04.780724931+08:00"
     description: A Helm chart for Tars
     digest: da80350a7d3570b463649c4f23ae383db1640190eceac68fe87381cb3903fff9
     name: tars
@@ -12,7 +21,7 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.136454701+08:00"
+    created: "2022-02-03T09:31:04.780226627+08:00"
     description: A Helm chart for Tars
     digest: 81a81eaeec3397ffec050790a776b679ffb0b77532d91a38eb7e414b480405cc
     name: tars
@@ -21,7 +30,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.136269888+08:00"
+    created: "2022-02-03T09:31:04.77968403+08:00"
     description: A Helm chart for Tars
     digest: 917f24298b8e5131de9dbe8a4aa1c2362c6958a40ac1afe6d21b15288f3d2502
     name: tars
@@ -30,7 +39,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.136087224+08:00"
+    created: "2022-02-03T09:31:04.779174155+08:00"
     description: A Helm chart for Tars
     digest: 8abfcbdf3fc5c5ed45cea15399efdfe5b4555aecd62495a3de356b19c1592e79
     name: tars
@@ -39,11 +48,11 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.135887329+08:00"
+    created: "2022-02-03T09:31:04.778598926+08:00"
     description: A Helm chart for Tars
     digest: 139659427efc667500f0a7e47dbd198529929565ebd033bafd26b0a51a87c48e
     name: tars
     urls:
     - https://tarscloud.github.io/TarsDocker/charts/dev/tars-0.1.0.tgz
     version: 0.1.0
-generated: "2020-06-04T09:24:30.135480814+08:00"
+generated: "2022-02-03T09:31:04.777779164+08:00"

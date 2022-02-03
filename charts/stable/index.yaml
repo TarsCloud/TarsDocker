@@ -3,7 +3,16 @@ entries:
   tars:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.055432277+08:00"
+    created: "2022-02-03T09:31:04.713600522+08:00"
+    description: A Helm chart for Tars
+    digest: 6b90c30ef7227d9400c639040d0427a85db59a332bcb69e6e53781c3033f821d
+    name: tars
+    urls:
+    - https://tarscloud.github.io/TarsDocker/charts/stable/tars-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2022-02-03T09:31:04.713268232+08:00"
     description: A Helm chart for Tars
     digest: f7c50d1d99afd444fb13976b05c46d4df3423b74845e0938669563f470ad545d
     name: tars
@@ -12,7 +21,7 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.055255589+08:00"
+    created: "2022-02-03T09:31:04.712654159+08:00"
     description: A Helm chart for Tars
     digest: 48a45b6eeea6e62696d23d716dfe3e41e584aac552b76093e0fcffe7ce9f0dc3
     name: tars
@@ -21,7 +30,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.055077441+08:00"
+    created: "2022-02-03T09:31:04.712196633+08:00"
     description: A Helm chart for Tars
     digest: 77c0e5a500dc0c74e6b176d8c42ee9d19401ea32e52e9e3b6e00a399506a1158
     name: tars
@@ -30,7 +39,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.054857633+08:00"
+    created: "2022-02-03T09:31:04.711627476+08:00"
     description: A Helm chart for Tars
     digest: 70709c8fb76e4b6033dae632ef250f69e2ede01d323555d326a1d9e35b7ebebb
     name: tars
@@ -39,11 +48,11 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2020-06-04T09:24:30.054641381+08:00"
+    created: "2022-02-03T09:31:04.711126096+08:00"
     description: A Helm chart for Tars
     digest: 08cdde3ef77cac00ebf97e7e635770b7f035cb54ee0fb1c3a57212cdd1d28c86
     name: tars
     urls:
     - https://tarscloud.github.io/TarsDocker/charts/stable/tars-0.1.0.tgz
     version: 0.1.0
-generated: "2020-06-04T09:24:30.054254632+08:00"
+generated: "2022-02-03T09:31:04.710014372+08:00"
