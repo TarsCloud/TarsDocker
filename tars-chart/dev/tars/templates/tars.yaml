@@ -134,7 +134,7 @@ spec:
  
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: web-tars
@@ -144,8 +144,12 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: ingress-web-tars
-          servicePort: 3000
+          service: 
+            name: ingress-web-tars
+            port: 
+              number: 3000
+        path: /
+        pathType: Prefix
 
 
 ---
@@ -166,7 +170,7 @@ spec:
  
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: auth-tars
@@ -176,8 +180,12 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: ingress-auth-tars
-          servicePort: 3001
+          service:
+            name: ingress-auth-tars
+            port: 
+              number: 3001
+        path: /
+        pathType: Prefix
 
 ---
 

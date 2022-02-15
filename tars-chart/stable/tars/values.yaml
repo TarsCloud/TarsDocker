@@ -5,8 +5,8 @@
 tars:
   namespace: tars
   data: /data/tars-data
-  image: tarscloud/framework:v2.4.1
-  replicas: 2
+  image: tarscloud/framework:v3.0.4
+  replicas: 1
   host: domain.com
   port: 80
   strict: "false"
@@ -24,7 +24,7 @@ tars:
   #   memory: 128Mi
 tarsnode:
   image: tarscloud/tars-node:stable
-  replicas: 3
+  replicas: 1
   pullPolicy: IfNotPresent
   resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
