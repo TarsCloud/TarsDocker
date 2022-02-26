@@ -1,3 +1,6 @@
+FROM docker:19.03 AS idocker
+RUN mv $(command -v  docker) /tmp/docker
+
 FROM ubuntu:20.04
 
 WORKDIR /root/
@@ -6,6 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update 
 RUN apt install -y build-essential unzip make golang cmake curl wget libprotobuf-dev libprotobuf-c-dev  zlib1g-dev libssl-dev \
     && apt-get clean
+COPY --from=idocker /tmp/docker /usr/local/bin/docker
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 

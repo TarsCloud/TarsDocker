@@ -1,3 +1,6 @@
+FROM docker:19.03 AS idocker
+RUN mv $(command -v  docker) /tmp/docker
+
 FROM ubuntu:20.04
 
 WORKDIR /root/
@@ -13,7 +16,7 @@ RUN apt update && apt install -y php php-dev php-cli php-gd php-curl php-mysql \
 	build-essential libmcrypt-dev php-pear
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-
+COPY --from=idocker /tmp/docker /usr/local/bin/docker
 # Clone Tars repo and init php submodule
 RUN cd /root/ && git clone https://gitee.com/TarsCloud/Tars.git \
 	&& cd /root/Tars/ \
