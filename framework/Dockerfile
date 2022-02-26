@@ -30,14 +30,14 @@ COPY --from=idocker /tmp/docker /usr/local/bin/docker
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Install Tars framework
-RUN mkdir -p /tmp/Tars && cd /tmp/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive && cd framework && git checkout $FRAMEWORK_TAG && git submodule update --init --recursive
-RUN cd /tmp/Tars && git clone https://github.com/TarsCloud/TarsWeb web && cd web && git checkout $WEB_TAG 
+RUN mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive && cd framework && git checkout $FRAMEWORK_TAG && git submodule update --init --recursive
+RUN cd /root/Tars && git clone https://github.com/TarsCloud/TarsWeb web && cd web && git checkout $WEB_TAG 
 RUN mkdir -p /data \
-	&& chmod u+x /tmp/Tars/framework/build/build.sh \
-	&& cd /tmp/Tars/framework/build/ \
+	&& chmod u+x /root/Tars/framework/build/build.sh \
+	&& cd /root/Tars/framework/build/ \
 	&& cmake .. && make -j4 && make install \
-	&& cp -rf /tmp/Tars/web /usr/local/tars/cpp/deploy/ \
-	&& rm -rf /tmp 
+	&& cp -rf /root/Tars/web /usr/local/tars/cpp/deploy/ \
+	&& rm -rf /root/Tars 
 
 RUN	${TARS_INSTALL}/tar-server.sh
 
@@ -46,8 +46,6 @@ ENTRYPOINT [ "/usr/local/tars/cpp/deploy/docker-init.sh" ]
 
 #web
 EXPOSE 3000
-#user system
-EXPOSE 3001
 #tarslog
 EXPOSE 18993
 #tarspatch
