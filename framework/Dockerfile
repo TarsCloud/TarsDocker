@@ -1,3 +1,6 @@
+FROM docker:19.03 AS idocker
+RUN mv $(command -v  docker) /tmp/docker
+
 # pull source and build docker auto in docker hub
 FROM ubuntu:20.04
 
@@ -20,6 +23,8 @@ RUN apt install -y npm \
 
 RUN apt-get clean \
 	&& rm -rf /var/cache/apt
+
+COPY --from=idocker /tmp/docker /usr/local/bin/docker
 
 # Get and install nodejs
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh

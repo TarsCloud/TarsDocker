@@ -1,3 +1,6 @@
+FROM docker:19.03 AS idocker
+RUN mv $(command -v  docker) /tmp/docker
+
 FROM ubuntu:20.04
 
 ARG FRAMEWORK_TAG=master
@@ -10,6 +13,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV SWOOLE_VERSION=v4.4.16 
 # Install
 RUN apt update 
+
+COPY --from=idocker /tmp/docker /usr/local/bin/docker
 
 RUN apt install -y mysql-client git build-essential unzip make golang cmake flex bison \
 	&& apt install -y libprotobuf-dev libprotobuf-c-dev zlib1g-dev libssl-dev \
