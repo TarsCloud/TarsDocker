@@ -16,7 +16,7 @@ RUN apt update
 
 COPY --from=idocker /tmp/docker /usr/local/bin/docker
 
-RUN apt install -y mysql-client git build-essential unzip make golang cmake flex bison \
+RUN apt install -y mysql-client git build-essential unzip make golang cmake flex bison python3 \
 	&& apt install -y libprotobuf-dev libprotobuf-c-dev zlib1g-dev libssl-dev \
 	&& apt install -y curl wget net-tools iproute2 \
 	#intall php tars
