@@ -20,15 +20,13 @@ fi
 
 function LOG_ERROR()
 {
-	if (( $# < 1 ))
-	then
-		echo -e "\033[33m usesage: LOG_ERROR msg \033[0m";
-	fi
-	
 	local msg=$(date +%Y-%m-%d" "%H:%M:%S);
 
-    msg="${msg} $@";
-
+	for p in $@
+	do
+		msg=${msg}" "${p};
+	done
+	
 	echo -e "\033[31m $msg \033[0m";	
 }
 
@@ -50,8 +48,6 @@ LOG_INFO "Building framework docker image for framework:$frameworkTag, web:$webT
 
 
 # test docker image
-# cd /tmp/framework-auto-build/
-# rm -rf /tmp/framework-auto-build/TarsDemo
 rm -rf TarsDemo
 git clone https://github.com/TarsCloud/TarsDemo
 cd TarsDemo
