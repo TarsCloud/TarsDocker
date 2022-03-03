@@ -8,6 +8,8 @@ ARG WEB_TAG=master
 
 WORKDIR /root/
 
+ENV TARS_INSTALL  /usr/local/tars/cpp/deploy
+
 ENV GOPATH=/usr/local/go
 ENV DEBIAN_FRONTEND=noninteractive
 ENV SWOOLE_VERSION=v4.4.16 
