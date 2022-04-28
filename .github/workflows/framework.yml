@@ -12,6 +12,7 @@ on:
       - master
     paths:
       - "framework/**"
+      
 jobs:
   build:
     runs-on: ubuntu-latest

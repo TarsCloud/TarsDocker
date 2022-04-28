@@ -13,6 +13,7 @@ on:
       - master
     paths:
       - "tarsnode/full/*"
+      
 jobs:
   build:
     runs-on: ubuntu-latest

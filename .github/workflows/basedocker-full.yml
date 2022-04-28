@@ -12,6 +12,7 @@ on:
       - master
     paths:
       - "basedocker/full/*"
+      
 jobs:
   build:
     runs-on: ubuntu-latest

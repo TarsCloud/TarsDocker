@@ -12,6 +12,7 @@ on:
       - master
     paths:
       - "compiler/*"
+      
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -12,6 +12,7 @@ on:
       - master
     paths:
       - "tars/**"
+      
 jobs:
   build:
     runs-on: ubuntu-latest
