@@ -18,9 +18,13 @@
 
 if [ "$DOMAIN" != "" ]; then
 	MachineIp=${DOMAIN}
+elif [ "${TARS_DOMAIN}" != "" ]; then
+	MachineIp=${TARS_DOMAIN}
 else
 	MachineIp=$(ip addr | grep inet | grep eth0 | awk '{print $2;}' | sed 's|/.*$||')
 fi
+
+#TARS_REGISTRY_ADDRESS: tcp -h xxx -p yyy:tcp -h xxx -p yyy
 
 mkdir -p /usr/local/app/tars/
 mkdir -p /usr/local/app/tars/tarsnode
@@ -39,7 +43,7 @@ while [ 1 ]
 do
 	rm -rf get_tarsnode.sh
 
-	wget -O get_tarsnode.sh "${WEB_HOST}/get_tarsnode?ip=${MachineIp}&runuser=root&registryAddress=${registryAddress}"
+	wget -O get_tarsnode.sh "${WEB_HOST}/get_tarsnode?ip=${MachineIp}&runuser=root&registryAddress=${TARS_REGISTRY_ADDRESS}"
 
 	sleep 1
 
