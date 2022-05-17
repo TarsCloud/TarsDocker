@@ -39,7 +39,7 @@ while [ 1 ]
 do
 	rm -rf get_tarsnode.sh
 
-	wget -O get_tarsnode.sh "${WEB_HOST}/get_tarsnode?ip=${MachineIp}&runuser=root"
+	wget -O get_tarsnode.sh "${WEB_HOST}/get_tarsnode?ip=${MachineIp}&runuser=root&registryAddress=${registryAddress}"
 
 	sleep 1
 

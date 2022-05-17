@@ -22,6 +22,7 @@ else
 	MachineIp=$(ip addr | grep inet | grep eth0 | awk '{print $2;}' | sed 's|/.*$||')
 fi
 
+
 mkdir -p /usr/local/app/tars/
 mkdir -p /usr/local/app/tars/tarsnode
 
@@ -39,7 +40,7 @@ while [ 1 ]
 do
 	rm -rf get_tarsnode.sh
 
-	wget -O get_tarsnode.sh "${WEB_HOST}/get_tarsnode?ip=${MachineIp}&runuser=root"
+	wget -O get_tarsnode.sh "${WEB_HOST}/get_tarsnode?ip=${MachineIp}&runuser=root&registryAddress=${registryAddress}"
 
 	sleep 1
 

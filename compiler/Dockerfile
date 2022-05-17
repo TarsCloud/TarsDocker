@@ -46,11 +46,8 @@ RUN cd /root/ && git clone https://github.com/TarsCloud/Tars.git \
 
 # Install tars go
 RUN go get github.com/TarsCloud/TarsGo/tars \
-    && cd $GOPATH/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go \
-    && go build .  \
-    && mkdir -p /usr/local/go/bin \
-    && chmod a+x /usr/local/go/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go/tars2go \
-    && ln -s /usr/local/go/src/github.com/TarsCloud/TarsGo/tars/tools/tars2go/tars2go /usr/local/go/bin/tars2go 
+    && go install github.com/TarsCloud/TarsGo/tars/tools/tars2go@latest               \
+    && go install github.com/TarsCloud/TarsGo/tars/tools/tarsgo@latest
 
 RUN cd /root/Tars/ \
     && git submodule update --init --recursive cpp \ 
