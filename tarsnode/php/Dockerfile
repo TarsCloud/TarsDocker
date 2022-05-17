@@ -18,7 +18,7 @@ RUN apt update && apt install -y php php-dev php-cli php-gd php-curl php-mysql \
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 COPY --from=idocker /tmp/docker /usr/local/bin/docker
 # Clone Tars repo and init php submodule
-RUN cd /root/ && git clone https://gitee.com/TarsCloud/Tars.git \
+RUN cd /root/ && git clone https://github.com/TarsCloud/Tars.git \
 	&& cd /root/Tars/ \
 	&& git submodule update --init --recursive php \
 	#intall PHP Tars module
