@@ -57,12 +57,12 @@ RUN cd /root/ && git clone https://github.com/TarsCloud/Tars.git \
     && cd /root && rm -rf swoole \
     && mkdir -p /root/phptars && cp -f /root/Tars/php/tars2php/src/tars2php.php /root/phptars 
 
-# Install tars go
-RUN go get github.com/TarsCloud/TarsGo/tars \
-    && go install github.com/TarsCloud/TarsGo/tars/tools/tars2go@latest               \
-    && go install github.com/TarsCloud/TarsGo/tars/tools/tarsgo@latest
+# # Install tars go
+# RUN go get github.com/TarsCloud/TarsGo/tars \
+#     && go install github.com/TarsCloud/TarsGo/tars/tools/tars2go@latest               \
+#     && go install github.com/TarsCloud/TarsGo/tars/tools/tarsgo@latest
 
-RUN go env -w GO111MODULE=on
+# RUN go env -w GO111MODULE=on
 
 RUN mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive && cd framework && git checkout $FRAMEWORK_TAG && git submodule update --init --recursive
 RUN cd /root/Tars && git clone https://github.com/TarsCloud/TarsWeb web && cd web && git checkout $WEB_TAG 
