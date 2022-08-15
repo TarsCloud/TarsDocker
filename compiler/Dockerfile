@@ -8,7 +8,7 @@ FROM php:7.4.26-apache-bullseye AS iphp
 RUN rm -rf /bin/ls
 
 RUN apt update                                                                         \
-    && apt install git libssl-dev zlib1g-dev busybox  libzip-dev  -y                   \
+    && apt install git curl wget libssl-dev zlib1g-dev busybox  libzip-dev  -y                   \
     && busybox --install
 
 RUN yes ''| pecl install igbinary zstd redis swoole                                    \
