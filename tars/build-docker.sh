@@ -54,9 +54,9 @@ cd TarsDemo
 #--------------------------------------------------------------------------------------------
 
 export DOCKER_CLI_EXPERIMENTAL=enabled 
-docker buildx create --use --name tars-builder-tars
-docker buildx inspect tars-builder-tars --bootstrap
-docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
+docker run --rm --privileged tonistiigi/binfmt:latest --install all
+docker buildx create --name tars-framework-builder --use
+docker buildx inspect --bootstrap --builder tars-framework-builder
 
 #--------------------------------------------------------------------------------------------
 docker buildx build $WORKING_DIR --no-cache  --file "${WORKING_DIR}/Dockerfile" --tag tarscloud/tars:$dockerTag --build-arg FRAMEWORK_TAG=$frameworkTag --build-arg WEB_TAG=$webTag --platform=linux/amd64 -o type=docker
