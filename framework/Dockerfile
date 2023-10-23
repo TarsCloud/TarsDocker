@@ -19,11 +19,11 @@ RUN apt install -y libprotobuf-dev libprotobuf-c-dev
 RUN apt install -y zlib1g-dev curl libssl-dev
 # Get and install nodejs
 RUN apt install -y npm \
-	&& npm install -g npm pm2 n \
-	&& n install v16.13.0 
+    && npm install -g pm2 n \
+    && n install v16.13.0 
 
 RUN apt-get clean \
-	&& rm -rf /var/cache/apt
+    && rm -rf /var/cache/apt
 
 COPY --from=idocker /tmp/docker /usr/local/bin/docker
 
@@ -34,11 +34,11 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN mkdir -p /root/Tars && cd /root/Tars && git clone https://github.com/TarsCloud/TarsFramework framework --recursive && cd framework && git checkout $FRAMEWORK_TAG && git submodule update --init --recursive
 RUN cd /root/Tars && git clone https://github.com/TarsCloud/TarsWeb web && cd web && git checkout $WEB_TAG 
 RUN mkdir -p /data \
-	&& chmod u+x /root/Tars/framework/build/build.sh \
-	&& cd /root/Tars/framework/build/ \
-	&& cmake .. && make -j4 && make install \
-	&& cp -rf /root/Tars/web /usr/local/tars/cpp/deploy/ \
-	&& rm -rf /root/Tars 
+    && chmod u+x /root/Tars/framework/build/build.sh \
+    && cd /root/Tars/framework/build/ \
+    && cmake .. && make -j4 && make install \
+    && cp -rf /root/Tars/web /usr/local/tars/cpp/deploy/ \
+    && rm -rf /root/Tars 
 
 RUN	${TARS_INSTALL}/tar-server.sh
 
